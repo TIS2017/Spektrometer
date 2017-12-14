@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Spektrometer.GUI;
+using Spektrometer.Logic;
+
 namespace Spektrometer
 {
     /// <summary>
@@ -20,6 +23,12 @@ namespace Spektrometer
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MenuComponent menuComponent { get; set; }
+        public GraphView graphViewer { get; set; }
+        public TopToolBar topToolBar { get; set; }
+        public CameraRecordView cameraRecordViewer { get; set; }
+        public SpektrometerService spektrometerService { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();

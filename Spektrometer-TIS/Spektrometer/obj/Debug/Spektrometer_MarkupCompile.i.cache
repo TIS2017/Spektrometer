@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-c:\Users\Fulminante\Documents\Visual Studio 2015\Projects\Spektrometer-TIS\Spektrometer\obj\Debug\
+C:\Users\Fulminante\Documents\Visual Studio 2015\Projects\Spektrometer-TIS\Spektrometer\obj\Debug\
 Spektrometer
 none
 false
 DEBUG;TRACE
-c:\Users\Fulminante\Documents\Visual Studio 2015\Projects\Spektrometer-TIS\Spektrometer\App.xaml
-11151548125
+C:\Users\Fulminante\Documents\Visual Studio 2015\Projects\Spektrometer-TIS\Spektrometer\App.xaml
+8-727510418
 
-301896518031
-13738642453
-MainWindow.xaml;
+301697931237
+14434534373
+GUI\MenuPages\CalibrationView.xaml;GUI\MenuPages\MenuView.xaml;GUI\MenuPages\MeasurementView.xaml;GUI\MenuPages\CameraView.xaml;GUI\MenuPages\ExportView.xaml;GUI\MenuPages\ImportView.xaml;GUI\MenuPages\MenuComponent.xaml;MainWindow.xaml;
 
 False
 
