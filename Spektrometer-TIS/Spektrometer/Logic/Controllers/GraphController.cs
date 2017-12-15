@@ -8,17 +8,17 @@ namespace Spektrometer.Logic
 {
     public class GraphController
     {
-        private GraphData _graphData;
+        public GraphData GraphData { get; }
         private GraphView _graphViewer;
         private GraphCalculator _graphCalculator;
-        private CalibrationPoints _calibrationPoints;
+        public CalibrationPoints CalibrationPoints { get; }
 
         public GraphController(GraphView gv, GraphCalculator gc)
         {
-            _graphData = new GraphData();
-            _graphData.NewData = update;
-            _calibrationPoints = new CalibrationPoints();
-            _calibrationPoints.NewData = update;
+            GraphData = new GraphData();
+            GraphData.NewData = update;
+            CalibrationPoints = new CalibrationPoints();
+            CalibrationPoints.NewData = update;
             _graphViewer = gv;
             _graphCalculator = gc;
         }
