@@ -28,6 +28,7 @@ namespace Spektrometer
         public TopToolBar topToolBar { get; set; }
         public CameraRecordView cameraRecordViewer { get; set; }
         public SpektrometerService spektrometerService { get; set; }
+        // public delegate void NewPage(Page page)
 
         public MainWindow()
         {
