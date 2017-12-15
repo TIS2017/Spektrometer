@@ -33,5 +33,10 @@ namespace Spektrometer.Logic
         {
             throw new NotImplementedException();
         }
+
+        internal void newImage(Bitmap bitmap)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
