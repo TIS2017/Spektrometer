@@ -14,17 +14,17 @@
         <StackPanel >
             <StackPanel.Resources>
                 <Style TargetType="{x:Type StackPanel}">
-                    <Setter Property="Margin" Value="0,0,0,20"/>
+                    <Setter Property="Margin" Value="10,10,10,10"/>
                 </Style>
             </StackPanel.Resources>
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="65" Margin="0,0,119,0" Click="Button_Click" >
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="65" Margin="0,0,98,0" Click="Button_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Spektrometer;component/GUI/images/icons8-menu-96 (1).png" Height="45"/>
                     <Label Content="Menu" VerticalAlignment="Center"  Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <Label Content="Camera" HorizontalAlignment="Center" FontSize="26" Foreground="White"/>
-            <Image Name="CameraImage" Height="200" Margin="10" Source="/Spektrometer;component/GUI/images/black.png" Stretch="Fill">
+            <Image Name="CameraImage" Height="200"  Source="/Spektrometer;component/GUI/images/black.png" Stretch="Fill">
                 <Image.OpacityMask>
                     <ImageBrush ImageSource="/Spektrometer;component/GUI/images/black.png"/>
                 </Image.OpacityMask>
@@ -46,8 +46,8 @@
             <Label Content="Camera choice" Foreground="White" FontSize="18"/>
             
             
-            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 95">
-                <ComboBox Margin="5, 0, 35, 0" Width="129">
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 10, 95">
+                <ComboBox Margin="5, 0, 10, 0" Width="129">
                     <ComboBoxItem IsSelected="True">Choose</ComboBoxItem>
                     <ComboBoxItem>ComboBox Item #2</ComboBoxItem>
                     <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
