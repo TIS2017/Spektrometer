@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Controls;
 using Spektrometer.GUI;
 
 namespace Spektrometer.Logic
@@ -20,7 +20,7 @@ namespace Spektrometer.Logic
         public GraphView GraphView { get; private set; }
         public CameraRecordView CameraRecordView { get; private set; }
         public TopToolBar TopToolBar { get; private set; }
-        public MenuComponent MenuComponent { get; set; }
+        public Page MenuComponent { get; set; }
 
         public SpektrometerService()
         {
@@ -29,17 +29,17 @@ namespace Spektrometer.Logic
 
         private void classInitialization()
         {
-            graphView = new GraphView();
-            cameraRecordView = new CameraRecordView();
-            menuComponent = new MenuView();
+            GraphView = new GraphView();
+            CameraRecordView = new CameraRecordView();
+            MenuComponent = new MenuView();
             GraphCalculator = new GraphCalculator();
-            graphController = new GraphController(graphView, graphCalculator);
-            imageCalculator = new ImageCalculator(graphController);
-            imageController = new ImageController(cameraRecordView, imageCalculator);
-            cameraController = new CameraController(imageController);
-            export = new Export(graphController, imageController);
-            import = new Import(graphController, imageController);
-            topToolBar = new TopToolBar(cameraController, graphController);
+            GraphController = new GraphController(GraphView, GraphCalculator);
+            ImageCalculator = new ImageCalculator(GraphController);
+            ImageController = new ImageController(CameraRecordView, ImageCalculator);
+            CameraController = new CameraController(ImageController);
+            Export = new Export(GraphController, ImageController);
+            Import = new Import(GraphController, ImageController);
+            TopToolBar = new TopToolBar(CameraController, GraphController);
         }
     }
 }
