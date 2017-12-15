@@ -13,6 +13,11 @@ namespace Spektrometer.Logic
         {
         }
 
+        public List<int> peaks(List<Color> pic)
+        {
+            return null;
+        }
+
         public List<double> calculate(List<Color> picture, List<Point> calibrationPoints)
         {
             throw new System.NotImplementedException();
