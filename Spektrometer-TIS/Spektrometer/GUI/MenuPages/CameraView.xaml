@@ -14,17 +14,17 @@
         <StackPanel >
             <StackPanel.Resources>
                 <Style TargetType="{x:Type StackPanel}">
-                    <Setter Property="Margin" Value="0,0,0,20"/>
+                    <Setter Property="Margin" Value="10,10,10,20"/>
                 </Style>
             </StackPanel.Resources>
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="65" Margin="0,0,119,0" Click="Button_Click" >
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="65" Margin="0,0,91,0" Click="Button_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Spektrometer;component/GUI/images/icons8-menu-96 (1).png" Height="45"/>
                     <Label Content="Menu" VerticalAlignment="Center"  Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <Label Content="Camera" HorizontalAlignment="Center" FontSize="26" Foreground="White"/>
-            <Image Name="CameraImage" Height="200" Margin="10" Source="/Spektrometer;component/GUI/images/black.png" Stretch="Fill">
+            <Image Name="CameraImage" Height="200"  Source="/Spektrometer;component/GUI/images/black.png" Stretch="Fill">
                 <Image.OpacityMask>
                     <ImageBrush ImageSource="/Spektrometer;component/GUI/images/black.png"/>
                 </Image.OpacityMask>
@@ -47,7 +47,7 @@
             
             
             <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 95">
-                <ComboBox Margin="5, 0, 35, 0" Width="129">
+                <ComboBox Margin="5, 0, 10, 0" Width="129">
                     <ComboBoxItem IsSelected="True">Choose</ComboBoxItem>
                     <ComboBoxItem>ComboBox Item #2</ComboBoxItem>
                     <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
@@ -55,10 +55,10 @@
                 <Button Content="Set" Width="75"/>
             </StackPanel>
 
-            <Button Margin="0, 0, 0, 45" Background="{x:Null}" BorderBrush="{x:Null}" Height="100"  VerticalContentAlignment="Bottom">
-                <StackPanel Orientation="Vertical">
+            <Button Margin="0, 0, 0, 40" Background="{x:Null}" BorderBrush="{x:Null}"   VerticalContentAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="69" Margin="0" Width="97">
                     <Image Source="/Spektrometer;component/GUI/images/icons8-settings-96.png" Height="45"/>
-                    <Label Content="Settings" VerticalAlignment="Top"  Foreground="White" HorizontalContentAlignment="Center" Padding="0" FontSize="18" HorizontalAlignment="Center"/>
+                    <Label Content="Settings" VerticalAlignment="Top"  Foreground="White" HorizontalContentAlignment="Center" Padding="0" FontSize="18" HorizontalAlignment="Center" Height="37" Width="87" RenderTransformOrigin="0.54,0.793"/>
                 </StackPanel>
             </Button>
             
