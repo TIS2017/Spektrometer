@@ -18,7 +18,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for MenuView.xaml
     /// </summary>
-    public partial class MenuView : MenuComponent
+    public partial class MenuView : Page
     {
         public MenuView()
         {

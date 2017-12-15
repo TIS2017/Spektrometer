@@ -20,7 +20,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for ExportView.xaml
     /// </summary>
-    public partial class ExportView : MenuComponent
+    public partial class ExportView : Page
     {
         private Export _export;
 

@@ -20,7 +20,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CameraView.xaml
     /// </summary>
-    public partial class CameraView : MenuComponent
+    public partial class CameraView : Page
     {
         private CameraController _cameraController;
 

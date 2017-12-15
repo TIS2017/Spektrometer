@@ -20,7 +20,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for ImportView.xaml
     /// </summary>
-    public partial class ImportView : MenuComponent
+    public partial class ImportView : Page
     {
         private Import _import;
 
