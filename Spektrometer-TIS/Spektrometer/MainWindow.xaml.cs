@@ -23,7 +23,7 @@ namespace Spektrometer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MenuComponent menuComponent { get; set; }
+        public Page menuComponent { get; set; }
         public GraphView graphViewer { get; set; }
         public TopToolBar topToolBar { get; set; }
         public CameraRecordView cameraRecordViewer { get; set; }
