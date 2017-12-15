@@ -10,25 +10,25 @@
       Title="MenuView">
 
     <Grid Background="#FF3D8AF7">
-        <Button x:Name="button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,81,0,0" BorderBrush="{x:Null}">
+        <Button x:Name="button" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,61,0,0" BorderBrush="{x:Null}">
             <Button.Background>
                 <ImageBrush ImageSource="/Spektrometer;component/GUI/images/videocam-filled-tool.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
-        <Label Content="Camera" Margin="0,186,0,0" VerticalAlignment="Top" Width="130" Height="32" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+        <Label Content="Camera" Margin="0,166,0,0" VerticalAlignment="Top" Width="130" Height="32" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
         <Button x:Name="button_Copy" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,218,0,0" BorderBrush="{x:Null}">
             <Button.Background>
                 <ImageBrush ImageSource="/Spektrometer;component/GUI/images/icons8-bar-chart-96.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
         <Label Content="Measurement" Margin="0,321,0,0" VerticalAlignment="Top" Width="130" Height="32" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
-        <Button x:Name="button_Copy1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,353,0,0" BorderBrush="{x:Null}">
+        <Button x:Name="button_Copy1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,373,0,0" BorderBrush="{x:Null}">
             <Button.Background>
                 <ImageBrush ImageSource="/Spektrometer;component/GUI/images/icons8-overscan-settings-100.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
-        <Label Content="Calibration" Margin="0,458,0,0" VerticalAlignment="Top" Width="130" Height="32" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
-        <Button x:Name="button_Copy2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,490,0,0">
+        <Label Content="Calibration" Margin="0,478,0,0" VerticalAlignment="Top" Width="130" Height="32" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+        <Button x:Name="button_Copy2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,530,0,0">
             <Button.BorderBrush>
                 <ImageBrush Stretch="Uniform" ImageSource="/Spektrometer;component/images/icons8-download-100.png"/>
             </Button.BorderBrush>
@@ -36,19 +36,19 @@
                 <ImageBrush Stretch="Uniform" ImageSource="/Spektrometer;component/GUI/images/icons8-download-100.png"/>
             </Button.Background>
         </Button>
-        <Label Content="Import" Margin="0,595,0,0" VerticalAlignment="Top" Width="130" Height="33" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
-        <Button x:Name="button_Copy3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,633,0,0" BorderBrush="{x:Null}">
+        <Label Content="Import" Margin="0,635,0,0" VerticalAlignment="Top" Width="130" Height="33" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+        <Button x:Name="button_Copy3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,693,0,0" BorderBrush="{x:Null}">
             <Button.Background>
                 <ImageBrush Stretch="Uniform" ImageSource="/Spektrometer;component/GUI/images/import-export-arrows.png"/>
             </Button.Background>
         </Button>
-        <Label Content="Export" Margin="0,738,0,0" VerticalAlignment="Top" Width="130" Height="35" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
-        <Button x:Name="button_Copy4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,855,0,0" BorderBrush="{x:Null}">
+        <Label Content="Export" Margin="0,798,0,0" VerticalAlignment="Top" Width="130" Height="35" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+        <Button x:Name="button_Copy4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="130" Height="100" Margin="0,895,0,0" BorderBrush="{x:Null}">
             <Button.Background>
                 <ImageBrush Stretch="Uniform" ImageSource="/Spektrometer;component/GUI/images/icons8-settings-96.png"/>
             </Button.Background>
         </Button>
-        <Label Content="Settings" Margin="0,960,0,0" VerticalAlignment="Top" Width="130" Height="33" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+        <Label Content="Settings" Margin="0,1000,0,0" VerticalAlignment="Top" Width="130" Height="33" Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
 
     </Grid>
 </Page>
