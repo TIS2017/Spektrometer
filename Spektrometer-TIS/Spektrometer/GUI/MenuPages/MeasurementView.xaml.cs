@@ -20,7 +20,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for MeasurementView.xaml
     /// </summary>
-    public partial class MeasurementView : MenuComponent
+    public partial class MeasurementView : Page
     {
         private GraphController _graphController;
 

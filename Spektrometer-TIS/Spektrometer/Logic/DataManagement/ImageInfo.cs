@@ -27,5 +27,10 @@ namespace Spektrometer.Logic
         {
             imageHistory.Push(colorLine);
         }
+
+        public void setRowIndex(int index)
+        {
+            this.rowIndex = index;
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CalibrationView.xaml
     /// </summary>
-    public partial class CalibrationView : MenuComponent
+    public partial class CalibrationView : Page
     {
         private Import _import;
         private GraphController _graphController;
