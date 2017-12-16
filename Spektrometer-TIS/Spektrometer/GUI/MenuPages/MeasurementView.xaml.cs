@@ -28,5 +28,6 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
         }
+
     }
 }
