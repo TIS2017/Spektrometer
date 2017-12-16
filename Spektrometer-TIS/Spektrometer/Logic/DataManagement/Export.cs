@@ -76,8 +76,9 @@ namespace Spektrometer.Logic
         public void cameraImage(string path)
         {
             try
-            {
-                Bitmap img = _imageController.imageInfo.lastImage;
+            {   
+                // get image from imageController   
+                Bitmap img = _imageController.LastImage();
                 img.Save(path);
             }
             catch
