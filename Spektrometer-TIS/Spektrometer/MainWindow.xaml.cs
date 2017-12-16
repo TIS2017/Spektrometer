@@ -36,7 +36,7 @@ namespace Spektrometer
             menu.Content = new MenuView(this);
         }
 
-        public void bla(Page page)
+        public void navigationController(Page page)
         {
             menu.Content = page;
         }

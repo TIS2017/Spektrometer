@@ -27,9 +27,29 @@ namespace Spektrometer.GUI
             this.mainWindow = mainWindow;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ShowCameraView(object sender, RoutedEventArgs e)
         {
-            mainWindow.bla(new CameraView());
+            mainWindow.navigationController(new CameraView(mainWindow));
+        }
+
+        private void ShowMeasurementView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MeasurementView(mainWindow));
+        }
+
+        private void ShowCalibrationView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new CalibrationView(mainWindow));
+        }
+
+        private void ShowImportView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new ImportView(mainWindow));
+        }
+
+        private void ShowExportView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new ExportView(mainWindow));
         }
     }
 }
