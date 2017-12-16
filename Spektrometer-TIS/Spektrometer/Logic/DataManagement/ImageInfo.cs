@@ -30,7 +30,7 @@ namespace Spektrometer.Logic
 
         public void setRowIndex(int index)
         {
-            this.rowIndex = index;
+            rowIndex = index;
         }
     }
 }
