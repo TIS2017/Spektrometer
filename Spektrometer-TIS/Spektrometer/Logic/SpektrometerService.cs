@@ -10,7 +10,6 @@ namespace Spektrometer.Logic
 {
     public class SpektrometerService
     {
-        public GraphCalculator GraphCalculator { get; private set; }
         public ImageCalculator ImageCalculator { get; private set; }
         public CameraController CameraController { get; set; }
         public GraphController GraphController { get; private set; }
@@ -30,10 +29,9 @@ namespace Spektrometer.Logic
         private void classInitialization()
         {
             GraphView = new GraphView();
+            GraphController = (GraphController) GraphView.DataContext;
             CameraRecordView = new CameraRecordView();
             MenuComponent = new MenuView();
-            GraphCalculator = new GraphCalculator();
-            GraphController = new GraphController(GraphView, GraphCalculator);
             ImageCalculator = new ImageCalculator(GraphController);
             ImageController = new ImageController(CameraRecordView, ImageCalculator);
             CameraController = new CameraController(ImageController);
