@@ -10,14 +10,7 @@ namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
-        private GraphController GraphController;
-
-        public ImageCalculator(GraphController gc)
-        {
-            GraphController = gc;
-        }
-
-        public List<Color> makeAverage(ref Stack<List<Color>> pics)
+        public static List<Color> Average(ref Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
             List<Color> pom = new List<Color>();
@@ -48,10 +41,22 @@ namespace Spektrometer.Logic
             return avg;
         }
 
-
-        public void GraphData_update(List<Color> avg)
+        public static List<Color> CutImage(Bitmap bitmap, int rowIndex, int rowCount)
         {
-            GraphController.GraphData.actualPicture = avg;
+            throw new NotImplementedException();
+            //var result = new Stack<List<Color>>();
+            //var row = _imageInfo.rowIndex;
+            //var rowCount = _imageInfo.rowCount;
+            //for (var rowIndex = row; rowIndex < row + rowCount; rowIndex++)
+            //{
+            //    var colorList = new List<Color>();
+            //    for (var column = 0; column < 1280; column++)
+            //    {
+            //        colorList.Add(bitmap.GetPixel(column, rowIndex));
+            //    }
+            //    result.Push(colorList);
+            //}
+            //return result;
         }
     }
 }

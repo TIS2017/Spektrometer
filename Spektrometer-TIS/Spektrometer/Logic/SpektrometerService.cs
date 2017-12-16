@@ -11,7 +11,6 @@ namespace Spektrometer.Logic
     public class SpektrometerService
     {
         public GraphCalculator GraphCalculator { get; private set; }
-        public ImageCalculator ImageCalculator { get; private set; }
         public CameraController CameraController { get; set; }
         public GraphController GraphController { get; private set; }
         public ImageController ImageController { get; private set; }
@@ -34,8 +33,7 @@ namespace Spektrometer.Logic
             MenuComponent = new MenuView();
             GraphCalculator = new GraphCalculator();
             GraphController = new GraphController(GraphView, GraphCalculator);
-            ImageCalculator = new ImageCalculator(GraphController);
-            ImageController = new ImageController(CameraRecordView, ImageCalculator);
+            ImageController = new ImageController(CameraRecordView);
             CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
             Import = new Import(GraphController, ImageController);
