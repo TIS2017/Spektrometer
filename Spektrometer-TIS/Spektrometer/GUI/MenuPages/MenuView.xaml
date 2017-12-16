@@ -17,7 +17,7 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="80"  VerticalContentAlignment="Bottom">
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="80"  VerticalContentAlignment="Bottom" Click="Button_Click">
                 <StackPanel Orientation="Vertical">
                     <Image Source="/Spektrometer;component/GUI/images/videocam-filled-tool.png" Height="45"/>
                     <Label Content="Camera" VerticalAlignment="Top"  Foreground="White" HorizontalContentAlignment="Center" Padding="0" FontSize="18" HorizontalAlignment="Center"/>

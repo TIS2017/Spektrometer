@@ -33,7 +33,12 @@ namespace Spektrometer
         public MainWindow()
         {
             InitializeComponent();
-            menu.Content = new ExportView();
+            menu.Content = new MenuView(this);
+        }
+
+        public void bla(Page page)
+        {
+            menu.Content = page;
         }
     }
 }
