@@ -23,10 +23,16 @@ namespace Spektrometer.GUI
     public partial class ExportView : Page
     {
         private Export _export;
-
-        public ExportView(Export export) : base()
+        MainWindow mainWindow;
+        public ExportView(MainWindow mainWindow) : base()
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+        }
+
+        private void MenuButton(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MenuView(mainWindow));
         }
     }
 }

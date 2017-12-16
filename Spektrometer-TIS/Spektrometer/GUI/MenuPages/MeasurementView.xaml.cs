@@ -23,10 +23,17 @@ namespace Spektrometer.GUI
     public partial class MeasurementView : Page
     {
         private GraphController _graphController;
+        MainWindow mainWindow;
 
-        public MeasurementView()
+        public MeasurementView(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+        }
+
+        private void MenuButton(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MenuView(mainWindow));
         }
 
     }
