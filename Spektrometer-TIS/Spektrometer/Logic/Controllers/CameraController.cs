@@ -66,7 +66,7 @@ namespace Spektrometer.Logic
         {
             Bitmap bitmap = (Bitmap)(eventargs.Frame).Clone();
 
-            _imageController.newImage(bitmap);
+            _imageController.NewImage(bitmap);
         }
     }
 }
