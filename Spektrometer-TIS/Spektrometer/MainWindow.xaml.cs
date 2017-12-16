@@ -33,7 +33,7 @@ namespace Spektrometer
         public MainWindow()
         {
             InitializeComponent();
-            menu.Content = new MenuView();
+            menu.Content = new CameraView();
         }
     }
 }
