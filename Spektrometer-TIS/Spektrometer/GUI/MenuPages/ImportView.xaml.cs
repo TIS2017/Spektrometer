@@ -23,10 +23,16 @@ namespace Spektrometer.GUI
     public partial class ImportView : Page
     {
         private Import _import;
-
-        public ImportView()
+        MainWindow mainWindow;
+        public ImportView(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+        }
+
+        private void MenuButton(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MenuView(mainWindow));
         }
     }
 }
