@@ -28,16 +28,15 @@ namespace Spektrometer.Logic
 
         private void classInitialization()
         {
-            GraphView = new GraphView();
-            CameraRecordView = new CameraRecordView();
-            MenuComponent = new MenuView();
-            GraphCalculator = new GraphCalculator();
-            GraphController = new GraphController(GraphView, GraphCalculator);
-            ImageController = new ImageController(CameraRecordView);
-            CameraController = new CameraController(ImageController);
+            //GraphView = new GraphView();
+            //CameraRecordView = new CameraRecordView();
+            //GraphCalculator = new GraphCalculator();
+            //GraphController = new GraphController(GraphView, GraphCalculator);
+            //ImageController = new ImageController(CameraRecordView);
+            //CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
-            Import = new Import(GraphController, ImageController);
-            TopToolBar = new TopToolBar(CameraController, GraphController);
+            //Import = new Import(GraphController, ImageController);
+            //TopToolBar = new TopToolBar(CameraController, GraphController);
         }
     }
 }
