@@ -21,7 +21,7 @@ namespace Spektrometer.Logic
             _cameraRecordViewer = crv;
             _cameraView = null;
             _imageInfo = new ImageInfo();
-            _cameraRecordViewer.NewLineIndex += SetRowIndex;
+            //_cameraRecordViewer.NewLineIndex += SetRowIndex;
         }
         
         public List<Color> GetPictureArray()

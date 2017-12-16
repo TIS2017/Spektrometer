@@ -18,11 +18,8 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CameraRecordView.xaml
     /// </summary>
-    
     public partial class CameraRecordView : Canvas
     {
-        public delegate void OnClick(int y);
-        public OnClick NewLineIndex { get; set; }
         public CameraRecordView()
         {
             InitializeComponent();

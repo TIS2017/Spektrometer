@@ -23,10 +23,10 @@ namespace Spektrometer.Logic
 
         public GraphController()
         {
-            GraphData = new GraphData();
-            GraphData.NewData = update;
-            _calibrationPoints = new CalibrationPoints();
-            _calibrationPoints.NewData = update;
+            //GraphData = new GraphData();
+            //GraphData.NewData = update;
+            //CalibrationPoints = new CalibrationPoints();
+            //CalibrationPoints.NewData = update;
             _graphCalculator = new GraphCalculator();
 
 
