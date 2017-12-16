@@ -14,6 +14,7 @@ namespace Spektrometer.Logic
         private CameraRecordView _cameraRecordViewer;
         private CameraView _cameraView;
         private ImageInfo _imageInfo;
+        private GraphController _graphController;
 
         public ImageController(CameraRecordView crv)
         {
@@ -37,28 +38,58 @@ namespace Spektrometer.Logic
         {
             Task.Factory.StartNew(() =>
                 {
-                    var lines = ImageCalculator.CutImage(bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
-                        
-                        if (_imageInfo.imageHistory.Count() == _imageInfo.historyCount)
+                    var line = ImageCalculator.CutImage(bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
+                    if (Monitor.TryEnter(_imageInfo))
+                    {
+                        _imageInfo.addNewLine(line);
+                        if (_imageInfo.historyCount == _imageInfo.imageHistory.Count())
                         {
-                            var history = _imageInfo.imageHistory;
-                            var line = ImageCalculator.Average(ref history);
-
+                            var lineOfImages = ImageCalculator.Average(_imageInfo.imageHistory);
+                            _graphController.GraphData.actualPicture = lineOfImages;
                         }
+                        // Tu pridu funkcie na zobrazovanie obrazkov
+                        Monitor.Exit(_imageInfo);
+                    }
                 });
-            throw new NotImplementedException();
         }
 
         public void SetRowIndex(int index)
         {
-
+            try
+            {
+                Monitor.Enter(_imageInfo);
+                _imageInfo.rowIndex = index;
+            }
+            finally
+            {
+                Monitor.Exit(_imageInfo);
+            }
         }
 
-        private void AddImage(Bitmap bitmap)
+        public void SetRowCount(int count)
         {
-            var lines = CutImage(ref bitmap);
-            _imageInfo.addNewLine(ImageCalculator.Average(ref lines));
-            _imageInfo.lastImage = bitmap;
+            try
+            {
+                Monitor.Enter(_imageInfo);
+                _imageInfo.rowCount = count;
+            }
+            finally
+            {
+                Monitor.Exit(_imageInfo);
+            }
+        }
+
+        public void SetImageCount(int count)
+        {
+            try
+            {
+                Monitor.Enter(_imageInfo);
+                _imageInfo.historyCount = count;
+            }
+            finally
+            {
+                Monitor.Exit(_imageInfo);
+            }
         }
     }
 }
