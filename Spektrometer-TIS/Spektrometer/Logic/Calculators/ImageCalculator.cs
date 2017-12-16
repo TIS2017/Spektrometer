@@ -10,12 +10,12 @@ namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
-        private GraphController GraphController;
+       /* private GraphController GraphController;
 
         public ImageCalculator(GraphController gc)
         {
             GraphController = gc;
-        }
+        } */
 
         public List<Color> makeAverage(ref Stack<List<Color>> pics)
         {
@@ -48,10 +48,10 @@ namespace Spektrometer.Logic
             return avg;
         }
 
-
+        /*
         public void GraphData_update(List<Color> avg)
         {
             GraphController.GraphData.actualPicture = avg;
-        }
+        }*/
     }
 }
