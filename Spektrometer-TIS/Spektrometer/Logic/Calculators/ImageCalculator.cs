@@ -10,7 +10,7 @@ namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
-        public static List<Color> Average(ref Stack<List<Color>> pics)
+        public static List<Color> Average(Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
             List<Color> pom = new List<Color>();
