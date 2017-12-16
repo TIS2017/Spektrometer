@@ -20,10 +20,36 @@ namespace Spektrometer.GUI
     /// </summary>
     public partial class MenuView : Page
     {
-        public MenuView()
+        MainWindow mainWindow;
+        public MenuView(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
         }
 
+        private void ShowCameraView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new CameraView(mainWindow));
+        }
+
+        private void ShowMeasurementView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MeasurementView(mainWindow));
+        }
+
+        private void ShowCalibrationView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new CalibrationView(mainWindow));
+        }
+
+        private void ShowImportView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new ImportView(mainWindow));
+        }
+
+        private void ShowExportView(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new ExportView(mainWindow));
+        }
     }
 }

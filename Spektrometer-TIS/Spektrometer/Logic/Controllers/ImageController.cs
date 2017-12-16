@@ -91,5 +91,10 @@ namespace Spektrometer.Logic
                 Monitor.Exit(_imageInfo);
             }
         }
+
+        public Bitmap LastImage()
+        {
+           return _imageInfo.lastImage;
+        }
     }
 }

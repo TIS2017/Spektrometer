@@ -23,11 +23,18 @@ namespace Spektrometer.GUI
     public partial class CalibrationView : Page
     {
         private Import _import;
+        MainWindow mainWindow;
         private GraphController _graphController;
 
-        public CalibrationView()
+        public CalibrationView(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+        }
+
+        private void MenuButton(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MenuView(mainWindow));
         }
     }
 }
