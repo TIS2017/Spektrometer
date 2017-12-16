@@ -10,6 +10,7 @@ namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
+
         public static List<Color> Average(Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
@@ -33,30 +34,39 @@ namespace Spektrometer.Logic
                 }
             }
 
-            for(int i=0; i<R.Count; i++)
+            for (int i = 0; i < R.Count; i++)
             {
                 avg.Add(Color.FromArgb(A[i], R[i], G[i], B[i]));
             }
-
             return avg;
         }
-
         public static List<Color> CutImage(Bitmap bitmap, int rowIndex, int rowCount)
         {
-            throw new NotImplementedException();
-            //var result = new Stack<List<Color>>();
-            //var row = _imageInfo.rowIndex;
-            //var rowCount = _imageInfo.rowCount;
-            //for (var rowIndex = row; rowIndex < row + rowCount; rowIndex++)
-            //{
-            //    var colorList = new List<Color>();
-            //    for (var column = 0; column < 1280; column++)
-            //    {
-            //        colorList.Add(bitmap.GetPixel(column, rowIndex));
-            //    }
-            //    result.Push(colorList);
-            //}
-            //return result;
+            List<Color> result = new List<Color>();
+            List<int> A = new List<int>();
+            List<int> R = new List<int>();
+            List<int> G = new List<int>();
+            List<int> B = new List<int>();
+            int width = bitmap.Width;
+
+            for (int row = rowIndex - rowCount; row <= rowIndex + rowCount; row++)
+            {
+                List<Color> pom = new List<Color>();
+
+                for (int col = 0; col < width; col++)
+                {
+                    pom.Add(bitmap.GetPixel(col, row));
+                    A[col] += pom[col].A;
+                    R[col] += pom[col].R;
+                    G[col] += pom[col].G;
+                    B[col] += pom[col].B;
+                }
+            }
+            for (int i = 0; i < width; i++)
+            {
+                result.Add(Color.FromArgb(A[i], R[i], G[i], B[i]));
+            }
+            return result;
         }
     }
 }

@@ -19,6 +19,16 @@ namespace Spektrometer.Logic
                 NewData();
             }
         }
+
+        public CalibrationPoints()
+        {
+            calibrationData = new List<Point>();
+        }
+
+        public void addPoint(Point point)
+        {
+            calibrationData.Add(point);
+        }
     }
 
     public struct Point
