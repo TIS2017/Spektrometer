@@ -144,10 +144,10 @@ namespace Spektrometer.Logic
 
         public GraphData()
         {
-            pixelData = null;
-            intesityData = null;
-            referencedPicture = null;
-            actualPicture = null;
+            pixelData = new List<Color>();
+            intesityData = new List<double>();
+            referencedPicture = new List<Color>();
+            actualPicture = new List<Color>();
             showPeaks = false;
             globalPeak = false;
             showValues = false;
