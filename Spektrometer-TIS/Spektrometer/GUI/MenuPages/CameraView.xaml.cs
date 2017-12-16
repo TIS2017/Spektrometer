@@ -23,10 +23,16 @@ namespace Spektrometer.GUI
     public partial class CameraView : Page
     {
         private CameraController _cameraController;
-
-        public CameraView()
+        MainWindow mainWindow;
+        public CameraView(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+        }
+
+        private void MenuButton(object sender, RoutedEventArgs e)
+        {
+            mainWindow.navigationController(new MenuView(mainWindow));
         }
     }
 }

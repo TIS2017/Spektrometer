@@ -12,9 +12,9 @@ namespace Spektrometer.Logic
 {
     public class GraphController : INotifyPropertyChanged
     {
-        private GraphData _graphData;
+        public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
-        private CalibrationPoints _calibrationPoints;
+        public CalibrationPoints CalibrationPoints { get; }
 
         private Func<double, string> _formatter;
         private double _from;
@@ -23,6 +23,8 @@ namespace Spektrometer.Logic
 
         public GraphController()
         {
+            GraphData = new GraphData();
+            GraphData.NewData = update;
             _calibrationPoints = new CalibrationPoints();
             _calibrationPoints.NewData = update;
             _graphCalculator = new GraphCalculator();

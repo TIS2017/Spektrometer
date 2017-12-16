@@ -5,10 +5,66 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="800" d:DesignWidth="250"
       Title="CameraView">
 
-    <Grid>
-        
+
+
+    <Grid Background="#FF3D8AF7" Margin="0,0,0,0">
+        <StackPanel >
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Margin" Value="10,10,10,20"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="73" Margin="0,0,65.6,0" Click="MenuButton" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Spektrometer;component/GUI/images/icons8-menu-96 (1).png" Height="45" RenderTransformOrigin="0.567,0.951"/>
+                    <Label Content="Menu" VerticalAlignment="Center"  Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Label Content="Camera" HorizontalAlignment="Center" FontSize="26" Foreground="White"/>
+            <Image Name="CameraImage" Height="200"  Source="/Spektrometer;component/GUI/images/black.png" Stretch="Fill">
+                <Image.OpacityMask>
+                    <ImageBrush ImageSource="/Spektrometer;component/GUI/images/black.png"/>
+                </Image.OpacityMask>
+            </Image>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Y: " Foreground="White" FontSize="18" Margin="0, 0, 20, 0"/>
+                <TextBox Height="22" TextWrapping="Wrap" Text="TextBox" Width="138"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="H: " Foreground="White" FontSize="18"  Margin="0, 0, 18, 0"/>
+                <TextBox Height="22" TextWrapping="Wrap" Text="TextBox" Width="138"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Set" Height="25" Width="100" VerticalAlignment="Center" Margin="5"/>
+            </StackPanel>
+
+            <Label Content="Camera choice" Foreground="White" FontSize="18"/>
+
+
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 95">
+                <ComboBox Margin="5, 0, 10, 0" Width="129">
+                    <ComboBoxItem IsSelected="True">Choose</ComboBoxItem>
+                    <ComboBoxItem>ComboBox Item #2</ComboBoxItem>
+                    <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
+                </ComboBox>
+                <Button Content="Set" Width="75"/>
+            </StackPanel>
+
+            <Button Margin="0, 0, 0, 40" Background="{x:Null}" BorderBrush="{x:Null}"   VerticalContentAlignment="Bottom">
+                <StackPanel Orientation="Vertical" Height="69" Margin="0" Width="97">
+                    <Image Source="/Spektrometer;component/GUI/images/icons8-settings-96.png" Height="45"/>
+                    <Label Content="Settings" VerticalAlignment="Top"  Foreground="White" HorizontalContentAlignment="Center" Padding="0" FontSize="18" HorizontalAlignment="Center" Height="37" Width="87" RenderTransformOrigin="0.54,0.793"/>
+                </StackPanel>
+            </Button>
+
+
+
+        </StackPanel>
     </Grid>
+
 </Page>
