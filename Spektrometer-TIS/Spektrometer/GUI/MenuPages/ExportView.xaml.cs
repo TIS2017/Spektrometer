@@ -24,6 +24,18 @@ namespace Spektrometer.GUI
     {
         private Export _export;
         MainWindow mainWindow;
+
+        public Export Export
+        {
+            get
+            {
+                return _export;
+            }
+            set
+            {
+                _export = value;
+            }
+        }
         public ExportView(MainWindow mainWindow) : base()
         {
             InitializeComponent();

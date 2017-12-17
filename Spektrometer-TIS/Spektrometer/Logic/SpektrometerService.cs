@@ -21,22 +21,52 @@ namespace Spektrometer.Logic
         public TopToolBar TopToolBar { get; private set; }
         public Page MenuComponent { get; set; }
 
-        public SpektrometerService()
+        public SpektrometerService(MainWindow mainWindow)
         {
-            classInitialization();
+            classInitialization(mainWindow);
         }
 
-        private void classInitialization()
+        private void classInitialization(MainWindow mainWindow)
         {
-            //GraphView = new GraphView();
-            //CameraRecordView = new CameraRecordView();
-            //GraphCalculator = new GraphCalculator();
-            //GraphController = new GraphController(GraphView, GraphCalculator);
-            //ImageController = new ImageController(CameraRecordView);
-            //CameraController = new CameraController(ImageController);
+            GraphView = mainWindow.graphView;
+            CameraRecordView = mainWindow.cameraRecordView;
+            GraphController = (GraphController)GraphView.DataContext;
+            GraphCalculator = new GraphCalculator();
+            ImageController = new ImageController(CameraRecordView);
+            CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
-            //Import = new Import(GraphController, ImageController);
-            //TopToolBar = new TopToolBar(CameraController, GraphController);
+            Import = new Import(GraphController, ImageController);
+            TopToolBar = new TopToolBar(CameraController, GraphController);
+        }
+
+        public void setReferences(Page menu)
+        {
+            if (menu is MenuView)
+            {
+                ((MenuView)menu).CameraController = CameraController;
+            }
+            else if (menu is CameraView)
+            {
+                ((CameraView)menu).CameraController = CameraController;
+                ((CameraView)menu).ImageController = ImageController;
+            }
+            else if (menu is CalibrationView)
+            {
+                ((CalibrationView)menu).Import = Import;
+                ((CalibrationView)menu).GraphController = GraphController;
+            }
+            else if (menu is ExportView)
+            {
+                ((ExportView)menu).Export = Export;
+            }
+            else if (menu is ImportView)
+            {
+                ((ImportView)menu).Import = Import;
+            }
+            else if (menu is MeasurementView)
+            {
+                ((MeasurementView)menu).GraphController = GraphController;
+            }
         }
     }
 }

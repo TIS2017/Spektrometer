@@ -25,6 +25,17 @@ namespace Spektrometer.GUI
         private GraphController _graphController;
         MainWindow mainWindow;
 
+        public GraphController GraphController
+        {
+            get
+            {
+                return _graphController;
+            }
+            set
+            {
+                _graphController = value;
+            }
+        }
         public MeasurementView(MainWindow mainWindow)
         {
             InitializeComponent();

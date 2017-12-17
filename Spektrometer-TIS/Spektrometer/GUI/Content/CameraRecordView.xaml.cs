@@ -18,11 +18,22 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CameraRecordView.xaml
     /// </summary>
-    public partial class CameraRecordView : Canvas
+    public partial class CameraRecordView : Grid
     {
+        public delegate void setIndex(int index);
+        public setIndex NewLineIndex { get; internal set; }
         public CameraRecordView()
         {
             InitializeComponent();
+        }
+
+        private void NewRow(object sender, MouseButtonEventArgs e)
+        {
+            
+            Point p = e.GetPosition(image);
+            TranslateTransform translate = new TranslateTransform(0, p.Y);
+            rectangle.RenderTransform = translate;
+            NewLineIndex((int) p.Y);
         }
     }
 }
