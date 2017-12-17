@@ -101,7 +101,7 @@ namespace Spektrometer.Logic
             {
                 graphData.Add(Color.FromArgb(R[i], G[i], B[i]));
             }        
-            GraphController.GraphData.pixelData = graphData;
+            GraphController.GraphData.PixelData = graphData;
         }
 
         /**

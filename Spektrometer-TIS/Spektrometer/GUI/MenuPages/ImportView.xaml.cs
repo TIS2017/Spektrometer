@@ -24,6 +24,18 @@ namespace Spektrometer.GUI
     {
         private Import _import;
         MainWindow mainWindow;
+
+        public Import Import
+        {
+            get
+            {
+                return _import;
+            }
+            set
+            {
+                _import = value;
+            }
+        }
         public ImportView(MainWindow mainWindow)
         {
             InitializeComponent();

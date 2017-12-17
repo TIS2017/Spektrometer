@@ -23,22 +23,19 @@ namespace Spektrometer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Page menuComponent { get; set; }
-        public GraphView graphViewer { get; set; }
-        public TopToolBar topToolBar { get; set; }
-        public CameraRecordView cameraRecordViewer { get; set; }
         public SpektrometerService spektrometerService { get; set; }
-        // public delegate void NewPage(Page page)
 
         public MainWindow()
         {
             InitializeComponent();
+            spektrometerService = new SpektrometerService(this);
             menu.Content = new MenuView(this);
         }
 
         public void navigationController(Page page)
         {
             menu.Content = page;
+            spektrometerService.setReferences(page);
         }
     }
 }

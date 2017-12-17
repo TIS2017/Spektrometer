@@ -55,7 +55,7 @@ namespace Spektrometer.Logic
                 StreamWriter File = new StreamWriter(path);
 
                 List<double> intesityData = new List<double>();
-                intesityData = GraphController.GraphData.intesityData;
+                intesityData = GraphController.GraphData.IntesityData;
 
                 for (int i = 0; i < intesityData.Count; i++)
                 {

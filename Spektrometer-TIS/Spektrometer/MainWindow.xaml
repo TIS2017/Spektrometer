@@ -33,13 +33,11 @@
                 <StackPanel Background="Green" Grid.Column="1"></StackPanel>
             </Grid>
             <StackPanel Grid.Row="1" Background="Gray">
-                <gui:GraphView Height="497" Margin="0,0,-0.4,0">
+                <gui:GraphView x:Name="graphView" Height="497" Margin="0,0,-0.4,0">
                 </gui:GraphView>
             </StackPanel>
-            <StackPanel Grid.Row="2" Background="Black">
-                <gui:CameraRecordView Height="160" Margin="0,0,-0.4,0">
-                </gui:CameraRecordView>
-            </StackPanel>
+            <gui:CameraRecordView x:Name="cameraRecordView" Grid.Row="2">
+            </gui:CameraRecordView>
         </Grid>
 
     </Grid>

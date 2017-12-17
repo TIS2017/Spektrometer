@@ -11,27 +11,30 @@ namespace Spektrometer.Logic
 {
     public class ImageController
     {
+        public delegate void SendImage(Bitmap bitmap);
+
+        public SendImage SendImageEvent;
         private CameraRecordView _cameraRecordViewer;
-        private CameraView _cameraView;
         private ImageInfo _imageInfo;
         private GraphController _graphController;
 
         public ImageController(CameraRecordView crv)
         {
             _cameraRecordViewer = crv;
-            _cameraView = null;
             _imageInfo = new ImageInfo();
-            //_cameraRecordViewer.NewLineIndex += SetRowIndex;
-        }
-        
-        public List<Color> GetPictureArray()
-        {
-            throw new NotImplementedException();
+            _cameraRecordViewer.NewLineIndex += SetRowIndex;
+            _graphController = new GraphController();
         }
 
         public void SetAsReferencedPicture()
         {
-            throw new NotImplementedException();
+            Task.Factory.StartNew(() =>
+            {
+                Monitor.Enter(_imageInfo);
+                var lineOfImages = ImageCalculator.Average(_imageInfo.imageHistory);
+                _graphController.GraphData.ReferencedPicture = lineOfImages;
+                Monitor.Exit(_imageInfo);
+            });
         }
 
         internal void NewImage(Bitmap bitmap)
@@ -45,9 +48,10 @@ namespace Spektrometer.Logic
                         if (_imageInfo.historyCount == _imageInfo.imageHistory.Count())
                         {
                             var lineOfImages = ImageCalculator.Average(_imageInfo.imageHistory);
-                            _graphController.GraphData.actualPicture = lineOfImages;
+                            _graphController.GraphData.ActualPicture = lineOfImages;
                         }
                         // Tu pridu funkcie na zobrazovanie obrazkov
+                        _imageInfo.imageHistory = new Stack<List<Color>>();
                         Monitor.Exit(_imageInfo);
                     }
                 });
@@ -59,6 +63,7 @@ namespace Spektrometer.Logic
             {
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowIndex = index;
+                _imageInfo.imageHistory = new Stack<List<Color>>();
             }
             finally
             {
@@ -72,6 +77,7 @@ namespace Spektrometer.Logic
             {
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowCount = count;
+                _imageInfo.imageHistory = new Stack<List<Color>>();
             }
             finally
             {
@@ -85,6 +91,7 @@ namespace Spektrometer.Logic
             {
                 Monitor.Enter(_imageInfo);
                 _imageInfo.historyCount = count;
+                _imageInfo.imageHistory = new Stack<List<Color>>();
             }
             finally
             {

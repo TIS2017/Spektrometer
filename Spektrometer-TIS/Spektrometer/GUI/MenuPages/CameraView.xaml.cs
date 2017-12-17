@@ -23,7 +23,32 @@ namespace Spektrometer.GUI
     public partial class CameraView : Page
     {
         private CameraController _cameraController;
+        private ImageController _imageController;
         MainWindow mainWindow;
+
+        public CameraController CameraController
+        {
+            get
+            {
+                return _cameraController;
+            }
+            set
+            {
+                _cameraController = value;
+            }
+        }
+        public ImageController ImageController
+        {
+            get
+            {
+                return _imageController;
+            }
+            set
+            {
+                _imageController = value;
+                // nastav delegatovi v imageController SendImageEvent += tvoja funkcia
+            }
+        }
         public CameraView(MainWindow mainWindow)
         {
             InitializeComponent();

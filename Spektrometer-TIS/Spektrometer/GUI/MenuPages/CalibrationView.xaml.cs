@@ -26,6 +26,29 @@ namespace Spektrometer.GUI
         MainWindow mainWindow;
         private GraphController _graphController;
 
+        public Import Import
+        {
+            get
+            {
+                return _import;
+            }
+            set
+            {
+                _import = value;
+            }
+        }
+        public GraphController GraphController
+        {
+            get
+            {
+                return _graphController;
+            }
+            set
+            {
+                _graphController = value;
+            }
+        }
+
         public CalibrationView(MainWindow mainWindow)
         {
             InitializeComponent();

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Spektrometer.Logic;
+
 namespace Spektrometer.GUI
 {
     /// <summary>
@@ -20,7 +22,20 @@ namespace Spektrometer.GUI
     /// </summary>
     public partial class MenuView : Page
     {
+        private CameraController _cameraController;
         MainWindow mainWindow;
+
+        public CameraController CameraController
+        {
+            get
+            {
+                return _cameraController;
+            }
+            set
+            {
+                _cameraController = value;
+            }
+        }
         public MenuView(MainWindow mainWindow)
         {
             InitializeComponent();
