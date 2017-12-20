@@ -122,6 +122,7 @@
       <DependentUpon>GraphView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\Content\ScrollableViewModel.cs" />
+    <Compile Include="GUI\MenuPages\MenuComponent.cs" />
     <Compile Include="GUI\MenuPages\CalibrationView.xaml.cs">
       <DependentUpon>CalibrationView.xaml</DependentUpon>
     </Compile>

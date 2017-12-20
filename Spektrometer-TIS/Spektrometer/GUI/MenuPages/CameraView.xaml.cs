@@ -20,11 +20,10 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CameraView.xaml
     /// </summary>
-    public partial class CameraView : Page
+    public partial class CameraView : MenuComponent
     {
         private CameraController _cameraController;
         private ImageController _imageController;
-        MainWindow mainWindow;
 
         public CameraController CameraController
         {
@@ -49,15 +48,20 @@ namespace Spektrometer.GUI
                 // nastav delegatovi v imageController SendImageEvent += tvoja funkcia
             }
         }
-        public CameraView(MainWindow mainWindow)
+        public CameraView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _cameraController = SpektrometerService.CameraController;
+            _imageController = SpektrometerService.ImageController;
         }
     }
 }

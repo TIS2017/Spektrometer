@@ -20,10 +20,9 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for ExportView.xaml
     /// </summary>
-    public partial class ExportView : Page
+    public partial class ExportView : MenuComponent
     {
         private Export _export;
-        MainWindow mainWindow;
 
         public Export Export
         {
@@ -36,15 +35,19 @@ namespace Spektrometer.GUI
                 _export = value;
             }
         }
-        public ExportView(MainWindow mainWindow) : base()
+        public ExportView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _export = SpektrometerService.Export;
         }
     }
 }
