@@ -12,20 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 using Spektrometer.Logic;
-using System.Collections.ObjectModel;
+
 namespace Spektrometer.GUI
 {
     /// <summary>
     /// Interaction logic for CameraView.xaml
     /// </summary>
-    public partial class CameraView : Page
+    public partial class CameraView : MenuComponent
     {
         private CameraController _cameraController;
         private ImageController _imageController;
         public List<string> list = new List<string>();
-        MainWindow mainWindow;
 
         public CameraController CameraController
         {
@@ -50,11 +50,9 @@ namespace Spektrometer.GUI
                 // nastav delegatovi v imageController SendImageEvent += tvoja funkcia
             }
         }
-        public CameraView(MainWindow mainWindow)
+        public CameraView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
-            mainWindow.spektrometerService.setReferences(this);
             SetCameraLIst();
         }
 
@@ -69,7 +67,13 @@ namespace Spektrometer.GUI
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _cameraController = SpektrometerService.CameraController;
+            _imageController = SpektrometerService.ImageController;
         }
 
         private void SetCamera(object sender, RoutedEventArgs e)

@@ -33,7 +33,7 @@ namespace Spektrometer.Logic
                 MessageBox.Show("Súbor sa nenašiel !");
                 return;
             }
-            String[] riadok;
+            string[] riadok;
             double x = -999;
             double y = -999;
 
@@ -51,9 +51,7 @@ namespace Spektrometer.Logic
                     }
 
                 if(x!= -999 && y!= -999){
-                    Point point = new Point();
-                    point.x = x;
-                    point.y = y;
+                    var point = new System.Windows.Point(x,y);
 
                     GraphController.CalibrationPoints.addPoint(point);
                 }
@@ -75,7 +73,7 @@ namespace Spektrometer.Logic
                 return;
             }
 
-            String[] riadok;
+            string[] riadok;
             List<int> R = new List<int>();
             List<int> G = new List<int>();
             List<int> B = new List<int>();

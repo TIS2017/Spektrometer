@@ -28,12 +28,12 @@ namespace Spektrometer.Logic
             try {
                 StreamWriter File = new StreamWriter(path);
 
-                List<Point> graphData = new List<Point>();
+                var graphData = new List<System.Windows.Point>();
                 graphData = GraphController.CalibrationPoints.calibrationData;
 
                 for (int i = 0; i < graphData.Count; i++)
                 {
-                    File.WriteLine(graphData[i].x + " " + graphData[i].y);
+                    File.WriteLine(graphData[i].X + " " + graphData[i].Y);
                 }
                 File.Close();
             }

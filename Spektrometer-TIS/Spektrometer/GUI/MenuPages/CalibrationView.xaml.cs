@@ -20,10 +20,9 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CalibrationView.xaml
     /// </summary>
-    public partial class CalibrationView : Page
+    public partial class CalibrationView : MenuComponent
     {
         private Import _import;
-        MainWindow mainWindow;
         private GraphController _graphController;
 
         public Import Import
@@ -49,15 +48,20 @@ namespace Spektrometer.GUI
             }
         }
 
-        public CalibrationView(MainWindow mainWindow)
+        public CalibrationView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _graphController = SpektrometerService.GraphController;
+            _import = SpektrometerService.Import;
         }
     }
 }

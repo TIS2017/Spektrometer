@@ -20,10 +20,9 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for ImportView.xaml
     /// </summary>
-    public partial class ImportView : Page
+    public partial class ImportView : MenuComponent
     {
         private Import _import;
-        MainWindow mainWindow;
 
         public Import Import
         {
@@ -36,15 +35,19 @@ namespace Spektrometer.GUI
                 _import = value;
             }
         }
-        public ImportView(MainWindow mainWindow)
+        public ImportView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _import = SpektrometerService.Import;
         }
     }
 }

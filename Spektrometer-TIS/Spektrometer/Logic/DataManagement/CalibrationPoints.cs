@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Linq;
 using System.Text;
 
@@ -29,10 +30,5 @@ namespace Spektrometer.Logic
         {
             calibrationData.Add(point);
         }
-    }
-
-    public struct Point
-    {
-        public double x, y;
     }
 }

@@ -20,10 +20,10 @@ namespace Spektrometer.Logic
             _imageController = ic;
         }
 
-        public List<String> getCameraList()
+        public List<string> getCameraList()
         {
             _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            List<String> cameraList = new List<string>();
+            List<string> cameraList = new List<string>();
             foreach (FilterInfo device in _videoDevices)
             {
                 cameraList.Add(device.Name);

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Spektrometer.Logic;
+
 namespace Spektrometer.GUI
 {
     /// <summary>
@@ -20,8 +22,9 @@ namespace Spektrometer.GUI
     /// </summary>
     public partial class CameraRecordView : Grid
     {
-        public delegate void setIndex(int index);
-        public setIndex NewLineIndex { get; internal set; }
+        public delegate void SetIndex(int index);
+        public SetIndex NewLineIndex { get; internal set; }
+        private ImageController _imageController;
         public CameraRecordView()
         {
             InitializeComponent();
@@ -29,11 +32,10 @@ namespace Spektrometer.GUI
 
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
-            
             Point p = e.GetPosition(image);
             TranslateTransform translate = new TranslateTransform(0, p.Y);
             rectangle.RenderTransform = translate;
-            NewLineIndex((int) p.Y);
+            _imageController.SetRowIndex((int)p.Y);
         }
     }
 }

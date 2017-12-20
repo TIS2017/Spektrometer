@@ -32,10 +32,9 @@ namespace Spektrometer
             menu.Content = new MenuView(this);
         }
 
-        public void navigationController(Page page)
+        public void ChangeFrameContent(Page page)
         {
             menu.Content = page;
-            spektrometerService.setReferences(page);
         }
 
         private void StartButton(object sender, RoutedEventArgs e)
