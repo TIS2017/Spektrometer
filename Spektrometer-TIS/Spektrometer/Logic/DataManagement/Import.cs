@@ -51,9 +51,7 @@ namespace Spektrometer.Logic
                     }
 
                 if(x!= -999 && y!= -999){
-                    Point point = new Point();
-                    point.x = x;
-                    point.y = y;
+                    var point = new System.Windows.Point(x,y);
 
                     GraphController.CalibrationPoints.addPoint(point);
                 }
