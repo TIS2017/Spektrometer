@@ -4,7 +4,7 @@
     <Position X="3" Y="7.25" Width="1.5" />
     <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.029" Y="1.657" />
+        <Position X="1.657" Y="0.029" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -36,6 +36,8 @@
       <Path>
         <Point X="1.5" Y="7.812" />
         <Point X="1.5" Y="8.187" />
+        <Point X="3.417" Y="8.187" Type="JumpStart" />
+        <Point X="3.583" Y="8.187" Type="JumpEnd" />
         <Point X="6.542" Y="8.187" Type="JumpStart" />
         <Point X="6.708" Y="8.187" Type="JumpEnd" />
         <Point X="7.667" Y="8.187" Type="JumpStart" />
@@ -99,6 +101,7 @@
       <HashCode>AgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>GUI\Content\CameraRecordView.xaml.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.GUI.GraphView" Collapsed="true">
     <Position X="4.75" Y="2.5" Width="1.5" />
@@ -115,7 +118,7 @@
         <Point X="9.812" Y="3.603" />
         <Point X="9.812" Y="8.281" />
         <Point X="10.792" Y="8.281" Type="JumpStart" />
-        <Point X="11.083" Y="8.281" Type="JumpEnd" />
+        <Point X="10.958" Y="8.281" Type="JumpEnd" />
         <Point X="11.25" Y="8.281" />
       </Path>
     </AssociationLine>
@@ -138,7 +141,7 @@
   <Class Name="Spektrometer.MainWindow">
     <Position X="7" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAAAAAAAAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -152,13 +155,6 @@
   </Class>
   <Class Name="Spektrometer.Logic.ImageController" Collapsed="true">
     <Position X="11.25" Y="9.5" Width="1.5" />
-    <NestedTypes>
-      <Delegate Name="Spektrometer.Logic.ImageController.SendImage" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Logic\Controllers\ImageController.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-    </NestedTypes>
     <AssociationLine Name="_cameraRecordViewer" Type="Spektrometer.GUI.CameraRecordView" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="12.75" Y="9.662" />
@@ -205,23 +201,6 @@
       <Field Name="_import" />
     </ShowAsAssociation>
     <Lollipop Position="0.178" />
-  </Class>
-  <Class Name="Spektrometer.GUI.CameraView">
-    <Position X="12.25" Y="4.75" Width="1.5" />
-    <AssociationLine Name="_cameraController" Type="Spektrometer.Logic.CameraController">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.781" Y="0.165" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAIAAIAAAAAgAAIAAAQAAAAAAAAAAAAABAAAAA=</HashCode>
-      <FileName>GUI\MenuPages\CameraView.xaml.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_cameraController" />
-      <Field Name="_imageController" />
-    </ShowAsAssociation>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.GUI.MeasurementView">
     <Position X="7.5" Y="4.75" Width="1.75" />
@@ -302,6 +281,23 @@
       <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAgAAA=</HashCode>
       <FileName>Logic\DataManagement\CalibrationPoints.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Spektrometer.GUI.CameraView">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <AssociationLine Name="_cameraController" Type="Spektrometer.Logic.CameraController">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.781" Y="0.165" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAIAAIAAAAAgAAKAAAQAAAAAAAAAAQAABAAAAA=</HashCode>
+      <FileName>GUI\MenuPages\CameraView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cameraController" />
+      <Field Name="_imageController" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

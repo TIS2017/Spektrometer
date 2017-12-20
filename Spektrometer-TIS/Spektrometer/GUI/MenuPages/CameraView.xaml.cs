@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 using Spektrometer.Logic;
 
@@ -24,6 +25,7 @@ namespace Spektrometer.GUI
     {
         private CameraController _cameraController;
         private ImageController _imageController;
+        public List<string> list = new List<string>();
 
         public CameraController CameraController
         {
@@ -51,6 +53,16 @@ namespace Spektrometer.GUI
         public CameraView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
+            SetCameraLIst();
+        }
+
+        public void SetCameraLIst()
+        {
+            list = CameraController.getCameraList();
+            if (list != null)
+            {
+                CameraListBox.ItemsSource = list;
+            }
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
@@ -62,6 +74,13 @@ namespace Spektrometer.GUI
         {
             _cameraController = SpektrometerService.CameraController;
             _imageController = SpektrometerService.ImageController;
+        }
+
+        private void SetCamera(object sender, RoutedEventArgs e)
+        {
+            string selected = this.CameraListBox.Text;
+            int ix = list.FindIndex(item => item == selected);
+            _cameraController.selectCamera(ix);
         }
     }
 }
