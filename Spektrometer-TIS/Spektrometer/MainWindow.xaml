@@ -8,19 +8,19 @@
         Title="MainWindow" Height="800" Width="1366">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1.5*" />
             <ColumnDefinition Width="6*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        
+
+
         <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
         <Grid Grid.Column="1" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="500" />
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="560" />
                 <RowDefinition Height="200" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -29,11 +29,49 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Background="Red" Grid.Column="0"></StackPanel>
-                <StackPanel Background="Green" Grid.Column="1"></StackPanel>
+
+                <DockPanel Grid.Column="0" HorizontalAlignment="Center">
+                    <Label Content="Display format: " FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <ComboBox Width="200" Height="30" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <ComboBoxItem IsSelected="True" Content="pixel" Height="40" />
+                        <ComboBoxItem Content="nanometer" Height="40"/>
+                    </ComboBox>
+                </DockPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+
+                    <DockPanel>
+                        <DockPanel.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Margin" Value="0,0,25,0"/>
+                            </Style>
+                        </DockPanel.Resources>
+                        <Button Width="100" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="{x:Null}" Click="StartButton">
+                            <DockPanel>
+                                <Label Content="Start: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                                <Image Source="/Spektrometer;component/GUI/images/icons8-play-24.png" HorizontalAlignment="Right" Height="35"></Image>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Width="100" HorizontalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Click="StopButton">
+                            <DockPanel>
+                                <Label Content="Stop: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                                <Image Source="/Spektrometer;component/GUI/images/icons8-stop-24.png" HorizontalAlignment="Right" Height="35"></Image>
+                            </DockPanel>
+                        </Button>
+
+
+                        <DockPanel Width="100" HorizontalAlignment="Left">
+                            <Label Content="Signal: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                            <Image Name="signal" Source="/Spektrometer;component/GUI/images/signal-off.png" HorizontalAlignment="Right" Height="25"></Image>
+                        </DockPanel>
+
+                    </DockPanel>
+                </StackPanel>
+
             </Grid>
-            <StackPanel Grid.Row="1" Background="Gray">
-                <gui:GraphView x:Name="graphView" Height="497" Margin="0,0,-0.4,0">
+            <StackPanel Grid.Row="1" >
+                <gui:GraphView VerticalAlignment="Center" x:Name="graphView" Height="497" Margin="0,0,-0.4,0">
                 </gui:GraphView>
             </StackPanel>
             <gui:CameraRecordView x:Name="cameraRecordView" Grid.Row="2">

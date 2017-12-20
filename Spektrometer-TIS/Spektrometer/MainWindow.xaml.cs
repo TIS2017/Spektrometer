@@ -37,5 +37,17 @@ namespace Spektrometer
             menu.Content = page;
             spektrometerService.setReferences(page);
         }
+
+        private void StartButton(object sender, RoutedEventArgs e)
+        {
+            signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-on.png", UriKind.Relative));
+            spektrometerService.CameraController.cameraStart();
+        }
+
+        private void StopButton(object sender, RoutedEventArgs e)
+        {
+            signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-off.png", UriKind.Relative));
+            spektrometerService.CameraController.cameraStop();
+        }
     }
 }
