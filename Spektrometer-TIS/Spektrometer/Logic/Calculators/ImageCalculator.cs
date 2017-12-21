@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
@@ -42,31 +45,45 @@ namespace Spektrometer.Logic
         }
         public static List<Color> CutImage(Bitmap bitmap, int rowIndex, int rowCount)
         {
-            List<Color> result = new List<Color>();
-            List<int> A = new List<int>();
-            List<int> R = new List<int>();
-            List<int> G = new List<int>();
-            List<int> B = new List<int>();
-            int width = bitmap.Width;
+            //List<Color> result = new List<Color>();
+            //List<int> A = new List<int>();
+            //List<int> R = new List<int>();
+            //List<int> G = new List<int>();
+            //List<int> B = new List<int>();
+            //int width = bitmap.Width;
 
-            for (int row = rowIndex - rowCount; row <= rowIndex + rowCount; row++)
-            {
-                List<Color> pom = new List<Color>();
+            //for (int row = rowIndex - rowCount; row <= rowIndex + rowCount; row++)
+            //{
+            //    List<Color> pom = new List<Color>();
 
-                for (int col = 0; col < width; col++)
-                {
-                    pom.Add(bitmap.GetPixel(col, row));
-                    A[col] += pom[col].A;
-                    R[col] += pom[col].R;
-                    G[col] += pom[col].G;
-                    B[col] += pom[col].B;
-                }
-            }
-            for (int i = 0; i < width; i++)
-            {
-                result.Add(Color.FromArgb(A[i], R[i], G[i], B[i]));
-            }
-            return result;
+            //    for (int col = 0; col < width; col++)
+            //    {
+            //        pom.Add(bitmap.GetPixel(col, row));
+            //        A[col] += pom[col].A;
+            //        R[col] += pom[col].R;
+            //        G[col] += pom[col].G;
+            //        B[col] += pom[col].B;
+            //    }
+            //}
+            //for (int i = 0; i < width; i++)
+            //{
+            //    result.Add(Color.FromArgb(A[i], R[i], G[i], B[i]));
+            //}
+            //return result;
+            return new List<Color>();
+        }
+
+        public static BitmapSource GetBitmapSource(Bitmap bitmap)
+        {
+            BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap
+            (
+                bitmap.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+
+            return bitmapSource;
         }
     }
 }

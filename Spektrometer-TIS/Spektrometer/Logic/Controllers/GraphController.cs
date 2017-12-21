@@ -122,7 +122,7 @@ namespace Spektrometer.Logic
         // Zavola sa po kazdej zmene GraphData a CalibrationPoints
         public void update()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

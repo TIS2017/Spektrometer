@@ -58,7 +58,7 @@ namespace Spektrometer.GUI
 
         public void SetCameraLIst()
         {
-            list = CameraController.getCameraList();
+            list = CameraController.GetCameraList();
             if (list != null)
             {
                 CameraListBox.ItemsSource = list;
@@ -80,7 +80,7 @@ namespace Spektrometer.GUI
         {
             string selected = this.CameraListBox.Text;
             int ix = list.FindIndex(item => item == selected);
-            _cameraController.selectCamera(ix);
+            _cameraController.SelectCamera(ix);
         }
     }
 }
