@@ -62,10 +62,9 @@ namespace Spektrometer.Logic
         /**
          * Prepočítava hodnoty na grafe pomocou kalibračných bodov a aktuálneho obrázka.
          */
-        public List<double> calculate(List<Color> picture, List<Point> calibrationPoints)
+        public List<double> calculate(List<Point> calibrationPoints)
         {
             throw new System.NotImplementedException();
-
-        } 
+        }
     }
 }

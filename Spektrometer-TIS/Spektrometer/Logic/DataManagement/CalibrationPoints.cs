@@ -11,24 +11,24 @@ namespace Spektrometer.Logic
         public delegate void Update();
 
         internal Update NewData;
-        public List<Point> calibrationData
+        public List<Point> CalibrationPointsList
         {
-            get { return calibrationData; }
+            get { return CalibrationPointsList; }
             set
             {
-                calibrationData = value;
+                CalibrationPointsList = value;
                 NewData();
             }
         }
 
         public CalibrationPoints()
         {
-            calibrationData = new List<Point>();
+            CalibrationPointsList = new List<Point>();
         }
 
-        public void addPoint(Point point)
+        public void AddPoint(Point point)
         {
-            calibrationData.Add(point);
+            CalibrationPointsList.Add(point);
         }
     }
 }

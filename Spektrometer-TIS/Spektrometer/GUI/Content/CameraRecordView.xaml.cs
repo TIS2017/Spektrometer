@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,6 @@ namespace Spektrometer.GUI
     {
         public delegate void SetIndex(int index);
         public SetIndex NewLineIndex { get; internal set; }
-        private ImageController _imageController;
         public CameraRecordView()
         {
             InitializeComponent();
@@ -32,10 +32,24 @@ namespace Spektrometer.GUI
 
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
-            Point p = e.GetPosition(image);
-            TranslateTransform translate = new TranslateTransform(0, p.Y);
+            System.Windows.Point p = e.GetPosition(image);
+            NewLineIndex((int)p.Y);
+        }
+
+        public void SetNewImage(BitmapSource bitmap)
+        {
+            image.Source = bitmap;
+        }
+
+        public void SetRowIndex(int rowIndex)
+        {
+            TranslateTransform translate = new TranslateTransform(0, rowIndex);
             rectangle.RenderTransform = translate;
-            _imageController.SetRowIndex((int)p.Y);
+        }
+
+        public void SetRowCount(int count)
+        {
+            rectangle.Height = count;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Spektrometer.GUI
 
         public void SetCameraLIst()
         {
-            list = CameraController.getCameraList();
+            list = CameraController.GetCameraList();
             if (list != null)
             {
                 CameraListBox.ItemsSource = list;
@@ -67,6 +67,7 @@ namespace Spektrometer.GUI
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
+            _imageController.SendImageEvent -= SetCameraImage;
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
@@ -74,13 +75,19 @@ namespace Spektrometer.GUI
         {
             _cameraController = SpektrometerService.CameraController;
             _imageController = SpektrometerService.ImageController;
+            _imageController.SendImageEvent += SetCameraImage;
         }
 
         private void SetCamera(object sender, RoutedEventArgs e)
         {
             string selected = this.CameraListBox.Text;
             int ix = list.FindIndex(item => item == selected);
-            _cameraController.selectCamera(ix);
+            _cameraController.SelectCamera(ix);
+        }
+
+        public void SetCameraImage(BitmapSource bitmap)
+        {
+            CameraImage.Source = bitmap;
         }
     }
 }

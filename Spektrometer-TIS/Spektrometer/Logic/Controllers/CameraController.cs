@@ -11,16 +11,24 @@ namespace Spektrometer.Logic
 {
     public class CameraController
     {
+        public delegate void Parameterless();
+
+        public Parameterless CameraStop;
+
         private ImageController _imageController;
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
         private VideoCaptureDevice _videoSource;
+        private int _cameraIndex;
 
         public CameraController(ImageController ic)
         {
             _imageController = ic;
+            _cameraIndex = -1;
+            CameraStop += StopCamera;
         }
 
-        public List<string> getCameraList()
+        /* Vrati list pripojenych zariadeni */
+        public List<string> GetCameraList()
         {
             _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             List<string> cameraList = new List<string>();
@@ -31,13 +39,15 @@ namespace Spektrometer.Logic
             return cameraList;
         }
 
-        public void selectCamera(int index)
+
+        public void SelectCamera(int index)
         {
+            _cameraIndex = index;
             _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
-            _videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
         }
 
-        public void showSettings()
+        public void ShowSettings()
         {
             if (_videoSource != null)
             {
@@ -45,16 +55,16 @@ namespace Spektrometer.Logic
             }
         }
 
-        public void cameraStart()
+        public void CameraStart()
         {
-            cameraStop();
+            CameraStop();
             if (_videoSource != null)
             {
                 _videoSource.Start();
             }
         }
 
-        public void cameraStop()
+        private void StopCamera()
         {
             if (_videoSource != null && _videoSource.IsRunning)
             {
@@ -62,11 +72,16 @@ namespace Spektrometer.Logic
             }
         }
 
-        private void video_NewFrame(object sender, NewFrameEventArgs eventargs)
+        private void Video_NewFrame(object sender, NewFrameEventArgs eventargs)
         {
-            Bitmap bitmap = (Bitmap)(eventargs.Frame).Clone();
+            Bitmap bitmap = eventargs.Frame;
 
             _imageController.NewImage(bitmap);
+        }
+
+        public int GetCameraIndex()
+        {
+            return _cameraIndex;
         }
     }
 }
