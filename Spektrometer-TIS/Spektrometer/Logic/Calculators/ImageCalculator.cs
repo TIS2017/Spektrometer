@@ -13,8 +13,7 @@ namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
-
-        public static List<Color> Average(Stack<List<Color>> pics)
+        public List<Color> Average(Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
             List<Color> pom = new List<Color>();
@@ -43,7 +42,7 @@ namespace Spektrometer.Logic
             }
             return avg;
         }
-        public static List<Color> CutImage(Bitmap bitmap, int rowIndex, int rowCount)
+        public List<Color> CutImageAndMakeAverage(ImageInfo imageInfo)
         {
             //List<Color> result = new List<Color>();
             //List<int> A = new List<int>();
@@ -71,19 +70,6 @@ namespace Spektrometer.Logic
             //}
             //return result;
             return new List<Color>();
-        }
-
-        public static BitmapSource GetBitmapSource(Bitmap bitmap)
-        {
-            BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap
-            (
-                bitmap.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-
-            return bitmapSource;
         }
     }
 }

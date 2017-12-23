@@ -33,14 +33,23 @@ namespace Spektrometer.GUI
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point p = e.GetPosition(image);
-            TranslateTransform translate = new TranslateTransform(0, p.Y);
-            rectangle.RenderTransform = translate;
             NewLineIndex((int)p.Y);
         }
 
         public void SetNewImage(BitmapSource bitmap)
         {
             image.Source = bitmap;
+        }
+
+        public void SetRowIndex(int rowIndex)
+        {
+            TranslateTransform translate = new TranslateTransform(0, rowIndex);
+            rectangle.RenderTransform = translate;
+        }
+
+        public void SetRowCount(int count)
+        {
+            rectangle.Height = count;
         }
     }
 }
