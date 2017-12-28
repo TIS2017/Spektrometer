@@ -5,12 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="120
+      d:DesignHeight="auto" d:DesignWidth="120
                      "
       Title="MenuView">
 
-    <Grid Background="#FF3D8AF7" Margin="0,0,0,0">
-        <StackPanel Background="#FF3D8AF7" Margin="0,80,0,0">
+    <Grid Background="#FF3D8AF7" Margin="0,0,0,0" >
+        <StackPanel Background="#FF3D8AF7" Margin="0,80,0,0" >
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Margin" Value="0,0,0,25"/>
@@ -52,7 +52,7 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="0, 0, 0, 45" Background="{x:Null}" BorderBrush="{x:Null}" Height="80"  VerticalContentAlignment="Bottom">
+            <Button Margin="0, 0, 0, 45" Background="{x:Null}" BorderBrush="{x:Null}" Height="80"  VerticalContentAlignment="Bottom" Click="ShowSettings">
                 <StackPanel Orientation="Vertical">
                     <Image Source="/Spektrometer;component/GUI/images/icons8-settings-96.png" Height="45"/>
                     <Label Content="Settings" VerticalAlignment="Top"  Foreground="White" HorizontalContentAlignment="Center" Padding="0" FontSize="18" HorizontalAlignment="Center"/>

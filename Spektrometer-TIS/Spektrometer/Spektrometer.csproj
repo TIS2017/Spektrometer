@@ -107,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\MenuPages\TopToolBarComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -140,6 +144,9 @@
     </Compile>
     <Compile Include="GUI\MenuPages\ImportView.xaml.cs">
       <DependentUpon>ImportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MenuPages\TopToolBarComponent.xaml.cs">
+      <DependentUpon>TopToolBarComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\DataManagement\CalibrationPoints.cs" />
     <Compile Include="Logic\Controllers\ImageController.cs" />

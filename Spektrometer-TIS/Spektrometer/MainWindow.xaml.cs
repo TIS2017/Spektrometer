@@ -28,6 +28,7 @@ namespace Spektrometer
         public MainWindow()
         {
             InitializeComponent();
+            this.SizeToContent = SizeToContent.Height;
             spektrometerService = new SpektrometerService(this);
             menu.Content = new MenuView(this);
         }
@@ -39,8 +40,11 @@ namespace Spektrometer
 
         private void StartButton(object sender, RoutedEventArgs e)
         {
-            signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-on.png", UriKind.Relative));
-            spektrometerService.CameraController.CameraStart();
+            if (spektrometerService.CameraController.GetCameraIndex() != -1)
+            {
+                signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-on.png", UriKind.Relative));
+                spektrometerService.CameraController.CameraStart();
+            }
         }
 
         private void StopButton(object sender, RoutedEventArgs e)

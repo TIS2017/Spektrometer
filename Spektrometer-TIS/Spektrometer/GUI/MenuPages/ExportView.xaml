@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="250"
+      Width="250"
       Title="ExportView">
-
+    <!--d:DesignHeight="800" d:DesignWidth="250"-->
     <Grid Background="#FF3D8AF7" Margin="0,0,0,0">
         <StackPanel>
             <StackPanel.Resources>
@@ -28,7 +28,7 @@
                 <DockPanel>
                     <Image Source="/Spektrometer;component/GUI/images/icons8-file-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                     <Label Content="Calibration file: " Foreground="White" FontSize="16"/>
-                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right"/>
+                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right" Click="CalibrationFile"/>
                 </DockPanel>
             </Border>
 
@@ -36,7 +36,7 @@
                 <DockPanel>
                     <Image Source="/Spektrometer;component/GUI/images/icons8-file-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                     <Label Content="Chart data: " Foreground="White" FontSize="16"/>
-                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right"/>
+                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right" Click="ChartData"/>
                 </DockPanel>
             </Border>
 
@@ -44,14 +44,14 @@
                 <DockPanel>
                     <Image Source="/Spektrometer;component/GUI/images/icons8-picture-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                     <Label Content="Chart image: " Foreground="White" FontSize="16"/>
-                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right"/>
+                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right" Click="ChartImage"/>
                 </DockPanel>
             </Border>
 
             <DockPanel>
                 <Image Source="/Spektrometer;component/GUI/images/icons8-picture-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                 <Label Content="Camera image: " Foreground="White" FontSize="16"/>
-                <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right"/>
+                <Button Content="Export" Height="26" Width="75" HorizontalAlignment="Right" Click="CameraImage"/>
             </DockPanel>
         </StackPanel>
     </Grid>

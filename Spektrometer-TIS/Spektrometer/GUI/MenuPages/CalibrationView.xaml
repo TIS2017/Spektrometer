@@ -5,9 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="250"
+      Width="250"
       Title="CalibrationView">
-
+    <!--d:DesignHeight="800" d:DesignWidth="250"-->
     <Grid  Background="#FF3D8AF7" Margin="0,0,0,0">
         <StackPanel>
             <StackPanel.Resources>
@@ -24,7 +24,7 @@
             <StackPanel>
                 <Label HorizontalAlignment="Center" Content="Calibration" Foreground="White" FontSize="26"/>
             </StackPanel>
-            <DockPanel>
+            <!--<DockPanel>
                 <Label Content="Point1:" Width="60" Foreground="White" HorizontalAlignment="Left" FontSize="14"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text="TextBox" Width="60" HorizontalAlignment="Center"  Margin="0, 0, 5, 0"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text="TextBox" Width="60" HorizontalAlignment="Right"/>
@@ -45,19 +45,19 @@
                 <DockPanel>
                     <Button Content="Set" Height="25" Width="75" HorizontalAlignment="Left"/>
                 </DockPanel>
-            </Border>
+            </Border>-->
 
             <DockPanel>
                 <Image Source="/Spektrometer;component/GUI/images/icons8-file-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                 <Label Content="File: " Foreground="White" FontSize="16"/>
-                <Button Content="Choose" Height="25" Width="75" HorizontalAlignment="Right"/>
+                <Button Content="Choose" Height="25" Width="75" HorizontalAlignment="Right" Click="CalibrationFile"/>
 
             </DockPanel>
 
-            <DockPanel>
+            <!--<DockPanel>
                 <Button Content="Set" Height="25" Width="75" HorizontalAlignment="Left"/>
 
-            </DockPanel>
+            </DockPanel>-->
 
 
         </StackPanel>

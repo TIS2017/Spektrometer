@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gui="clr-namespace:Spektrometer.GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="830" Width="1366">
+        Title="MainWindow"
+
+        SizeToContent="WidthAndHeight"
+        MinWidth="600"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
+    <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
+        Width="{Binding SystemParameters.PrimaryScreenWidth}"-->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="6*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
