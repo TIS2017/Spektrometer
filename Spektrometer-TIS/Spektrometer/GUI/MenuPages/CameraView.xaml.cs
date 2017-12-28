@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 using Spektrometer.Logic;
 
@@ -54,6 +45,22 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
             SetCameraLIst();
+            DefaulteSettings();
+        }
+
+        public void DefaulteSettings()
+        {
+            this.rowIndex.Text = ImageController.GetRowIndex().ToString();
+            this.rowCount.Text = ImageController.GetRowCount().ToString();
+            this.BtnCameraChoice.Content = "Set";
+
+            // Nefunguje uplne spravne, opravit - zobrazenie *
+            int ix = CameraController.GetCameraIndex();
+            if (ix != -1)
+            {
+                //Debug.WriteLine("Test");
+                CameraListBox.SelectedItem = list[ix];
+            }
         }
 
         public void SetCameraLIst()
@@ -80,14 +87,53 @@ namespace Spektrometer.GUI
 
         private void SetCamera(object sender, RoutedEventArgs e)
         {
+            if (CameraController.GetCameraIndex() != -1)
+            {
+                CameraController.CameraStop();
+            }
             string selected = this.CameraListBox.Text;
+            this.CameraListBox.SelectedItem = selected;
             int ix = list.FindIndex(item => item == selected);
             _cameraController.SelectCamera(ix);
+            BtnCameraChoice.Content = "Set";
+
         }
 
         public void SetCameraImage(BitmapSource bitmap)
         {
             CameraImage.Source = bitmap;
+        }
+
+        private void CameraChosen(object sender, SelectionChangedEventArgs e)
+        {
+            BtnCameraChoice.Content = "*Set";
+        }
+
+        private void RowIndexChanged(object sender, TextChangedEventArgs e)
+        {
+            BtnImageAreaSet.Content = "*Set";
+        }
+
+        private void RowCountChanged(object sender, TextChangedEventArgs e)
+        {
+            BtnImageAreaSet.Content = "*Set";
+        }
+
+        private void ImageAreaSet(object sender, RoutedEventArgs e)
+        {
+            int y = Int32.Parse(this.rowIndex.Text);
+            int h = Int32.Parse(this.rowCount.Text);
+            ImageController.SetRowIndex(y);
+            ImageController.SetRowCount(h);
+            BtnImageAreaSet.Content = "Set";
+        }
+
+        private void ShowSettings(object sender, RoutedEventArgs e)
+        {
+            if (CameraController.GetCameraIndex() != -1)
+            {
+                CameraController.ShowSettings();
+            } else { return; }
         }
     }
 }

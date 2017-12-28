@@ -69,5 +69,13 @@ namespace Spektrometer.GUI
         {
             _cameraController = SpektrometerService.CameraController;
         }
+
+        private void ShowSettings(object sender, RoutedEventArgs e)
+        {
+            if (CameraController.GetCameraIndex() != -1)
+            {
+                CameraController.ShowSettings();
+            }
+        }
     }
 }
