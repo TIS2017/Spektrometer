@@ -28,14 +28,14 @@ namespace Spektrometer.Logic
         private void ClassInitialization(MainWindow mainWindow)
         {
             GraphView = mainWindow.graphView;
-            CameraRecordView = mainWindow.cameraRecordView;
             GraphController = (GraphController)GraphView.DataContext;
             GraphCalculator = new GraphCalculator();
-            ImageController = new ImageController(CameraRecordView);
+            ImageController = new ImageController();
             CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
             Import = new Import(GraphController, ImageController);
             TopToolBar = new TopToolBar(CameraController, GraphController);
+            CameraRecordView = new CameraRecordView(ImageController);
         }
     }
 }

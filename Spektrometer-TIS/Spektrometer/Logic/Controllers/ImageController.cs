@@ -18,37 +18,25 @@ namespace Spektrometer.Logic
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
 
-        public delegate void SendImage(BitmapSource bitmap);
+        public delegate void SendImageHandler(BitmapSource bitmap);
+        public delegate void NewRowIndexHandler(int rowIndex);
+        public delegate void NewRowCountHandler(int rowCount);
 
-        public SendImage SendImageEvent;
-        private CameraRecordView _cameraRecordViewer;
+        public SendImageHandler SendImageEvent { get; set; }
+        public NewRowIndexHandler NewRowIndex { get; set; }
+        public NewRowCountHandler NewRowCount { get; set; }
+
         private ImageCalculator _imageCalculator;
         private ImageInfo _imageInfo;
         private GraphController _graphController;
         private Dispatcher _dispatcher;
 
-        public ImageController(CameraRecordView crv)
+        public ImageController()
         {
             _imageCalculator = new ImageCalculator();
-            _cameraRecordViewer = crv;
             _imageInfo = new ImageInfo();
-            _cameraRecordViewer.NewLineIndex += SetRowIndex;
-            _cameraRecordViewer.SetRowIndex(_imageInfo.rowIndex);
-            _cameraRecordViewer.SetRowCount(_imageInfo.rowCount);
-            SendImageEvent += _cameraRecordViewer.SetNewImage;
             _graphController = new GraphController();
             _dispatcher = Dispatcher.CurrentDispatcher;
-        }
-
-        public void SetAsReferencedPicture()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                Monitor.Enter(_imageInfo);
-                var lineOfImage = _imageCalculator.CutImageAndMakeAverage(_imageInfo);
-                _graphController.GraphData.ReferencedPicture = lineOfImage;
-                Monitor.Exit(_imageInfo);
-            });
         }
 
         internal void NewImage(Bitmap bitmap)
@@ -57,7 +45,7 @@ namespace Spektrometer.Logic
             _dispatcher.BeginInvoke(
             new ThreadStart(() =>
             {
-                var line = _imageCalculator.CutImageAndMakeAverage(_imageInfo);
+                var line = _imageCalculator.CutImageAndMakeAverage(bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
                 if (Monitor.TryEnter(_imageInfo))
                 {
                     _imageInfo.addNewLine(line);
@@ -81,7 +69,7 @@ namespace Spektrometer.Logic
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowIndex = index;
                 _imageInfo.imageHistory = new Stack<List<Color>>();
-                _cameraRecordViewer.SetRowIndex(index);
+                NewRowIndex(index);
             }
             finally
             {
@@ -101,7 +89,7 @@ namespace Spektrometer.Logic
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowCount = count;
                 _imageInfo.imageHistory = new Stack<List<Color>>();
-                _cameraRecordViewer.SetRowCount(count);
+                NewRowCount(count);
             }
             finally
             {
