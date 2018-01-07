@@ -82,6 +82,7 @@ namespace Spektrometer.GUI
         private void MenuButton(object sender, RoutedEventArgs e)
         {
             _imageController.SendImageEvent -= SetCameraImage;
+            _imageController.NewRowIndex -= SetRowIndex;
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
