@@ -24,27 +24,31 @@ using LiveCharts.Geared;
 using Spektrometer.Logic;
 using Spektrometer.GUI;
 
-//namespace Spektrometer.GUI
-//{
+
 //    /// <summary>
 //    /// Interaction logic for GraphView.xaml
 //    /// </summary>
-//    public partial class GraphView : Page
-//    {
-//        public GraphView()
-//        {
-//            InitializeComponent();
-//        }
-//    }
-//}
-
 namespace Spektrometer.GUI
 {
-    public partial class GraphView 
+    public partial class GraphView
     {
         public GraphView()
         {
             InitializeComponent();
+
+
+            mainAxisX.Sections.Add(
+             new AxisSection
+             {
+                 Value = 100,
+                 DataLabel = true,
+                 StrokeThickness = 1,
+                 Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0)),
+                 StrokeDashArray = new DoubleCollection(new[] { 10d }),
+                 DisableAnimations = true,
+                 DataLabelForeground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))
+             }
+            );
         }
 
 
@@ -64,18 +68,22 @@ namespace Spektrometer.GUI
         {
             var vm = (GraphController)DataContext;
 
-            //vm.RangeValue = vm.ScrollTo;
+            vm.RangeValue = e.Range;
 
 
             //if less than -0.5, cancel
-            if (e.PreviewMinValue < -0.5) e.Cancel = true;
+            if (e.PreviewMinValue < -0.5)
+            {
+                mainAxisX.MinValue = double.NaN;
+                mainAxisX.MaxValue = double.NaN;
+                e.Cancel = true;
+            }
 
             //if greater than the number of items on our array plus a 0.5 offset, stay on max limit
             if (e.PreviewMaxValue > 1280 - 0.5) e.Cancel = true;
 
-            //finally if the axis range is less than 1, cancel the event
-            if (e.PreviewMaxValue - e.PreviewMinValue < 1) e.Cancel = true;
+            //finally if the axis range is less than 1, cancel the event (maximalny zoom)
+            if (e.PreviewMaxValue - e.PreviewMinValue < 10) e.Cancel = true;
         }
-
     }
 }
