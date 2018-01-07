@@ -76,9 +76,9 @@ namespace Spektrometer.Logic
             }
 
             String[] riadok;
-            List<int> R = new List<int>();
-            List<int> G = new List<int>();
-            List<int> B = new List<int>();
+            int R = 0;
+            int G = 0;
+            int B = 0;
             List<Color> graphData = new List<Color>();
 
             StreamReader chart = new StreamReader(path);
@@ -87,9 +87,10 @@ namespace Spektrometer.Logic
                 riadok = chart.ReadLine().Split(' ');
                 try
                 {
-                    R.Add(Convert.ToInt32(riadok[0]));
-                    G.Add(Convert.ToInt32(riadok[1]));
-                    B.Add(Convert.ToInt32(riadok[2]));
+                    R = Convert.ToInt32(riadok[0]);
+                    G = Convert.ToInt32(riadok[1]);
+                    B = Convert.ToInt32(riadok[2]);
+                    graphData.Add(Color.FromArgb(R, G, B));
                 }
                 catch
                 {
@@ -97,21 +98,21 @@ namespace Spektrometer.Logic
             }
             chart.Close();
             
-            for(int i=0; i<R.Count; i++)
+           /* for(int i=0; i<R.Count; i++)
             {
                 graphData.Add(Color.FromArgb(R[i], G[i], B[i]));
-            }        
+            } */       
             GraphController.GraphData.pixelData = graphData;
         }
 
         /**
-         Importuje obrázok z kamery, ako .png a potom uloží ImageController,
+         Importuje obrázok spektrometra zo súboru ako bitmapu a potom uloží v ImageControlleri,
          ako new Image...
          */
         public void importCameraImage(string path)
         {
-            
-            throw new System.NotImplementedException();
+            Bitmap image = new Bitmap(path);
+            _imageController.NewImage(image);
         }
     }
 }
