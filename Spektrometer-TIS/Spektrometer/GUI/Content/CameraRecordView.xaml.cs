@@ -38,7 +38,7 @@ namespace Spektrometer.GUI
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point p = e.GetPosition(image);
-            _imageController.NewRowIndex((int)p.Y);
+            _imageController.SetRowIndex((int)p.Y);
         }
 
         public void SetNewImage(BitmapSource bitmap)
