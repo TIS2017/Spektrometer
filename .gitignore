@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Prototypy/DirectshowWebcam
+/Spektrometer-TIS/.vs/Spektrometer
+/Spektrometer-TIS/Spektrometer/bin/Debug
+/Spektrometer-TIS/Spektrometer/obj/Debug
+*.user

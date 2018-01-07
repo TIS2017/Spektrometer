@@ -45,7 +45,7 @@ namespace Spektrometer.Logic
             _dispatcher.BeginInvoke(
             new ThreadStart(() =>
             {
-                var line = _imageCalculator.CutImageAndMakeAverage(bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
+                var line = _imageCalculator.CutImageAndMakeAverage(bmp, _imageInfo.rowIndex, _imageInfo.rowCount);
                 if (Monitor.TryEnter(_imageInfo))
                 {
                     _imageInfo.addNewLine(line);

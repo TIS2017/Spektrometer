@@ -114,7 +114,7 @@ namespace Spektrometer.Logic
                 _imageController.NewImage(bitmap);
             } catch(Exception e)
             {
-                MessageBox.Show("Chyba pri nacitavani. " + e.Message);
+                MessageBox.Show("Chyba pri načítavaní. " + e.Message);
             }
         }
     }
