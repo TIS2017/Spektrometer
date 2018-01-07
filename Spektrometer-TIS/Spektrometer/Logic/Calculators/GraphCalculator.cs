@@ -154,8 +154,8 @@ namespace Spektrometer.Logic
 
 
             // nepotrebné môže byť aj od 0 - 1280p;
-            d = (int)(calibrationPoints[0].x);
-            h = (int)(calibrationPoints[calibrationPoints.Count].x);
+           d = (int)(calibrationPoints[0].X);
+           h = (int)(calibrationPoints[calibrationPoints.Count].X);
 
             nb = 1 + (h - d);
             for (int i = d; i < h; i++){
