@@ -81,8 +81,9 @@
                 <gui:GraphView VerticalAlignment="Center" x:Name="graphView" Height="497" Margin="0,0,-0.4,0">
                 </gui:GraphView>
             </StackPanel>
-            <gui:CameraRecordView x:Name="cameraRecordView" Grid.Row="2">
-            </gui:CameraRecordView>
+            <Grid Name="cameraRecordGrid" Grid.Row="2">
+
+            </Grid>
         </Grid>
 
     </Grid>

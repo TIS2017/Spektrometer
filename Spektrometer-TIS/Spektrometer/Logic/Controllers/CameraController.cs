@@ -11,9 +11,9 @@ namespace Spektrometer.Logic
 {
     public class CameraController
     {
-        public delegate void Parameterless();
+        public delegate void StopCameraHandler();
 
-        public Parameterless CameraStop;
+        public StopCameraHandler CameraStop;
 
         private ImageController _imageController;
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);

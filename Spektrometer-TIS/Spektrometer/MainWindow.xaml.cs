@@ -31,6 +31,7 @@ namespace Spektrometer
             this.SizeToContent = SizeToContent.Height;
             spektrometerService = new SpektrometerService(this);
             menu.Content = new MenuView(this);
+            cameraRecordGrid.Children.Add(spektrometerService.CameraRecordView);
         }
 
         public void ChangeFrameContent(Page page)

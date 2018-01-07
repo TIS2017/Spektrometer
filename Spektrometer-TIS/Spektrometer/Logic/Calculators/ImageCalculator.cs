@@ -42,7 +42,7 @@ namespace Spektrometer.Logic
             }
             return avg;
         }
-        public List<Color> CutImageAndMakeAverage(ImageInfo imageInfo)
+        public List<Color> CutImageAndMakeAverage(Bitmap bitmap, int rowIndex, int rowCount)
         {
             //List<Color> result = new List<Color>();
             //List<int> A = new List<int>();

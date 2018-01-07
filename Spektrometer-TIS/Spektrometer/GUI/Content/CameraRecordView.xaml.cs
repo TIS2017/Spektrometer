@@ -21,19 +21,24 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CameraRecordView.xaml
     /// </summary>
-    public partial class CameraRecordView : Grid
+    public partial class CameraRecordView : ScrollViewer
     {
-        public delegate void SetIndex(int index);
-        public SetIndex NewLineIndex { get; internal set; }
-        public CameraRecordView()
+        private ImageController _imageController;
+        public CameraRecordView(ImageController ic)
         {
             InitializeComponent();
+            _imageController = ic;
+            _imageController.NewRowIndex += SetRowIndex;
+            _imageController.NewRowCount += SetRowCount;
+            _imageController.SendImageEvent += SetNewImage;
+            SetRowIndex(_imageController.GetRowIndex());
+            SetRowCount(_imageController.GetRowCount());
         }
 
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point p = e.GetPosition(image);
-            NewLineIndex((int)p.Y);
+            _imageController.SetRowIndex((int)p.Y);
         }
 
         public void SetNewImage(BitmapSource bitmap)

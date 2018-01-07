@@ -1,4 +1,4 @@
-﻿<Grid x:Name="cameraRecord" x:Class="Spektrometer.GUI.CameraRecordView"
+﻿<ScrollViewer x:Name="cameraRecord" x:Class="Spektrometer.GUI.CameraRecordView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,13 @@
              xmlns:local="clr-namespace:Spektrometer.GUI"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="1280">
-    <ScrollViewer Name="scrollview">
-        <Grid>
-            <Image Name="image" Source="/Spektrometer;component/GUI/testImage/example.png" MouseDown="NewRow"/>
-            <Rectangle Name="rectangle" Width="{Binding Path=ViewportWidth, ElementName=scrollview}" Height="20"  Stroke="Azure" VerticalAlignment="Top">
-                <Rectangle.RenderTransform>
-                    <TranslateTransform Y="200"/>
-                </Rectangle.RenderTransform>
-            </Rectangle>
-        </Grid>
-    </ScrollViewer>
+    <Grid>
+        <Image Name="image" Source="/Spektrometer;component/GUI/testImage/example.png" MouseDown="NewRow"/>
+        <Rectangle Name="rectangle" Width="{Binding Path=ViewportWidth, ElementName=scrollview}" Height="20"  Stroke="Azure" VerticalAlignment="Top">
+            <Rectangle.RenderTransform>
+                <TranslateTransform Y="200"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+    </Grid>
 
-</Grid>
+</ScrollViewer>

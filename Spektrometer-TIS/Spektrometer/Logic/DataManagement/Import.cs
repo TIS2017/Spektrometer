@@ -108,8 +108,14 @@ namespace Spektrometer.Logic
          */
         public void importCameraImage(string path)
         {
-            
-            throw new System.NotImplementedException();
+            try
+            {
+                Bitmap bitmap = new Bitmap(path);
+                _imageController.NewImage(bitmap);
+            } catch(Exception e)
+            {
+                MessageBox.Show("Chyba pri nacitavani. " + e.Message);
+            }
         }
     }
 }
