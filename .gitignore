@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Spektrometer-TIS/Spektrometer/obj/Debug/GUI/Content
+/Spektrometer-TIS/Spektrometer/obj/Debug/TempPE
+/Spektrometer-TIS

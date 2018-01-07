@@ -71,7 +71,7 @@ namespace Spektrometer.Logic
                         blueColor += temp.B;
                     }
                     result.Add(Color.FromArgb(alphaColor / (rowCount * 2+1), redColor / (rowCount * 2+1), greenColor / (rowCount * 2+1), blueColor / (rowCount * 2+1)));
-                }
+                }                
                 return result;
             }
             catch (IndexOutOfRangeException)
