@@ -7,7 +7,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
         xmlns:scrollable="clr-namespace:Spektrometer.Logic"
-        mc:Ignorable="d">
+        mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="500">
     <UserControl.DataContext>
         <scrollable:GraphController></scrollable:GraphController>
     </UserControl.DataContext>
@@ -15,7 +15,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="{Binding RangeValue}"></TextBlock>
         <lvc:CartesianChart x:Name="cartesianChart" Grid.Row="1"
@@ -44,7 +43,7 @@
                                     Stroke="Red"
                                     LineSmoothness="0"
                                     />
-                <!--<geared:GLineSeries StrokeThickness=".5" 
+                <geared:GLineSeries StrokeThickness=".5" 
                                     Values="{Binding ValuesGreen}"
                                     AreaLimit="0"
                                     Fill="Transparent"
@@ -57,7 +56,7 @@
                                     Fill="Transparent"
                                     Stroke="Blue"
                                     LineSmoothness="0"
-                                    />-->
+                                    />
             </lvc:CartesianChart.Series>
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis x:Name="mainAxisX" MinValue="{Binding From, Mode=TwoWay}" 

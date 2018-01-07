@@ -27,17 +27,14 @@ namespace Spektrometer.Logic
 
         public GraphController()
         {
-            GraphData = new GraphData();
-            GraphData.NewData = update;
+            GraphData = new GraphData
+            {
+                OnCalculationDataChange = Recalculate
+            };
             _graphCalculator = new GraphCalculator();
-
-            IsReading = false;
 
             From = 0;
             To = 1280;
-
-            Read();
-
         }
 
         public object Mapper { get; set; }
@@ -93,42 +90,21 @@ namespace Spektrometer.Logic
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public bool IsReading { get; set; }
+        
         public GraphController DataContext { get; private set; }
 
-
-        private void Read()
-        {
-            if (IsReading) return;
-
-            IsReading = true;
-
-            Action readFromThread = () =>
-            {
-                while (IsReading)
-                {
-                    Thread.Sleep(500);
-                    update();
-                    OnPropertyChanged();
-
-
-                }
-            };
-
-            //2 different tasks adding a value every ms
-            //add as many tasks as you want to test this feature
-            Task.Factory.StartNew(readFromThread);
-        }
-
-
+        
         // Zavola sa po kazdej zmene GraphData a CalibrationPoints
-        public void update()
+        public void Recalculate()
         {
+            var tmp = GraphData.ActualPicture;
+            // TODO:
+            GraphData.PixelData = tmp;
+
             var listOfRedValues = new List<double>();
             var listOfGreenValues = new List<double>();
             var listOfBlueValues = new List<double>();
-            for (int i = 0; i < GraphData.PixelData.Count; i++) 
+            for (int i = 0; i < GraphData.PixelData.Count; i++)
             {
                 listOfRedValues.Add(GraphData.PixelData[i].R);
                 listOfGreenValues.Add(GraphData.PixelData[i].G);
@@ -139,49 +115,7 @@ namespace Spektrometer.Logic
             ValuesBlue = listOfGreenValues.AsGearedValues().WithQuality(Quality.High);
             ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
 
-            //Random rnd = new Random();
-
-            //int pocitadlo = 1;
-            //bool logic = true;
-            //for (var j = 0; j < 3; j++)
-            //{
-            //    var l = new List<double>();
-            //    for (var i = 0; i < 1280; i++)
-            //    {
-            //        if (pocitadlo == 255 || pocitadlo == 0)
-            //        {
-            //            logic = !logic;
-            //        }
-            //        var cislo = (rnd.Next(pocitadlo));
-            //        l.Add(rnd.Next(200, 255));
-            //        if (logic)
-            //        {
-            //            pocitadlo++;
-            //        }
-            //        else
-            //        {
-            //            pocitadlo--;
-            //        }
-
-            //    }
-
-            //    pocitadlo = 20;
-            //    logic = true;
-
-            //    if (j == 0)
-            //    {
-            //        ValuesRed = l.AsGearedValues().WithQuality(Quality.High);
-            //    }
-            //    else if (j == 1)
-            //    {
-            //        ValuesBlue = l.AsGearedValues().WithQuality(Quality.High);
-            //    }
-            //    else if (j == 2)
-            //    {
-            //        ValuesGreen = l.AsGearedValues().WithQuality(Quality.High);
-            //    }
-            
-            //}
+            OnPropertyChanged();
         }
     }
 }

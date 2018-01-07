@@ -30,7 +30,7 @@ namespace Spektrometer.Logic
             GraphView = mainWindow.graphView;
             GraphController = (GraphController)GraphView.DataContext;
             GraphCalculator = new GraphCalculator();
-            ImageController = new ImageController();
+            ImageController = new ImageController(GraphController);
             CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
             Import = new Import(GraphController, ImageController);
