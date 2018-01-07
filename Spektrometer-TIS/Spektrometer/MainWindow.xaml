@@ -9,25 +9,22 @@
 
         SizeToContent="WidthAndHeight"
         MinWidth="600"
-        WindowState="Maximized"
+        WindowState="Normal"
         WindowStartupLocation="CenterScreen">
     <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
         Width="{Binding SystemParameters.PrimaryScreenWidth}"-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
 
         <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
         <Grid Grid.Column="1" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="560" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*" />
                 <RowDefinition Height="200" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -78,11 +75,11 @@
 
             </Grid>
             <StackPanel Grid.Row="1" >
-                <gui:GraphView VerticalAlignment="Center" x:Name="graphView" Height="497" Margin="0,0,-0.4,0">
+                <gui:GraphView VerticalAlignment="Center" x:Name="graphView" Margin="0,0,-0.4,0">
                 </gui:GraphView>
             </StackPanel>
             <Grid Name="cameraRecordGrid" Grid.Row="2">
-
+                
             </Grid>
         </Grid>
 
