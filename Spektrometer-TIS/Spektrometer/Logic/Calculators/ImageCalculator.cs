@@ -5,13 +5,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
     public class ImageCalculator
     {
-
-        public static List<Color> Average(Stack<List<Color>> pics)
+        public List<Color> Average(Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
             List<Color> pom = new List<Color>();
@@ -40,7 +42,7 @@ namespace Spektrometer.Logic
             }
             return avg;
         }
-        public static List<Color> CutImage(Bitmap bitmap, int rowIndex, int rowCount)
+        public List<Color> CutImageAndMakeAverage(Bitmap bitmap, int rowIndex, int rowCount)
         {
             List<Color> result = new List<Color>();
             try
@@ -67,7 +69,6 @@ namespace Spektrometer.Logic
             }
             catch (IndexOutOfRangeException)
             {
-                throw;
             }
         }
     }

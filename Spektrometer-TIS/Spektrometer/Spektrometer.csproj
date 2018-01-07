@@ -36,6 +36,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Geared, Version=1.2.8.2, Culture=neutral, PublicKeyToken=7292f245d14ab8bf, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Geared.1.2.8.2\lib\net45\LiveCharts.Geared.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
     </Reference>
@@ -66,6 +75,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GUI\Content\CameraRecordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Content\GraphView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\MenuPages\CalibrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,6 +107,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\MenuPages\TopToolBarComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,6 +119,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GUI\Content\CameraRecordView.xaml.cs">
+      <DependentUpon>CameraRecordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Content\GraphView.xaml.cs">
+      <DependentUpon>GraphView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Content\ScrollableViewModel.cs" />
+    <Compile Include="GUI\MenuPages\MenuComponent.cs" />
     <Compile Include="GUI\MenuPages\CalibrationView.xaml.cs">
       <DependentUpon>CalibrationView.xaml</DependentUpon>
     </Compile>
@@ -116,10 +145,11 @@
     <Compile Include="GUI\MenuPages\ImportView.xaml.cs">
       <DependentUpon>ImportView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\MenuPages\TopToolBarComponent.xaml.cs">
+      <DependentUpon>TopToolBarComponent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\DataManagement\CalibrationPoints.cs" />
     <Compile Include="Logic\Controllers\ImageController.cs" />
-    <Compile Include="GUI\Content\CameraRecordView.cs" />
-    <Compile Include="GUI\Content\GraphView.cs" />
     <Compile Include="GUI\Content\TopToolBar.cs" />
     <Compile Include="Logic\DataManagement\GraphData.cs" />
     <Compile Include="Logic\DataManagement\ImageInfo.cs" />
@@ -201,6 +231,23 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="GUI\images\icons8-picture-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\testImage\example.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\images\icons8-play-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\images\icons8-stop-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\images\signal-off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GUI\images\signal-on.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

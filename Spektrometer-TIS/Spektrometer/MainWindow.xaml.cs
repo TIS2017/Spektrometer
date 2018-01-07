@@ -23,22 +23,35 @@ namespace Spektrometer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Page menuComponent { get; set; }
-        public GraphView graphViewer { get; set; }
-        public TopToolBar topToolBar { get; set; }
-        public CameraRecordView cameraRecordViewer { get; set; }
         public SpektrometerService spektrometerService { get; set; }
-        // public delegate void NewPage(Page page)
 
         public MainWindow()
         {
             InitializeComponent();
+            this.SizeToContent = SizeToContent.Height;
+            spektrometerService = new SpektrometerService(this);
             menu.Content = new MenuView(this);
+            cameraRecordGrid.Children.Add(spektrometerService.CameraRecordView);
         }
 
-        public void navigationController(Page page)
+        public void ChangeFrameContent(Page page)
         {
             menu.Content = page;
+        }
+
+        private void StartButton(object sender, RoutedEventArgs e)
+        {
+            if (spektrometerService.CameraController.GetCameraIndex() != -1)
+            {
+                signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-on.png", UriKind.Relative));
+                spektrometerService.CameraController.CameraStart();
+            }
+        }
+
+        private void StopButton(object sender, RoutedEventArgs e)
+        {
+            signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-off.png", UriKind.Relative));
+            spektrometerService.CameraController.CameraStop();
         }
     }
 }

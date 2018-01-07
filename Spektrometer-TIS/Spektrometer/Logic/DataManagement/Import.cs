@@ -33,7 +33,7 @@ namespace Spektrometer.Logic
                 MessageBox.Show("Súbor sa nenašiel !");
                 return;
             }
-            String[] riadok;
+            string[] riadok;
             double x = -999;
             double y = -999;
 
@@ -51,11 +51,9 @@ namespace Spektrometer.Logic
                     }
 
                 if(x!= -999 && y!= -999){
-                    Point point = new Point();
-                    point.x = x;
-                    point.y = y;
+                    var point = new System.Windows.Point(x,y);
 
-                    GraphController.CalibrationPoints.addPoint(point);
+                    GraphController.CalibrationPoints.AddPoint(point);
                 }
             }
            calibFile.Close();
@@ -75,7 +73,7 @@ namespace Spektrometer.Logic
                 return;
             }
 
-            String[] riadok;
+            string[] riadok;
             List<int> R = new List<int>();
             List<int> G = new List<int>();
             List<int> B = new List<int>();
@@ -101,7 +99,7 @@ namespace Spektrometer.Logic
             {
                 graphData.Add(Color.FromArgb(R[i], G[i], B[i]));
             }        
-            GraphController.GraphData.pixelData = graphData;
+            GraphController.GraphData.PixelData = graphData;
         }
 
         /**
@@ -110,8 +108,14 @@ namespace Spektrometer.Logic
          */
         public void importCameraImage(string path)
         {
-            
-            throw new System.NotImplementedException();
+            try
+            {
+                Bitmap bitmap = new Bitmap(path);
+                _imageController.NewImage(bitmap);
+            } catch(Exception e)
+            {
+                MessageBox.Show("Chyba pri nacitavani. " + e.Message);
+            }
         }
     }
 }
