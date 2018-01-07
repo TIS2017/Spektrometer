@@ -69,6 +69,7 @@ namespace Spektrometer.Logic
             }
             catch (IndexOutOfRangeException)
             {
+                throw;
             }
         }
     }
