@@ -42,9 +42,12 @@ namespace Spektrometer.Logic
 
         public void SelectCamera(int index)
         {
-            _cameraIndex = index;
-            _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
-            _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+            if (index >= 0 && index < _videoDevices.Count)
+            {
+                _cameraIndex = index;
+                _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
+                _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+            }
         }
 
         public void ShowSettings()
