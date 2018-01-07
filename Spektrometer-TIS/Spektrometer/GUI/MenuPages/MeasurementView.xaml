@@ -9,68 +9,69 @@
       Title="MeasurementView">
 
     <Grid Background="#FF3D8AF7" Margin="0,0,0,0">
-        <StackPanel>
+        <StackPanel >
             <StackPanel.Resources>
                 <Style TargetType="{x:Type DockPanel}">
                     <Setter Property="Margin" Value="10,10,10,20"/>
                 </Style>
             </StackPanel.Resources>
-            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="73" Margin="0,0,65.6,0" HorizontalAlignment="Left" Click="MenuButton">
+            <Button Background="{x:Null}" BorderBrush="{x:Null}" Height="73" Margin="10,0,65.6,0" HorizontalAlignment="Left" Click="MenuButton">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/Spektrometer;component/GUI/images/icons8-menu-96 (1).png" Height="45" RenderTransformOrigin="0.567,0.951"/>
                     <Label Content="Menu" VerticalAlignment="Center"  Foreground="White" HorizontalContentAlignment="Center" FontSize="18" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
+            
             <StackPanel>
                 <Label HorizontalAlignment="Center" Content="Measurement" Foreground="White" FontSize="26"/>
             </StackPanel>
 
             <DockPanel >
                 <Label Content="Show peaks" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                <Button Content="Show" Width="70" HorizontalAlignment="Right" Grid.IsSharedSizeScope="True"/>
+                <Button Name="Peaks" Content="Show" Width="70" HorizontalAlignment="Right" Grid.IsSharedSizeScope="True" Click="ShowPeaks"/>
             </DockPanel>
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <StackPanel Margin="10,10,10,20">
-                    <CheckBox Content="Global peek" Foreground="White" FontSize="14"/>
+                    <CheckBox Name="GlobalPeakChecked" Content="Global peek" Foreground="White" FontSize="14" Checked="SetGlobalPeak"/>
                 </StackPanel>
             </Border>
 
 
             <DockPanel>
                 <Label Content="Show values" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                <TextBox Height="30" TextWrapping="Wrap" Text="TextBox" Width="110" HorizontalAlignment="Right"/>
+                <TextBox Name="Value" Height="30" TextWrapping="Wrap" Width="110" HorizontalAlignment="Right"/>
             </DockPanel>
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
-                    <Button Content="Show" Height="30" Width="70" HorizontalAlignment="Left"/>
+                    <Button Content="Show" Height="30" Width="70" HorizontalAlignment="Left" Click="SetShowValue"/>
                 </DockPanel>
             </Border>
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel >
                     <Label Content="Reference picture" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                    <Button Content="Set" Width="70" HorizontalAlignment="Right"/>
+                    <Button Name="BtnReferencePic" Content="Set" Width="70" HorizontalAlignment="Right" Click="ReferencePicture"/>
                 </DockPanel>
             </Border>
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel >
                     <Label Content="Subtraction" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                    <Button Content="Set" Width="70" HorizontalAlignment="Right"/>
+                    <Button Name="BtnSubtraction" Content="Set" Width="70" HorizontalAlignment="Right" Click="Subtraction"/>
                 </DockPanel>
             </Border>
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
                     <Label Content="Division" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                    <Button Content="Set" Width="70" HorizontalAlignment="Right"/>
+                    <Button Name="BtnDivision" Content="Set" Width="70" HorizontalAlignment="Right" Click="Division"/>
                 </DockPanel>
             </Border>
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
                     <Label Content="Fill chart" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                    <ComboBox Margin="40 ,0, 0,0" Width="115" HorizontalAlignment="Right">
+                    <ComboBox Name="FillChartList" Margin="40 ,0, 0,0" Width="115" HorizontalAlignment="Right" SelectionChanged="FillChart">
                         <ComboBoxItem IsSelected="True" Content="all"/>
                         <ComboBoxItem Content="red"/>
                         <ComboBoxItem Content="green"/>

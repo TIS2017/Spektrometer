@@ -52,7 +52,7 @@ namespace Spektrometer.GUI
         {
             this.rowIndex.Text = ImageController.GetRowIndex().ToString();
             this.rowCount.Text = ImageController.GetRowCount().ToString();
-            this.BtnCameraChoice.Content = "Set";
+            BtnImageAreaSet.Content = "Set";
 
             // Nefunguje uplne spravne, opravit - zobrazenie *
             int ix = CameraController.GetCameraIndex();
@@ -61,6 +61,7 @@ namespace Spektrometer.GUI
                 //Debug.WriteLine("Test");
                 CameraListBox.SelectedItem = list[ix];
             }
+            BtnCameraChoice.Content = "Set";
         }
 
         public void SetCameraLIst()
@@ -70,6 +71,12 @@ namespace Spektrometer.GUI
             {
                 CameraListBox.ItemsSource = list;
             }
+        }
+
+        public void SetRowIndex(int rowIndex)
+        {
+            this.rowIndex.Text = rowIndex.ToString();
+            BtnImageAreaSet.Content = "Set";
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
@@ -83,6 +90,7 @@ namespace Spektrometer.GUI
             _cameraController = SpektrometerService.CameraController;
             _imageController = SpektrometerService.ImageController;
             _imageController.SendImageEvent += SetCameraImage;
+            _imageController.NewRowIndex += SetRowIndex;
         }
 
         private void SetCamera(object sender, RoutedEventArgs e)
