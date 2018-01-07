@@ -13,43 +13,69 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Spektrometer.Logic;
+
 namespace Spektrometer.GUI
 {
     /// <summary>
     /// Interaction logic for MenuView.xaml
     /// </summary>
-    public partial class MenuView : Page
+    public partial class MenuView : MenuComponent
     {
-        MainWindow mainWindow;
-        public MenuView(MainWindow mainWindow)
+        private CameraController _cameraController;
+
+        public CameraController CameraController
+        {
+            get
+            {
+                return _cameraController;
+            }
+            set
+            {
+                _cameraController = value;
+            }
+        }
+        public MenuView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void ShowCameraView(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new CameraView(mainWindow));
+            MainWindow.ChangeFrameContent(new CameraView(MainWindow));
         }
 
         private void ShowMeasurementView(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MeasurementView(mainWindow));
+            MainWindow.ChangeFrameContent(new MeasurementView(MainWindow));
         }
 
         private void ShowCalibrationView(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new CalibrationView(mainWindow));
+            MainWindow.ChangeFrameContent(new CalibrationView(MainWindow));
         }
 
         private void ShowImportView(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new ImportView(mainWindow));
+            MainWindow.ChangeFrameContent(new ImportView(MainWindow));
         }
 
         private void ShowExportView(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new ExportView(mainWindow));
+            MainWindow.ChangeFrameContent(new ExportView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _cameraController = SpektrometerService.CameraController;
+        }
+
+        private void ShowSettings(object sender, RoutedEventArgs e)
+        {
+            if (CameraController.GetCameraIndex() != -1)
+            {
+                CameraController.ShowSettings();
+            }
         }
     }
 }

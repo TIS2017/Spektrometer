@@ -22,141 +22,179 @@ namespace Spektrometer.Logic
         public delegate void Update();
 
         internal Update NewData { get; set; }
+        private List<Color> _pixelData;
+        private List<double> _intesityData;
+        private List<Color> _referencedPicture;
+        private List<Color> _actualPicture;
+        private bool _showPeaks;
+        private bool _globalPeak;
+        private bool _showValues;
+        private double _treshold;
+        private bool _subtraction;
+        private bool _division;
+        private bool _fillChart;
+        private Filter _filter;
+        private DisplayFormat _displayFormat;
+        public List<Color> PixelData
+        {
+            get { return _pixelData; }
+            set
+            {
+                _pixelData = value;
+                if (NewData == null)
+                    return;
+                NewData();
+            }
+        }
+        public List<double> IntesityData
+        {
+            get {  return _intesityData;  }
+            set
+            {
+                _intesityData = value;
+                if (NewData == null)
+                    return;
+                NewData();
+            }
+        }
 
-        public List<Color> pixelData
+        public List<Color> ReferencedPicture
         {
-            get { return pixelData; }
+            get {  return _referencedPicture;  }
             set
             {
-                pixelData = value;
+                _referencedPicture = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public List<double> intesityData
+        public List<Color> ActualPicture
         {
-            get {  return intesityData;  }
+            get  {  return _actualPicture;  }
             set
             {
-                intesityData = value;
+                _actualPicture = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-
-        public List<Color> referencedPicture
+        public bool ShowPeaks
         {
-            get {  return referencedPicture;  }
+            get  {  return _showPeaks;  }
             set
             {
-                referencedPicture = value;
+                _showPeaks = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public List<Color> actualPicture
+        public bool GlobalPeak
         {
-            get  {  return actualPicture;  }
+            get  {  return _globalPeak;  }
             set
             {
-                actualPicture = value;
+                _globalPeak = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool showPeaks
+        public bool ShowValues
         {
-            get  {  return showPeaks;  }
+            get  {  return _showValues;  }
             set
             {
-                showPeaks = value;
+                _showValues = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool globalPeak
+        public double Treshold
         {
-            get  {  return globalPeak;  }
+            get  {  return _treshold;  }
             set
             {
-                globalPeak = value;
+                _treshold = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool showValues
+        public bool Subtraction
         {
-            get  {  return showValues;  }
+            get  {  return _subtraction;  }
             set
             {
-                showValues = value;
+                _subtraction = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public double treshold
+        public bool Division
         {
-            get  {  return treshold;  }
+            get  {  return _division;  }
             set
             {
-                treshold = value;
+                _division = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool subtraction
+        public bool FillChart
         {
-            get  {  return subtraction;  }
+            get {  return _fillChart;  }
             set
             {
-                subtraction = value;
+                _fillChart = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool division
+        public Filter Filter
         {
-            get  {  return division;  }
+            get  {  return _filter;  }
             set
             {
-                division = value;
+                _filter = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
-        public bool fillChart
+        public DisplayFormat DisplayFormat
         {
-            get {  return fillChart;  }
+            get  {  return _displayFormat;  }
             set
             {
-                fillChart = value;
-                NewData();
-            }
-        }
-        public Filter filter
-        {
-            get  {  return filter;  }
-            set
-            {
-                filter = value;
-                NewData();
-            }
-        }
-        public DisplayFormat displayformat
-        {
-            get  {  return displayformat;  }
-            set
-            {
-                displayformat = value;
+                _displayFormat = value;
+                if (NewData == null)
+                    return;
                 NewData();
             }
         }
 
         public GraphData()
         {
-            pixelData = null;
-            intesityData = null;
-            referencedPicture = null;
-            actualPicture = null;
-            showPeaks = false;
-            globalPeak = false;
-            showValues = false;
-            treshold = 0;
-            subtraction = false;
-            division = false;
-            fillChart = false;
-            filter = Filter.RGB;
-            displayformat = DisplayFormat.pixel;
+            PixelData = new List<Color>();
+            IntesityData = new List<double>();
+            ReferencedPicture = new List<Color>();
+            ActualPicture = new List<Color>();
+            ShowPeaks = false;
+            GlobalPeak = false;
+            ShowValues = false;
+            Treshold = 0;
+            Subtraction = false;
+            Division = false;
+            FillChart = false;
+            Filter = Filter.RGB;
+            DisplayFormat = DisplayFormat.pixel;
         }
     }
 }

@@ -28,12 +28,12 @@ namespace Spektrometer.Logic
             try {
                 StreamWriter File = new StreamWriter(path);
 
-                List<Point> graphData = new List<Point>();
-                graphData = GraphController.CalibrationPoints.calibrationData;
+                var graphData = new List<System.Windows.Point>();
+                graphData = GraphController.CalibrationPoints.CalibrationPointsList;
 
                 for (int i = 0; i < graphData.Count; i++)
                 {
-                    File.WriteLine(graphData[i].x + " " + graphData[i].y);
+                    File.WriteLine(graphData[i].X + " " + graphData[i].Y);
                 }
                 File.Close();
             }
@@ -55,7 +55,7 @@ namespace Spektrometer.Logic
                 StreamWriter File = new StreamWriter(path);
 
                 List<double> intesityData = new List<double>();
-                intesityData = GraphController.GraphData.intesityData;
+                intesityData = GraphController.GraphData.IntesityData;
 
                 for (int i = 0; i < intesityData.Count; i++)
                 {

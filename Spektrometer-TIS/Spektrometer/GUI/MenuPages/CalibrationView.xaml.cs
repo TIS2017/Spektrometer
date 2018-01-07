@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 using Spektrometer.Logic;
 
 namespace Spektrometer.GUI
@@ -20,21 +8,69 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for CalibrationView.xaml
     /// </summary>
-    public partial class CalibrationView : Page
+    public partial class CalibrationView : MenuComponent
     {
         private Import _import;
-        MainWindow mainWindow;
         private GraphController _graphController;
 
-        public CalibrationView(MainWindow mainWindow)
+        public Import Import
+        {
+            get
+            {
+                return _import;
+            }
+            set
+            {
+                _import = value;
+            }
+        }
+        public GraphController GraphController
+        {
+            get
+            {
+                return _graphController;
+            }
+            set
+            {
+                _graphController = value;
+            }
+        }
+
+        public CalibrationView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
+        }
+
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _graphController = SpektrometerService.GraphController;
+            _import = SpektrometerService.Import;
+        }
+
+        private void CalibrationFile(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dialogWindow = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dialogWindow.DefaultExt = ".txt";
+            dialogWindow.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dialogWindow.ShowDialog();
+
+            // Get the selected file name
+            if (result == true)
+            {
+                // Open document 
+                string path = Path.GetFullPath(dialogWindow.FileName);
+                Import.importCalibrationFile(path);
+            }
         }
     }
 }

@@ -20,21 +20,34 @@ namespace Spektrometer.GUI
     /// <summary>
     /// Interaction logic for MeasurementView.xaml
     /// </summary>
-    public partial class MeasurementView : Page
+    public partial class MeasurementView : MenuComponent
     {
         private GraphController _graphController;
-        MainWindow mainWindow;
 
-        public MeasurementView(MainWindow mainWindow)
+        public GraphController GraphController
+        {
+            get
+            {
+                return _graphController;
+            }
+            set
+            {
+                _graphController = value;
+            }
+        }
+        public MeasurementView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
-            this.mainWindow = mainWindow;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
         {
-            mainWindow.navigationController(new MenuView(mainWindow));
+            MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
+        protected override void SetReferencesFromSpektrometerService()
+        {
+            _graphController = SpektrometerService.GraphController;
+        }
     }
 }

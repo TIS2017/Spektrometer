@@ -19,24 +19,23 @@ namespace Spektrometer.Logic
         public GraphView GraphView { get; private set; }
         public CameraRecordView CameraRecordView { get; private set; }
         public TopToolBar TopToolBar { get; private set; }
-        public Page MenuComponent { get; set; }
 
-        public SpektrometerService()
+        public SpektrometerService(MainWindow mainWindow)
         {
-            classInitialization();
+            ClassInitialization(mainWindow);
         }
 
-        private void classInitialization()
+        private void ClassInitialization(MainWindow mainWindow)
         {
-            //GraphView = new GraphView();
-            //CameraRecordView = new CameraRecordView();
-            //GraphCalculator = new GraphCalculator();
-            //GraphController = new GraphController(GraphView, GraphCalculator);
-            //ImageController = new ImageController(CameraRecordView);
-            //CameraController = new CameraController(ImageController);
+            GraphView = mainWindow.graphView;
+            GraphController = (GraphController)GraphView.DataContext;
+            GraphCalculator = new GraphCalculator();
+            ImageController = new ImageController();
+            CameraController = new CameraController(ImageController);
             Export = new Export(GraphController, ImageController);
-            //Import = new Import(GraphController, ImageController);
-            //TopToolBar = new TopToolBar(CameraController, GraphController);
+            Import = new Import(GraphController, ImageController);
+            TopToolBar = new TopToolBar(CameraController, GraphController);
+            CameraRecordView = new CameraRecordView(ImageController);
         }
     }
 }
