@@ -22,18 +22,19 @@ namespace Spektrometer.Logic
 
         /**
         Export .txt súboru s kalibračnými bodmi na zadanú adresu.
+        Podmienka minimálne 3 kalibračné body.
          */
         public void calibrationFile(string path)
         {
             try {
                 StreamWriter File = new StreamWriter(path);
 
-                List<Point> graphData = new List<Point>();
-                graphData = GraphController.CalibrationPoints.calibrationData;
+                List<Point> calibrationPoint = new List<Point>();
+                calibrationPoint = GraphController.CalibrationPoints.calibrationData;
 
-                for (int i = 0; i < graphData.Count; i++)
+                for (int i = 0; i < calibrationPoint.Count; i++)
                 {
-                    File.WriteLine(graphData[i].x + " " + graphData[i].y);
+                    File.WriteLine(calibrationPoint[i].x + " " + calibrationPoint[i].y);
                 }
                 File.Close();
             }
@@ -42,24 +43,22 @@ namespace Spektrometer.Logic
                 MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !");
                 return;
             }
-
         }
         
         /**
-         Export grafu ako .txt súbor s vlnovými dĺžkami.
+         Export grafu ako .txt súbor s RGB zložkami.
          */
         public void chartData(string path)
         {
             try
             {
                 StreamWriter File = new StreamWriter(path);
+                List<Color> Pixel = new List<Color>();
+                Pixel = GraphController.GraphData.pixelData;
 
-                List<double> intesityData = new List<double>();
-                intesityData = GraphController.GraphData.intesityData;
-
-                for (int i = 0; i < intesityData.Count; i++)
+                for (int i = 0; i < Pixel.Count; i++)
                 {
-                    File.WriteLine(intesityData);
+                    File.WriteLine(Pixel[i].R+" "+Pixel[i].G+" "+Pixel[i].B);
                 }
                 File.Close();
             }
@@ -77,7 +76,7 @@ namespace Spektrometer.Logic
         {
             try
             {   
-                // get image from imageController   
+                // get aktual image from imageController   
                 Bitmap img = _imageController.LastImage();
                 img.Save(path);
             }
