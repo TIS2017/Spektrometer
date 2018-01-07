@@ -31,11 +31,11 @@ namespace Spektrometer.Logic
         private GraphController _graphController;
         private Dispatcher _dispatcher;
 
-        public ImageController()
+        public ImageController(GraphController graphController)
         {
             _imageCalculator = new ImageCalculator();
             _imageInfo = new ImageInfo();
-            _graphController = new GraphController();
+            _graphController = graphController;
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
@@ -45,9 +45,9 @@ namespace Spektrometer.Logic
             _dispatcher.BeginInvoke(
             new ThreadStart(() =>
             {
-                var line = _imageCalculator.CutImageAndMakeAverage(bmp, _imageInfo.rowIndex, _imageInfo.rowCount);
                 if (Monitor.TryEnter(_imageInfo))
                 {
+                    var line = _imageCalculator.CutImageAndMakeAverage(bmp, _imageInfo.rowIndex, _imageInfo.rowCount);
                     _imageInfo.addNewLine(line);
                     if (_imageInfo.historyCount == _imageInfo.imageHistory.Count())
                     {

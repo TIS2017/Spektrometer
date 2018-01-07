@@ -51,9 +51,9 @@ namespace Spektrometer.Logic
         }
         public List<Color> CutImageAndMakeAverage(Bitmap bitmap, int rowIndex, int rowCount)
         {
-            List<Color> result = new List<Color>();
             try
             {
+                List<Color> result = new List<Color>();
                 for (int col = 0; col < bitmap.Width; col++)
                 {
                     Color temp = new Color();
