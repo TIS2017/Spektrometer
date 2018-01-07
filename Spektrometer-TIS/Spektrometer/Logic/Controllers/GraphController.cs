@@ -7,6 +7,10 @@ using LiveCharts.Defaults;
 using LiveCharts.Geared;
 
 using Spektrometer.GUI;
+using System.Timers;
+using System.Windows.Controls;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spektrometer.Logic
 {
@@ -25,49 +29,21 @@ namespace Spektrometer.Logic
         {
             GraphData = new GraphData();
             GraphData.NewData = update;
-            //CalibrationPoints = new CalibrationPoints();
-            //CalibrationPoints.NewData = update;
             _graphCalculator = new GraphCalculator();
 
-
-            var now = DateTime.Now;
-            Random rnd = new Random();
-
-            var r = new Random();
-            for (var j = 0; j < 3; j++)
-            {
-                var l = new List<Double>();
-                for (var i = 0; i < 1280; i++)
-                {
-                    var cislo = r.Next(100);
-                    l.Add(cislo);
-                }
-
-                if (j == 0)
-                {
-                    ValuesRed = l.AsGearedValues().WithQuality(Quality.Low);
-
-                }
-                else if (j == 1)
-                {
-                    ValuesBlue = l.AsGearedValues().WithQuality(Quality.Low);
-                }
-                else if (j == 2)
-                {
-                    ValuesGreen = l.AsGearedValues().WithQuality(Quality.Low);
-                }
-
-            }
-
+            IsReading = false;
 
             From = 0;
             To = 1280;
+
+            Read();
+
         }
 
         public object Mapper { get; set; }
-        public GearedValues<Double> ValuesRed { get; set; }
-        public GearedValues<Double> ValuesGreen { get; set; }
-        public GearedValues<Double> ValuesBlue { get; set; }
+        public GearedValues<double> ValuesRed { get; set; }
+        public GearedValues<double> ValuesGreen { get; set; }
+        public GearedValues<double> ValuesBlue { get; set; }
 
         public double From
         {
@@ -118,11 +94,94 @@ namespace Spektrometer.Logic
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public bool IsReading { get; set; }
+        public GraphController DataContext { get; private set; }
+
+
+        private void Read()
+        {
+            if (IsReading) return;
+
+            IsReading = true;
+
+            Action readFromThread = () =>
+            {
+                while (IsReading)
+                {
+                    Thread.Sleep(500);
+                    update();
+                    OnPropertyChanged();
+
+
+                }
+            };
+
+            //2 different tasks adding a value every ms
+            //add as many tasks as you want to test this feature
+            Task.Factory.StartNew(readFromThread);
+        }
+
 
         // Zavola sa po kazdej zmene GraphData a CalibrationPoints
         public void update()
         {
+            var listOfRedValues = new List<double>();
+            var listOfGreenValues = new List<double>();
+            var listOfBlueValues = new List<double>();
+            for (int i = 0; i < GraphData.PixelData.Count; i++) 
+            {
+                listOfRedValues.Add(GraphData.PixelData[i].R);
+                listOfGreenValues.Add(GraphData.PixelData[i].G);
+                listOfBlueValues.Add(GraphData.PixelData[i].B);
+            }
+
+            ValuesRed = listOfRedValues.AsGearedValues().WithQuality(Quality.High);
+            ValuesBlue = listOfGreenValues.AsGearedValues().WithQuality(Quality.High);
+            ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
+
+            //Random rnd = new Random();
+
+            //int pocitadlo = 1;
+            //bool logic = true;
+            //for (var j = 0; j < 3; j++)
+            //{
+            //    var l = new List<double>();
+            //    for (var i = 0; i < 1280; i++)
+            //    {
+            //        if (pocitadlo == 255 || pocitadlo == 0)
+            //        {
+            //            logic = !logic;
+            //        }
+            //        var cislo = (rnd.Next(pocitadlo));
+            //        l.Add(rnd.Next(200, 255));
+            //        if (logic)
+            //        {
+            //            pocitadlo++;
+            //        }
+            //        else
+            //        {
+            //            pocitadlo--;
+            //        }
+
+            //    }
+
+            //    pocitadlo = 20;
+            //    logic = true;
+
+            //    if (j == 0)
+            //    {
+            //        ValuesRed = l.AsGearedValues().WithQuality(Quality.High);
+            //    }
+            //    else if (j == 1)
+            //    {
+            //        ValuesBlue = l.AsGearedValues().WithQuality(Quality.High);
+            //    }
+            //    else if (j == 2)
+            //    {
+            //        ValuesGreen = l.AsGearedValues().WithQuality(Quality.High);
+            //    }
             
+            //}
         }
     }
 }
