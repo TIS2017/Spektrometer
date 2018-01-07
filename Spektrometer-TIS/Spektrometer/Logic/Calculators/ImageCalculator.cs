@@ -23,6 +23,13 @@ namespace Spektrometer.Logic
             List<int> G = new List<int>();
             List<int> B = new List<int>();
 
+            for(int i=0; i<1280; i++)
+            {
+                A.Add(0);
+                R.Add(0);
+                G.Add(0);
+                B.Add(0);
+            }
 
             for (int i = 0; i < pics.Count; i++)
             {
@@ -38,7 +45,7 @@ namespace Spektrometer.Logic
 
             for (int i = 0; i < R.Count; i++)
             {
-                avg.Add(Color.FromArgb(A[i], R[i], G[i], B[i]));
+                avg.Add(Color.FromArgb(A[i]/pics.Count, R[i]/pics.Count, G[i]/pics.Count, B[i]/pics.Count));
             }
             return avg;
         }
@@ -63,13 +70,34 @@ namespace Spektrometer.Logic
                         greenColor += temp.G;
                         blueColor += temp.B;
                     }
-                    result.Add(Color.FromArgb(alphaColor / (rowCount * 2), redColor / (rowCount * 2), greenColor / (rowCount * 2), blueColor / (rowCount * 2)));
+                    result.Add(Color.FromArgb(alphaColor / (rowCount * 2+1), redColor / (rowCount * 2+1), greenColor / (rowCount * 2+1), blueColor / (rowCount * 2+1)));
                 }
                 return result;
             }
             catch (IndexOutOfRangeException)
             {
+                throw;
             }
+        }
+
+        public List<Color> DifferenceBetweenActualAndReferencePicture(List<Color> actualPicture, List<Color> referencePicture)
+        {
+            int A = 0;
+            int R = 0;
+            int G = 0;
+            int B = 0;
+            List<Color> result = new List<Color>();
+
+            for(int i =0; i<actualPicture.Count; i++)
+            {
+                A = actualPicture[i].A - referencePicture[i].A;
+                R = actualPicture[i].R - referencePicture[i].R;
+                G = actualPicture[i].G - referencePicture[i].G;
+                B = actualPicture[i].B - referencePicture[i].B;
+                result.Add(Color.FromArgb(A, R, G, B));
+            }
+
+            return result;
         }
     }
 }
