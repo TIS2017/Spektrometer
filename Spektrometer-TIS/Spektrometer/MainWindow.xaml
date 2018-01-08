@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:gui="clr-namespace:Spektrometer.GUI"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Spektrometer"
 
         SizeToContent="WidthAndHeight"
-        MinWidth="600"
+        MinHeight="600" MinWidth="1000"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen">
     <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
@@ -19,13 +19,14 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-
-        <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
+        <Viewbox>
+            <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
+        </Viewbox>
         <Grid Grid.Column="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="3*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="200" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -74,10 +75,10 @@
                 </StackPanel>
 
             </Grid>
-            <StackPanel Grid.Row="1" >
-                <gui:GraphView VerticalAlignment="Center" x:Name="graphView" Height="300">
+            <Grid x:Name="stackPanelOfGraphView" Grid.Row="1">
+                <gui:GraphView x:Name="graphView" Height="{Binding Height, ElementName=stackPanelOfGraphView}" Margin="30,30,30,30">
                 </gui:GraphView>
-            </StackPanel>
+            </Grid>
             <Grid Name="cameraRecordGrid" Grid.Row="2">
                 
             </Grid>
