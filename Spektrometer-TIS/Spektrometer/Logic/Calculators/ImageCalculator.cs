@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
@@ -18,10 +18,10 @@ namespace Spektrometer.Logic
             List<Color> avg = new List<Color>();
             List<Color> pom = new List<Color>();
 
-            List<int> A = new List<int>();
-            List<int> R = new List<int>();
-            List<int> G = new List<int>();
-            List<int> B = new List<int>();
+            var A = new List<int>();
+            var R = new List<int>();
+            var G = new List<int>();
+            var B = new List<int>();
 
             for(int i=0; i<1280; i++)
             {
@@ -45,39 +45,58 @@ namespace Spektrometer.Logic
 
             for (int i = 0; i < R.Count; i++)
             {
-                avg.Add(Color.FromArgb(A[i]/pics.Count, R[i]/pics.Count, G[i]/pics.Count, B[i]/pics.Count));
+                avg.Add(Color.FromArgb(Convert.ToByte(A[i]/pics.Count), Convert.ToByte(R[i]/pics.Count), Convert.ToByte(G[i]/pics.Count), Convert.ToByte(B[i]/pics.Count)));
             }
             return avg;
         }
-        public List<Color> CutImageAndMakeAverage(Bitmap bitmap, int rowIndex, int rowCount)
+        public List<Color> CutImageAndMakeAverage(ref BitmapSource bitmap, int rowIndex, int rowCount)
         {
-            try
+            var format = bitmap.Format;
+            if (format != PixelFormats.Bgr24 &&
+                format != PixelFormats.Bgr32 &&
+                format != PixelFormats.Bgra32 &&
+                format != PixelFormats.Pbgra32)
             {
-                List<Color> result = new List<Color>();
-                for (int col = 0; col < bitmap.Width; col++)
-                {
-                    Color temp = new Color();
-                    int alphaColor = 0;
-                    int redColor = 0;
-                    int greenColor = 0;
-                    int blueColor = 0;
+                throw new InvalidOperationException("BitmapSource must have Bgr24, Bgr32, Bgra32 or Pbgra32 format!");
+            }
 
-                    for (int row = (rowIndex - rowCount); row <= (rowIndex + rowCount); row++)
-                    {
-                        temp = bitmap.GetPixel(col, row);
-                        alphaColor += temp.A;
-                        redColor += temp.R;
-                        greenColor += temp.G;
-                        blueColor += temp.B;
-                    }
-                    result.Add(Color.FromArgb(alphaColor / (rowCount * 2+1), redColor / (rowCount * 2+1), greenColor / (rowCount * 2+1), blueColor / (rowCount * 2+1)));
-                }
-                return result;
-            }
-            catch (IndexOutOfRangeException)
+            var width = bitmap.PixelWidth;
+            var sourceRect = new Int32Rect(0, rowIndex - rowCount, width, 2*rowCount+1);
+            var numPixels = (2 * rowCount + 1) * width;
+            var bytesPerPixel = format.BitsPerPixel / 8;
+            var pixelBuffer = new byte[numPixels * bytesPerPixel];
+
+            bitmap.CopyPixels(sourceRect, pixelBuffer, width * bytesPerPixel, 0);
+
+            var red = new List<long>();
+            var green = new List<long>();
+            var blue = new List<long>();
+            var result = new List<Color>();
+            for (int row = 0; row < 2 * rowCount + 1; row++)
             {
-                throw;
+                var column = 0;
+                for (int i = 0; i < width * bytesPerPixel; i += bytesPerPixel)
+                {
+                    if (blue.Count <= column)
+                        blue.Add(0);
+                    blue[column] += pixelBuffer[i + row * width];
+                    if (green.Count <= column)
+                        green.Add(0);
+                    green[column] += pixelBuffer[i + 1 + row * width];
+                    if (red.Count <= column)
+                        red.Add(0);
+                    red[column] += pixelBuffer[i + 2 + row * width];
+                    if (row == 2 * rowCount)
+                    {
+                        var blueByte = Convert.ToByte(blue[column] / (row + 1));
+                        var greenByte = Convert.ToByte(green[column] / (row + 1));
+                        var redByte = Convert.ToByte(red[column] / (row + 1));
+                        result.Add(Color.FromRgb(redByte,greenByte,blueByte));
+                    }
+                    column++;
+                }
             }
+            return result;
         }
 
         public List<Color> DifferenceBetweenActualAndReferencePicture(List<Color> actualPicture, List<Color> referencePicture)
@@ -94,7 +113,7 @@ namespace Spektrometer.Logic
                 R = actualPicture[i].R - referencePicture[i].R;
                 G = actualPicture[i].G - referencePicture[i].G;
                 B = actualPicture[i].B - referencePicture[i].B;
-                result.Add(Color.FromArgb(A, R, G, B));
+                result.Add(Color.FromArgb(Convert.ToByte(A), Convert.ToByte(R), Convert.ToByte(G), Convert.ToByte(B)));
             }
 
             return result;

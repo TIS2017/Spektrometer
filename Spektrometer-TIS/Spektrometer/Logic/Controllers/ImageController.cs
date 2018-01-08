@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Spektrometer.GUI;
@@ -15,9 +15,6 @@ namespace Spektrometer.Logic
 {
     public class ImageController
     {
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject);
-
         public delegate void SendImageHandler(BitmapSource bitmap);
         public delegate void NewRowIndexHandler(int rowIndex);
         public delegate void NewRowCountHandler(int rowCount);
@@ -39,27 +36,22 @@ namespace Spektrometer.Logic
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        internal void NewImage(Bitmap bitmap)
+        internal void NewImage(BitmapSource bitmap)
         {
-            var bmp = (Bitmap)bitmap.Clone();
-            _dispatcher.BeginInvoke(
-            new ThreadStart(() =>
+            var line = _imageCalculator.CutImageAndMakeAverage(ref bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
+            if (Monitor.TryEnter(_imageInfo))
             {
-                if (Monitor.TryEnter(_imageInfo))
+                _imageInfo.addNewLine(line);
+                if (_imageInfo.historyCount == _imageInfo.imageHistory.Count())
                 {
-                    var line = _imageCalculator.CutImageAndMakeAverage(bmp, _imageInfo.rowIndex, _imageInfo.rowCount);
-                    _imageInfo.addNewLine(line);
-                    if (_imageInfo.historyCount == _imageInfo.imageHistory.Count())
-                    {
-                        var lineOfImages = _imageCalculator.Average(_imageInfo.imageHistory);
-                        _graphController.GraphData.ActualPicture = lineOfImages;
-                        CreateBitmapSourceAndCallSendImageEvent(bmp);
-                        SetLastImage(bmp);
-                        _imageInfo.imageHistory = new Stack<List<Color>>();
-                    }
-                    Monitor.Exit(_imageInfo);
+                    var lineOfImages = _imageCalculator.Average(_imageInfo.imageHistory);
+                    _graphController.GraphData.ActualPicture = lineOfImages;
+                    SendImageEvent(bitmap);
+                    SetLastImage(bitmap);
+                    _imageInfo.imageHistory = new Stack<List<Color>>();
                 }
-            }));
+                Monitor.Exit(_imageInfo);
+            }
         }
 
         public void SetRowIndex(int index)
@@ -116,29 +108,12 @@ namespace Spektrometer.Logic
             }
         }
         
-        public Bitmap LastImage()
+        public BitmapSource LastImage()
         {
            return _imageInfo.lastImage;
         }
 
-        public void CreateBitmapSourceAndCallSendImageEvent(Bitmap bitmap)
-        {
-            var hBitmap = bitmap.GetHbitmap();
-            
-            BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap
-            (
-                hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-            );
-
-            SendImageEvent(bitmapSource);
-
-            DeleteObject(hBitmap);
-        }
-
-        public void SetLastImage(Bitmap bitmap)
+        public void SetLastImage(BitmapSource bitmap)
         {
             _imageInfo.lastImage = bitmap;
         }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
     public class ImageInfo
     {
-        public Bitmap lastImage { get; set; }
+        public BitmapSource lastImage { get; set; }
         public Stack<List<Color>> imageHistory { get; set; }
         public int historyCount { get; set; }
         public int rowIndex { get; set; }

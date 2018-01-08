@@ -6,11 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
     public class CameraController
     {
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
         public delegate void StopCameraHandler();
 
         public StopCameraHandler CameraStop;
@@ -79,12 +84,35 @@ namespace Spektrometer.Logic
         {
             Bitmap bitmap = eventargs.Frame;
 
-            _imageController.NewImage(bitmap);
+            CreateBitmapSourceAndCallSendImageEvent(bitmap);
         }
 
         public int GetCameraIndex()
         {
             return _cameraIndex;
+        }
+        
+        public void CreateBitmapSourceAndCallSendImageEvent(Bitmap bitmap)
+        {
+            var bmp = (Bitmap)bitmap.Clone();
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var hBitmap = bmp.GetHbitmap();
+
+                    BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap
+                    (
+                        hBitmap,
+                        IntPtr.Zero,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+
+                    _imageController.NewImage(bitmapSource);
+
+                    DeleteObject(hBitmap);
+                })
+            );
         }
     }
 }
