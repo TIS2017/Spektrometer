@@ -27,18 +27,28 @@ namespace Spektrometer.Logic
         private ImageInfo _imageInfo;
         private GraphController _graphController;
         private Dispatcher _dispatcher;
+        private static ImageController imageControllerInstance = null; 
 
-        public ImageController(GraphController graphController)
+        private ImageController()
         {
             _imageCalculator = new ImageCalculator();
             _imageInfo = new ImageInfo();
-            _graphController = graphController;
+            _graphController = GraphController.GetInstance();
             _dispatcher = Dispatcher.CurrentDispatcher;
+        }
+
+        public static ImageController GetInstance()
+        {
+            if (imageControllerInstance == null)
+            {
+                imageControllerInstance = new ImageController();
+            }
+            return imageControllerInstance;
         }
 
         internal void NewImage(BitmapSource bitmap)
         {
-            var line = _imageCalculator.CutImageAndMakeAverage(ref bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
+            var line =  _imageCalculator.CutImageAndMakeAverage(ref bitmap, _imageInfo.rowIndex, _imageInfo.rowCount);
             if (Monitor.TryEnter(_imageInfo))
             {
                 _imageInfo.addNewLine(line);
@@ -60,13 +70,26 @@ namespace Spektrometer.Logic
             {
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowIndex = index;
+                if (_imageInfo.lastImage != null)
+                {
+                    CheckAndRepairRowIndex(_imageInfo.lastImage.PixelHeight);
+                    NewImage(_imageInfo.lastImage);
+                }
                 _imageInfo.imageHistory = new Stack<List<Color>>();
-                NewRowIndex(index);
+                NewRowIndex(_imageInfo.rowIndex);
             }
             finally
             {
                 Monitor.Exit(_imageInfo);
             }
+        }
+
+        internal void CheckAndRepairRowIndex(int imageHeight)
+        {
+            var index = _imageInfo.rowIndex;
+            index = index - _imageInfo.rowCount < 0 ? _imageInfo.rowCount : index;
+            index = imageHeight < index + _imageInfo.rowCount ? imageHeight - _imageInfo.rowCount : index;
+            _imageInfo.rowIndex = index;
         }
 
         public int GetRowIndex()
@@ -80,6 +103,12 @@ namespace Spektrometer.Logic
             {
                 Monitor.Enter(_imageInfo);
                 _imageInfo.rowCount = count;
+                if (_imageInfo.lastImage != null)
+                {
+                    CheckAndRepairRowIndex(_imageInfo.lastImage.PixelHeight);
+                    NewRowIndex(_imageInfo.rowIndex);
+                    NewImage(_imageInfo.lastImage);
+                }
                 _imageInfo.imageHistory = new Stack<List<Color>>();
                 NewRowCount(count);
             }

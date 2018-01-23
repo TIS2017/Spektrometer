@@ -24,12 +24,23 @@ namespace Spektrometer.Logic
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
         private VideoCaptureDevice _videoSource;
         private int _cameraIndex;
+        private readonly int REQUARED_WIDTH = 1280;
+        private static CameraController cameraControllerInstance;
 
-        public CameraController(ImageController ic)
+        private CameraController()
         {
-            _imageController = ic;
+            _imageController = ImageController.GetInstance();
             _cameraIndex = -1;
             CameraStop += StopCamera;
+        }
+
+        public static CameraController GetInstance()
+        {
+            if (cameraControllerInstance == null)
+            {
+                cameraControllerInstance = new CameraController();
+            }
+            return cameraControllerInstance;
         }
 
         /* Vrati list pripojenych zariadeni */
@@ -51,8 +62,23 @@ namespace Spektrometer.Logic
             {
                 _cameraIndex = index;
                 _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
+                CheckAndSetVideoResolution();
                 _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
             }
+        }
+
+        private void CheckAndSetVideoResolution()
+        {
+            foreach (VideoCapabilities vc in _videoSource.VideoCapabilities) 
+            {
+                if (vc.FrameSize.Width == REQUARED_WIDTH)
+                {
+                    _videoSource.VideoResolution = vc;
+                    break;
+                }
+            }
+            if (_videoSource.VideoResolution == null)
+                MessageBox.Show("Kamera nepodporuje potrebnu sirku: " + REQUARED_WIDTH);
         }
 
         public void ShowSettings()
@@ -68,6 +94,7 @@ namespace Spektrometer.Logic
             CameraStop();
             if (_videoSource != null)
             {
+                _imageController.CheckAndRepairRowIndex(_videoSource.VideoResolution.FrameSize.Height);
                 _videoSource.Start();
             }
         }

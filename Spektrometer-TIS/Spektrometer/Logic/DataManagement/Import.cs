@@ -15,10 +15,10 @@ namespace Spektrometer.Logic
         private GraphController GraphController;
         private ImageController _imageController;
 
-        public Import(GraphController gc, ImageController ic)
+        public Import()
         {
-            GraphController = gc;
-            _imageController = ic;
+            GraphController = GraphController.GetInstance();
+            _imageController = ImageController.GetInstance();
         }
 
         /**
@@ -111,7 +111,7 @@ namespace Spektrometer.Logic
         {
             try
             {
-                Stream imageStreamSource = new FileStream("smiley.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+                Stream imageStreamSource = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 BitmapSource bitmapSource = decoder.Frames[0];
                 _imageController.NewImage(bitmapSource);

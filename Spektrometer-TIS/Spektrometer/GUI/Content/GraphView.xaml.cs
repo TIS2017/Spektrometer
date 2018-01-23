@@ -36,7 +36,6 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
 
-
             mainAxisX.Sections.Add(
              new AxisSection
              {
@@ -50,8 +49,6 @@ namespace Spektrometer.GUI
              }
             );
         }
-
-
 
         //private void ResetZoomOnClick(object sender, RoutedEventArgs e)
         //{

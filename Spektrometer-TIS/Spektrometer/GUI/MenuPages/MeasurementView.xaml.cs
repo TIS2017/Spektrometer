@@ -47,7 +47,7 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _graphController = SpektrometerService.GraphController;
+            _graphController = GraphController.GetInstance();
         }
 
         private void ShowPeaks(object sender, RoutedEventArgs e)
