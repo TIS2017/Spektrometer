@@ -35,7 +35,7 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _import = SpektrometerService.Import;
+            _import = new Import();
         }
 
         private void CalibrationFile(object sender, RoutedEventArgs e)

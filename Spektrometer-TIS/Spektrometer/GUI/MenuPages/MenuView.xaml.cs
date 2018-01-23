@@ -67,7 +67,7 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _cameraController = SpektrometerService.CameraController;
+            _cameraController = CameraController.GetInstance();
         }
 
         private void ShowSettings(object sender, RoutedEventArgs e)

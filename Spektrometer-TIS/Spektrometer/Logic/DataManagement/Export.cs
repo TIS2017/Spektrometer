@@ -14,10 +14,10 @@ namespace Spektrometer.Logic
         private GraphController GraphController;
         private ImageController _imageController;
 
-        public Export(GraphController gc, ImageController ic)
+        public Export()
         {
-            GraphController = gc;
-            _imageController = ic;
+            GraphController = GraphController.GetInstance();
+            _imageController = ImageController.GetInstance();
         }
 
         /**

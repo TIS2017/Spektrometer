@@ -18,7 +18,11 @@ namespace Spektrometer.Logic
         public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
         public CalibrationPoints CalibrationPoints { get; }
+        private static GraphController graphControllerInstance;
 
+        public delegate void Force();
+        public Force ForceUpdate { get; set; }
+        
         private Func<double, string> _formatter;
         private double _from;
         private double _to;
@@ -26,14 +30,21 @@ namespace Spektrometer.Logic
 
         public GraphController()
         {
-            GraphData = new GraphData
-            {
-                OnCalculationDataChange = Recalculate
-            };
+            GraphData = new GraphData();
+            GraphData.OnCalculationDataChange += Recalculate;
             _graphCalculator = new GraphCalculator();
-
+            graphControllerInstance = this;
             From = 0;
             To = 1280;
+        }
+
+        public static GraphController GetInstance()
+        {
+            if (graphControllerInstance == null)
+            {
+                graphControllerInstance = new GraphController();
+            }
+            return graphControllerInstance;
         }
 
         public object Mapper { get; set; }
@@ -100,21 +111,28 @@ namespace Spektrometer.Logic
             // TODO:
             GraphData.PixelData = tmp;
 
-            var listOfRedValues = new List<double>();
-            var listOfGreenValues = new List<double>();
-            var listOfBlueValues = new List<double>();
-            for (int i = 0; i < GraphData.PixelData.Count; i++)
-            {
-                listOfRedValues.Add(GraphData.PixelData[i].R);
-                listOfGreenValues.Add(GraphData.PixelData[i].G);
-                listOfBlueValues.Add(GraphData.PixelData[i].B);
+            if (Monitor.TryEnter(this)) {
+
+
+                var listOfRedValues = new List<double>();
+                var listOfGreenValues = new List<double>();
+                var listOfBlueValues = new List<double>();
+                for (int i = 0; i < GraphData.PixelData.Count; i++)
+                {
+                    listOfRedValues.Add(GraphData.PixelData[i].R);
+                    listOfGreenValues.Add(GraphData.PixelData[i].G);
+                    listOfBlueValues.Add(GraphData.PixelData[i].B);
+                }
+
+                ValuesRed = listOfRedValues.AsGearedValues().WithQuality(Quality.High);
+                ValuesBlue = listOfGreenValues.AsGearedValues().WithQuality(Quality.High);
+                ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
+
+                OnPropertyChanged();
+                ForceUpdate();
+
+                Monitor.Exit(this);
             }
-
-            ValuesRed = listOfRedValues.AsGearedValues().WithQuality(Quality.High);
-            ValuesBlue = listOfGreenValues.AsGearedValues().WithQuality(Quality.High);
-            ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
-
-            OnPropertyChanged();
         }
     }
 }

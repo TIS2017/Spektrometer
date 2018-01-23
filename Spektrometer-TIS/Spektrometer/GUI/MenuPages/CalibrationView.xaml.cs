@@ -48,8 +48,8 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _graphController = SpektrometerService.GraphController;
-            _import = SpektrometerService.Import;
+            _graphController = GraphController.GetInstance();
+            _import = new Import();
         }
 
         private void CalibrationFile(object sender, RoutedEventArgs e)

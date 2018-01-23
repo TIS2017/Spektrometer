@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,15 +24,14 @@ namespace Spektrometer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SpektrometerService spektrometerService { get; set; }
+
+        private CameraController cameraController;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.SizeToContent = SizeToContent.Height;
-            spektrometerService = new SpektrometerService(this);
             menu.Content = new MenuView(this);
-            cameraRecordGrid.Children.Add(spektrometerService.CameraRecordView);
+            cameraController = CameraController.GetInstance();
         }
 
         public void ChangeFrameContent(Page page)
@@ -41,17 +41,23 @@ namespace Spektrometer
 
         private void StartButton(object sender, RoutedEventArgs e)
         {
-            if (spektrometerService.CameraController.GetCameraIndex() != -1)
+            if (cameraController.GetCameraIndex() != -1)
             {
                 signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-on.png", UriKind.Relative));
-                spektrometerService.CameraController.CameraStart();
+               cameraController.CameraStart();
             }
         }
 
         private void StopButton(object sender, RoutedEventArgs e)
         {
             signal.Source = new BitmapImage(new Uri("/Spektrometer;component/GUI/images/signal-off.png", UriKind.Relative));
-            spektrometerService.CameraController.CameraStop();
+            cameraController.CameraStop();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var open = menu.FindResource("open") as Storyboard;
+            open.Begin();
         }
     }
 }
