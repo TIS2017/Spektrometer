@@ -19,6 +19,10 @@ namespace Spektrometer.Logic
         private GraphCalculator _graphCalculator;
         public CalibrationPoints CalibrationPoints { get; }
 
+        public delegate void ForceUpdate();
+
+        public ForceUpdate forceUpdate { get; set; }
+
         private Func<double, string> _formatter;
         private double _from;
         private double _to;
@@ -89,6 +93,8 @@ namespace Spektrometer.Logic
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        
         
         public GraphController DataContext { get; private set; }
 
@@ -115,6 +121,8 @@ namespace Spektrometer.Logic
             ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
 
             OnPropertyChanged();
+
+            forceUpdate();
         }
     }
 }
