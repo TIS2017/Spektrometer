@@ -36,8 +36,6 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
 
-            meno.ForceUpdate += ForceUpdate;
-
             mainAxisX.Sections.Add(
              new AxisSection
              {
@@ -50,11 +48,6 @@ namespace Spektrometer.GUI
                  DataLabelForeground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))
              }
             );
-        }
-
-        public void ForceUpdate()
-        {
-            cartesianChart.Update(true, false);
         }
 
         //private void ResetZoomOnClick(object sender, RoutedEventArgs e)
