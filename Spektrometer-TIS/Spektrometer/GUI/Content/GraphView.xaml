@@ -9,7 +9,7 @@
         xmlns:scrollable="clr-namespace:Spektrometer.Logic"
         mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="500">
     <UserControl.DataContext>
-        <scrollable:GraphController></scrollable:GraphController>
+        <scrollable:GraphController x:Name="graphController"></scrollable:GraphController>
     </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
