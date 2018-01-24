@@ -38,7 +38,6 @@ namespace Spektrometer.GUI
             set
             {
                 _imageController = value;
-                // nastav delegatovi v imageController SendImageEvent += tvoja funkcia
             }
         }
         public CameraView(MainWindow mainWindow) : base(mainWindow)
@@ -88,8 +87,8 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _cameraController = SpektrometerService.CameraController;
-            _imageController = SpektrometerService.ImageController;
+            _cameraController = CameraController.GetInstance();
+            _imageController = ImageController.GetInstance();
             _imageController.SendImageEvent += SetCameraImage;
             _imageController.NewRowIndex += SetRowIndex;
         }

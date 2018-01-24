@@ -36,7 +36,7 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _export = SpektrometerService.Export;
+            _export = new Export();
         }
 
         private void CalibrationFile(object sender, RoutedEventArgs e)

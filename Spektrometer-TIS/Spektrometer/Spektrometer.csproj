@@ -150,7 +150,6 @@
     </Compile>
     <Compile Include="Logic\DataManagement\CalibrationPoints.cs" />
     <Compile Include="Logic\Controllers\ImageController.cs" />
-    <Compile Include="GUI\Content\TopToolBar.cs" />
     <Compile Include="Logic\DataManagement\GraphData.cs" />
     <Compile Include="Logic\DataManagement\ImageInfo.cs" />
     <Compile Include="Logic\Controllers\CameraController.cs" />
@@ -158,7 +157,6 @@
     <Compile Include="Logic\Controllers\GraphController.cs" />
     <Compile Include="Logic\Calculators\ImageCalculator.cs" />
     <Compile Include="Logic\DataManagement\Import.cs" />
-    <Compile Include="Logic\SpektrometerService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

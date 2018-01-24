@@ -24,10 +24,11 @@ namespace Spektrometer.GUI
     public partial class CameraRecordView : ScrollViewer
     {
         private ImageController _imageController;
-        public CameraRecordView(ImageController ic)
+        private int _rowIndex;
+        public CameraRecordView() 
         {
             InitializeComponent();
-            _imageController = ic;
+            _imageController = ImageController.GetInstance();
             _imageController.NewRowIndex += SetRowIndex;
             _imageController.NewRowCount += SetRowCount;
             _imageController.SendImageEvent += SetNewImage;
@@ -48,13 +49,14 @@ namespace Spektrometer.GUI
 
         public void SetRowIndex(int rowIndex)
         {
-            TranslateTransform translate = new TranslateTransform(0, rowIndex);
+            _rowIndex = rowIndex;
+            TranslateTransform translate = new TranslateTransform(0, _rowIndex - (rectangle.Height / 2));
             rectangle.RenderTransform = translate;
         }
 
         public void SetRowCount(int count)
         {
-            rectangle.Height = count;
+            rectangle.Height = 2 * count;
         }
     }
 }

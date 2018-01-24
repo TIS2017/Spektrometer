@@ -7,82 +7,88 @@
         mc:Ignorable="d"
         Title="Spektrometer"
 
-        SizeToContent="WidthAndHeight"
         MinHeight="600" MinWidth="1000"
-        WindowState="Normal"
+        WindowState="Normal" 
+        MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
+        MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
         WindowStartupLocation="CenterScreen">
     <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
         Width="{Binding SystemParameters.PrimaryScreenWidth}"-->
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+    <DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Viewbox>
-            <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
-        </Viewbox>
-        <Grid Grid.Column="1" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-
-                <DockPanel Grid.Column="0" HorizontalAlignment="Center">
-                    <Label Content="Display format: " FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <ComboBox Width="200" Height="30" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <ComboBoxItem IsSelected="True" Content="pixel" Height="40" />
-                        <ComboBoxItem Content="nanometer" Height="40"/>
-                    </ComboBox>
-                </DockPanel>
-
-                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-
-                    <DockPanel>
-                        <DockPanel.Resources>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Margin" Value="0,0,25,0"/>
-                            </Style>
-                        </DockPanel.Resources>
-                        <Button Width="100" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="{x:Null}" Click="StartButton">
-                            <DockPanel>
-                                <Label Content="Start: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
-                                <Image Source="/Spektrometer;component/GUI/images/icons8-play-24.png" HorizontalAlignment="Right" Height="35"></Image>
-                            </DockPanel>
-                        </Button>
-
-                        <Button Width="100" HorizontalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Click="StopButton">
-                            <DockPanel>
-                                <Label Content="Stop: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
-                                <Image Source="/Spektrometer;component/GUI/images/icons8-stop-24.png" HorizontalAlignment="Right" Height="35"></Image>
-                            </DockPanel>
-                        </Button>
+            <Grid  Grid.Column="0">
+                <Frame Name="menu" NavigationUIVisibility="Hidden" ></Frame>
+            </Grid>
+            <Grid Grid.Column="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
 
-                        <DockPanel Width="100" HorizontalAlignment="Left">
-                            <Label Content="Signal: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
-                            <Image Name="signal" Source="/Spektrometer;component/GUI/images/signal-off.png" HorizontalAlignment="Right" Height="25"></Image>
-                        </DockPanel>
-
+                    <DockPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <Label Content="Display format: " FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <ComboBox Width="200" Height="30" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <ComboBoxItem IsSelected="True" Content="pixel" Height="40" />
+                            <ComboBoxItem Content="nanometer" Height="40"/>
+                        </ComboBox>
                     </DockPanel>
-                </StackPanel>
 
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+
+                        <DockPanel>
+                            <DockPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="0,0,25,0"/>
+                                </Style>
+                            </DockPanel.Resources>
+                            <Button Width="100" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="{x:Null}" Click="StartButton">
+                                <DockPanel>
+                                    <Label Content="Start: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                                    <Image Source="/Spektrometer;component/GUI/images/icons8-play-24.png" HorizontalAlignment="Right" Height="35"></Image>
+                                </DockPanel>
+                            </Button>
+
+                            <Button Width="100" HorizontalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Click="StopButton">
+                                <DockPanel>
+                                    <Label Content="Stop: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                                    <Image Source="/Spektrometer;component/GUI/images/icons8-stop-24.png" HorizontalAlignment="Right" Height="35"></Image>
+                                </DockPanel>
+                            </Button>
+
+
+                            <DockPanel Width="100" HorizontalAlignment="Left">
+                                <Label Content="Signal: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16"></Label>
+                                <Image Name="signal" Source="/Spektrometer;component/GUI/images/signal-off.png" HorizontalAlignment="Right" Height="25"></Image>
+                            </DockPanel>
+
+                        </DockPanel>
+                    </StackPanel>
+
+                </Grid>
+                <Grid x:Name="stackPanelOfGraphView" Grid.Row="1">
+                    <gui:GraphView x:Name="graphView" Margin="30,30,30,30">
+                    </gui:GraphView>
+                </Grid>
+                <Grid Name="cameraRecordGrid" Grid.Row="2">
+                    <gui:CameraRecordView>
+                        
+                    </gui:CameraRecordView>
+                </Grid>
             </Grid>
-            <Grid x:Name="stackPanelOfGraphView" Grid.Row="1">
-                <gui:GraphView x:Name="graphView" Height="{Binding Height, ElementName=stackPanelOfGraphView}" Margin="30,30,30,30">
-                </gui:GraphView>
-            </Grid>
-            <Grid Name="cameraRecordGrid" Grid.Row="2">
-                
-            </Grid>
+
         </Grid>
-
-    </Grid>
+    </DockPanel>
+    
 </Window>

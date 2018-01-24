@@ -36,8 +36,6 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
 
-            graphController.forceUpdate += updateForce;
-
             mainAxisX.Sections.Add(
              new AxisSection
              {
@@ -50,11 +48,6 @@ namespace Spektrometer.GUI
                  DataLabelForeground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))
              }
             );
-        }
-
-        public void updateForce()
-        {
-            cartesianChart.Update(false, true); //force chart redraw
         }
 
         //private void ResetZoomOnClick(object sender, RoutedEventArgs e)

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="1280">
     <Grid>
-        <Image Name="image" Source="/Spektrometer;component/GUI/testImage/example.png" MouseDown="NewRow"/>
+        <Image Name="image" MouseDown="NewRow"/>
         <Rectangle Name="rectangle" Width="{Binding Path=ViewportWidth, ElementName=scrollview}" Height="20"  Stroke="Azure" VerticalAlignment="Top">
             <Rectangle.RenderTransform>
                 <TranslateTransform Y="200"/>

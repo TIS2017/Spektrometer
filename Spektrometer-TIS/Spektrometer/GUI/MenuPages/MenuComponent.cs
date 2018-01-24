@@ -11,12 +11,10 @@ namespace Spektrometer.GUI
 {
     public abstract class MenuComponent : Page
     {
-        protected SpektrometerService SpektrometerService { get; private set; }
         protected MainWindow MainWindow { get; private set; }
 
         public MenuComponent(MainWindow mainWindow)
         {
-            SpektrometerService = mainWindow.spektrometerService;
             MainWindow = mainWindow;
             SetReferencesFromSpektrometerService();
         }

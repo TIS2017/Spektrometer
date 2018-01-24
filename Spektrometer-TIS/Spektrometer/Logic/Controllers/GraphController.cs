@@ -18,11 +18,8 @@ namespace Spektrometer.Logic
         public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
         public CalibrationPoints CalibrationPoints { get; }
-
-        public delegate void ForceUpdate();
-
-        public ForceUpdate forceUpdate { get; set; }
-
+        private static GraphController graphControllerInstance;
+        
         private Func<double, string> _formatter;
         private double _from;
         private double _to;
@@ -30,14 +27,21 @@ namespace Spektrometer.Logic
 
         public GraphController()
         {
-            GraphData = new GraphData
-            {
-                OnCalculationDataChange = Recalculate
-            };
+            GraphData = new GraphData();
+            GraphData.OnCalculationDataChange += Recalculate;
             _graphCalculator = new GraphCalculator();
-
+            graphControllerInstance = this;
             From = 0;
             To = 1280;
+        }
+
+        public static GraphController GetInstance()
+        {
+            if (graphControllerInstance == null)
+            {
+                graphControllerInstance = new GraphController();
+            }
+            return graphControllerInstance;
         }
 
         public object Mapper { get; set; }
@@ -93,8 +97,6 @@ namespace Spektrometer.Logic
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
         
         public GraphController DataContext { get; private set; }
 
@@ -105,7 +107,7 @@ namespace Spektrometer.Logic
             var tmp = GraphData.ActualPicture;
             // TODO:
             GraphData.PixelData = tmp;
-
+            
             var listOfRedValues = new List<double>();
             var listOfGreenValues = new List<double>();
             var listOfBlueValues = new List<double>();
@@ -121,8 +123,6 @@ namespace Spektrometer.Logic
             ValuesGreen = listOfBlueValues.AsGearedValues().WithQuality(Quality.High);
 
             OnPropertyChanged();
-
-            forceUpdate();
         }
     }
 }
