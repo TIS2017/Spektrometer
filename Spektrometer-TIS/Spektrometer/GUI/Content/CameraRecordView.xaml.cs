@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 using Spektrometer.Logic;
 
 namespace Spektrometer.GUI
@@ -25,6 +14,8 @@ namespace Spektrometer.GUI
     {
         private ImageController _imageController;
         private int _rowIndex;
+        private int _count;
+        private double _maxImageHeight;
         public CameraRecordView() 
         {
             InitializeComponent();
@@ -34,29 +25,42 @@ namespace Spektrometer.GUI
             _imageController.SendImageEvent += SetNewImage;
             SetRowIndex(_imageController.GetRowIndex());
             SetRowCount(_imageController.GetRowCount());
+            _rowIndex = 1;
+            _count = 1;
         }
 
         private void NewRow(object sender, MouseButtonEventArgs e)
         {
-            System.Windows.Point p = e.GetPosition(image);
-            _imageController.SetRowIndex((int)p.Y);
+            double rowIndex = e.GetPosition(image).Y / scrollViewGrid.ActualHeight * _maxImageHeight;
+
+            _imageController.SetRowIndex((int)rowIndex);
         }
 
         public void SetNewImage(BitmapSource bitmap)
         {
+            _maxImageHeight = bitmap.PixelHeight;
             image.Source = bitmap;
         }
 
         public void SetRowIndex(int rowIndex)
         {
             _rowIndex = rowIndex;
-            TranslateTransform translate = new TranslateTransform(0, _rowIndex - (rectangle.Height / 2));
+            double row = rowIndex / _maxImageHeight * scrollViewGrid.ActualHeight - _count;
+            TranslateTransform translate = new TranslateTransform(0, row);
             rectangle.RenderTransform = translate;
+
+            if (image.Source != null)
+            {
+                double scrollTo = row - ActualHeight / 2 < 0 ? 0 : row - ActualHeight / 2;
+                ScrollToVerticalOffset(scrollTo);
+            }
         }
 
         public void SetRowCount(int count)
         {
-            rectangle.Height = 2 * count;
+            _count = count;
+            rectangle.Height = 2 * count + 1;
+            SetRowIndex(_rowIndex);
         }
     }
 }

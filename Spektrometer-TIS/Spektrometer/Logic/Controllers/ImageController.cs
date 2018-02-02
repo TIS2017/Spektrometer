@@ -72,7 +72,7 @@ namespace Spektrometer.Logic
                 _imageInfo.rowIndex = index;
                 if (_imageInfo.lastImage != null)
                 {
-                    CheckAndRepairRowIndex(_imageInfo.lastImage.PixelHeight);
+                    CheckAndRepairRowIndex();
                     NewImage(_imageInfo.lastImage);
                 }
                 _imageInfo.imageHistory = new Stack<List<Color>>();
@@ -84,11 +84,15 @@ namespace Spektrometer.Logic
             }
         }
 
-        internal void CheckAndRepairRowIndex(int imageHeight)
+        internal void CheckAndRepairRowIndex()
         {
             var index = _imageInfo.rowIndex;
-            index = index - _imageInfo.rowCount < 0 ? _imageInfo.rowCount : index;
-            index = imageHeight < index + _imageInfo.rowCount ? imageHeight - _imageInfo.rowCount : index;
+            var count = _imageInfo.rowCount;
+            var imageHeight = _imageInfo.lastImage.PixelHeight;
+            if (index + count >= imageHeight)
+                index = imageHeight - count - 1;
+            if (index - count < 0)
+                index = count + 1;
             _imageInfo.rowIndex = index;
         }
 
@@ -105,7 +109,7 @@ namespace Spektrometer.Logic
                 _imageInfo.rowCount = count;
                 if (_imageInfo.lastImage != null)
                 {
-                    CheckAndRepairRowIndex(_imageInfo.lastImage.PixelHeight);
+                    CheckAndRepairRowIndex();
                     NewRowIndex(_imageInfo.rowIndex);
                     NewImage(_imageInfo.lastImage);
                 }
