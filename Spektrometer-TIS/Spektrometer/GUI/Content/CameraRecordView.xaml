@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Spektrometer.GUI"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="1280">
-    <Grid>
+    <Grid Name="scrollViewGrid">
         <Image Name="image" MouseDown="NewRow"/>
         <Rectangle Name="rectangle" Width="{Binding Path=ViewportWidth, ElementName=scrollview}" Height="20"  Stroke="Azure" VerticalAlignment="Top">
             <Rectangle.RenderTransform>
