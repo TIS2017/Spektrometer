@@ -8,7 +8,7 @@
         Title="Spektrometer"
 
         SizeToContent="WidthAndHeight"
-        MinHeight="600" MinWidth="1000"
+        MinHeight="750" MinWidth="1000"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen">
     <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
@@ -19,9 +19,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox>
-            <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
-        </Viewbox>
+        <!--<Viewbox>
+            
+        </Viewbox>-->
+        <Frame Name="menu" NavigationUIVisibility="Hidden" Grid.Column="0" ></Frame>
         <Grid Grid.Column="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

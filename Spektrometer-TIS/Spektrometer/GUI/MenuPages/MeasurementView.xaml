@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
       Width="250"
+      Height="auto"
       Title="MeasurementView">
 
     <Grid Background="#FF3D8AF7" Margin="0,0,0,0">
