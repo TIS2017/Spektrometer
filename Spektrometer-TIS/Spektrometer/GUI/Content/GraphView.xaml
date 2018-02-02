@@ -4,68 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:geared="clr-namespace:LiveCharts.Geared;assembly=LiveCharts.Geared"
-        xmlns:scrollable="clr-namespace:Spektrometer.Logic"
         mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="500">
-    <UserControl.DataContext>
-        <scrollable:GraphController></scrollable:GraphController>
-    </UserControl.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding RangeValue}"></TextBlock>
-        <lvc:CartesianChart x:Name="cartesianChart" Grid.Row="1"
-                            Zoom="X" 
-                            ZoomingSpeed="0.8"
-                            DisableAnimations="True"
-                            DataTooltip="{x:Null}"
-                            Hoverable="False">
-            <lvc:CartesianChart.Resources>
-                <Style TargetType="lvc:Separator">
-                    <Setter Property="StrokeThickness" Value="2"></Setter>
-                    <Setter Property="Stroke" Value="#E7E7E7"></Setter>
-                    <Setter Property="StrokeDashArray" Value="2"></Setter>
-                    <Style.Triggers>
-                        <Trigger Property="AxisOrientation" Value="X">
-                            <Setter Property="IsEnabled" Value="False"></Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </lvc:CartesianChart.Resources>
-            <lvc:CartesianChart.Series>
-                <geared:GLineSeries StrokeThickness=".5" 
-                                    Values="{Binding ValuesRed}"
-                                    AreaLimit="0"
-                                    Fill="Transparent"
-                                    Stroke="Red"
-                                    LineSmoothness="0"
-                                    />
-                <geared:GLineSeries StrokeThickness=".5" 
-                                    Values="{Binding ValuesGreen}"
-                                    AreaLimit="0"
-                                    Fill="Transparent"
-                                    Stroke="Green"
-                                    LineSmoothness="0"
-                                    />
-                <geared:GLineSeries StrokeThickness=".5" 
-                                    Values="{Binding ValuesBlue}"                               
-                                    AreaLimit="0"
-                                    Fill="Transparent"
-                                    Stroke="Blue"
-                                    LineSmoothness="0"
-                                    />
-            </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis x:Name="mainAxisX" MinValue="{Binding From, Mode=TwoWay}" 
-                      MaxValue="{Binding To, Mode=TwoWay}"
-                      PreviewRangeChanged="Axis_OnPreviewRangeChanged"
-                      DisableAnimations="True"/>
-
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
-
+    <Grid x:Name="gridCanvas">
+        <Canvas Name="canGraph" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding ActualWidth, ElementName=gridCanvas, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=gridCanvas, Mode=OneWay}">
+        </Canvas>
     </Grid>
 </UserControl>

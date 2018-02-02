@@ -74,18 +74,18 @@ namespace Spektrometer.Logic
             var result = new List<Color>();
             for (int row = 0; row < 2 * rowCount + 1; row++)
             {
-                var column = 0;
-                for (int i = 0; i < width * bytesPerPixel; i += bytesPerPixel)
+                for (int column = 0; column < width; column++)
                 {
+                    var index = column * bytesPerPixel + row * width * bytesPerPixel;
                     if (blue.Count <= column)
                         blue.Add(0);
-                    blue[column] += pixelBuffer[i + row * width];
+                    blue[column] += pixelBuffer[index + 1];
                     if (green.Count <= column)
                         green.Add(0);
-                    green[column] += pixelBuffer[i + 1 + row * width];
+                    green[column] += pixelBuffer[index];
                     if (red.Count <= column)
                         red.Add(0);
-                    red[column] += pixelBuffer[i + 2 + row * width];
+                    red[column] += pixelBuffer[index + 2];
                     if (row == 2 * rowCount)
                     {
                         var blueByte = Convert.ToByte(blue[column] / (row + 1));
@@ -93,7 +93,6 @@ namespace Spektrometer.Logic
                         var redByte = Convert.ToByte(red[column] / (row + 1));
                         result.Add(Color.FromRgb(redByte,greenByte,blueByte));
                     }
-                    column++;
                 }
             }
             return result;

@@ -15,12 +15,6 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Globalization;
 
-using LiveCharts.Events;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
-using LiveCharts.Geared;
-
 using Spektrometer.Logic;
 using Spektrometer.GUI;
 
@@ -36,54 +30,138 @@ namespace Spektrometer.GUI
         {
             InitializeComponent();
 
-
-            mainAxisX.Sections.Add(
-             new AxisSection
-             {
-                 Value = 100,
-                 DataLabel = true,
-                 StrokeThickness = 1,
-                 Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0)),
-                 StrokeDashArray = new DoubleCollection(new[] { 10d }),
-                 DisableAnimations = true,
-                 DataLabelForeground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255))
-             }
-            );
+            GraphController.GetInstance().RedrawChart += DrawGraph;
         }
 
-
-
-        //private void ResetZoomOnClick(object sender, RoutedEventArgs e)
-        //{
-        //    //Use the axis MinValue/MaxValue properties to specify the values to display.
-        //    //use double.Nan to clear it.
-
-        //    X.MinValue = double.NaN;
-        //    X.MaxValue = double.NaN;
-        //    Y.MinValue = double.NaN;
-        //    Y.MaxValue = double.NaN;
-        //}
-
-        private void Axis_OnPreviewRangeChanged(PreviewRangeChangedEventArgs e)
+        public void DrawGraph(List<Color> pixelData)
         {
-            var vm = (GraphController)DataContext;
 
-            vm.RangeValue = e.Range;
+            canGraph.Children.Clear();
 
+            const double margin = 30;
+            double step = pixelData.Count / canGraph.Width;
+            double xmin = margin;
+            double xmax = canGraph.Width - margin;
+            double ymin = margin;
+            double ymax = canGraph.Height - margin;
+            double axisLineWidth = 10;
+            double lengthBetweenTwoAxisXPoints = 100;
+            double lengthBetweenTwoAxisYPoints = 20;
+            double countingAxisYPoints = 0;
 
-            //if less than -0.5, cancel
-            if (e.PreviewMinValue < -0.5)
+            double counterForAxisX = lengthBetweenTwoAxisXPoints;
+            double counterForAxisY = ymax-lengthBetweenTwoAxisYPoints;
+
+            Line l = new Line();
+            l.X1 = margin + 100 + step;
+            l.X2 = margin + 100 + step;
+            l.Y1 = ymax;
+            l.Y2 = 0;
+            l.Stroke = Brushes.Black;
+            l.StrokeThickness = 1;
+            l.StrokeDashArray = new DoubleCollection(new[] { 10d });
+            canGraph.Children.Add(l);
+
+            // Make the X axis.
+            GeometryGroup xaxis_geom = new GeometryGroup();
+            xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
+            for (double x = xmin; x <= canGraph.Width; x += step)
             {
-                mainAxisX.MinValue = double.NaN;
-                mainAxisX.MaxValue = double.NaN;
-                e.Cancel = true;
+                if (x > counterForAxisX)
+                {
+                    counterForAxisX += lengthBetweenTwoAxisXPoints;
+                    xaxis_geom.Children.Add(new LineGeometry(
+                    new Point(x + margin, ymax - axisLineWidth / 2),
+                    new Point(x + margin, ymax + axisLineWidth / 2)));
+
+                    TextBlock txt = new TextBlock();
+                    txt.Text = String.Format("{0:0}", counterForAxisX-100);
+                    Canvas.SetTop(txt, ymax + 5);
+                    Canvas.SetLeft(txt, x + 20);
+                    canGraph.Children.Add(txt);
+                }
+
+            }
+            //MessageBox.Show(""+ countingAxisXPoints);
+            Path xaxis_path = new Path();
+            xaxis_path.StrokeThickness = 1;
+            xaxis_path.Stroke = Brushes.Black;
+            xaxis_path.Data = xaxis_geom;
+
+            canGraph.Children.Add(xaxis_path);
+
+            // Make the Y axis.
+            GeometryGroup yaxis_geom = new GeometryGroup();
+            yaxis_geom.Children.Add(new LineGeometry(new Point(xmin, 0), new Point(xmin, canGraph.Height)));
+            for (double y = ymax; y >= margin; y -= step)
+            {
+                if (y < counterForAxisY && countingAxisYPoints <= 12)
+                {
+                    counterForAxisY -= lengthBetweenTwoAxisYPoints;
+                    countingAxisYPoints++;
+
+                    yaxis_geom.Children.Add(new LineGeometry(
+                    new Point(xmin - axisLineWidth / 2, y),
+                    new Point(xmin + axisLineWidth / 2, y)));
+
+                    TextBlock txt = new TextBlock();
+                    txt.Text = String.Format("{0:0}", lengthBetweenTwoAxisYPoints*countingAxisYPoints);
+                    txt.Text = txt.Text.Substring(0, txt.Text.Length - 1) + "0";
+                    Canvas.SetTop(txt, y-10);
+                    canGraph.Children.Add(txt);
+                                        
+                }
             }
 
-            //if greater than the number of items on our array plus a 0.5 offset, stay on max limit
-            if (e.PreviewMaxValue > 1280 - 0.5) e.Cancel = true;
+            Path yaxis_path = new Path();
+            yaxis_path.StrokeThickness = 1;
+            yaxis_path.Stroke = Brushes.Black;
+            yaxis_path.Data = yaxis_geom;
 
-            //finally if the axis range is less than 1, cancel the event (maximalny zoom)
-            if (e.PreviewMaxValue - e.PreviewMinValue < 10) e.Cancel = true;
+            canGraph.Children.Add(yaxis_path);
+
+
+
+
+
+            //==================== ADDING GRAPH DATA ======================
+            Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
+
+            for (int data_set = 0; data_set < 3; data_set++)
+            {
+                int count = 0;
+
+                PointCollection points = new PointCollection();
+                for (double x = 0; x <= pixelData.Count; x += step)
+                {                    
+                    double yValue = 0;
+                    switch(data_set)
+                    {
+                        case 0:
+                            yValue = ymax - pixelData.ElementAt((int)x).R;
+                            break;
+                        case 1:
+                            yValue = ymax - pixelData.ElementAt((int)x).G;
+                            break;
+                        case 2:
+                            yValue = ymax - pixelData.ElementAt((int)x).B;
+                            break;
+                        default:
+                            throw new Exception("");                           
+
+                    }
+                    points.Add(new Point(xmin + count, yValue));
+                    count++;
+                }
+                //MessageBox.Show(""+pocet);
+                Polyline polyline = new Polyline();
+                polyline.StrokeThickness = 1;
+                polyline.Stroke = brushes[data_set];
+                polyline.Points = points;
+
+                canGraph.Children.Add(polyline);
+            }
+
         }
     }
 }
