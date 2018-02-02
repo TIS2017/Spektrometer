@@ -81,7 +81,7 @@
                     </gui:GraphView>
                 </Grid>
                 <Grid Name="cameraRecordGrid" Grid.Row="2">
-                    <gui:CameraRecordView>
+                    <gui:CameraRecordView Margin="60 0 0 0">
                         
                     </gui:CameraRecordView>
                 </Grid>
