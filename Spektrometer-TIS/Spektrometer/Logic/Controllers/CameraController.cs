@@ -94,7 +94,6 @@ namespace Spektrometer.Logic
             CameraStop();
             if (_videoSource != null)
             {
-                _imageController.CheckAndRepairRowIndex(_videoSource.VideoResolution.FrameSize.Height);
                 _videoSource.Start();
             }
         }
