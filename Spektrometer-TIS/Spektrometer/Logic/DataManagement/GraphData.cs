@@ -11,6 +11,8 @@ namespace Spektrometer.Logic
     public enum Filter
     {
         RGB, R, G, B
+
+
     }
     public enum DisplayFormat
     {
@@ -191,7 +193,7 @@ namespace Spektrometer.Logic
             ShowPeaks = false;
             GlobalPeak = false;
             ShowValues = false;
-            Treshold = 0;
+            Treshold = -1;
             Subtraction = false;
             Division = false;
             FillChart = false;

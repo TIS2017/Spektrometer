@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace Spektrometer.Logic
 {
@@ -14,6 +16,7 @@ namespace Spektrometer.Logic
     {
         private GraphController GraphController;
         private ImageController _imageController;
+        internal static string loadPath = Directory.GetCurrentDirectory();
 
         public Import()
         {
@@ -27,7 +30,7 @@ namespace Spektrometer.Logic
          Prvý stĺpec je x-ová súradnica
          Druhý stĺpec vlnová dĺžka.
             */
-        public void importCalibrationFile(string path)
+        public void ImportCalibrationFile(string path)
         {
             if (!File.Exists(path))
             {
@@ -60,13 +63,102 @@ namespace Spektrometer.Logic
            calibFile.Close();
         }
 
+        internal void LoadConfig()
+        {
+            if (File.Exists("Config.xml"))
+            {
+                var doc = XDocument.Load("Config.xml");
+                var spektrometer = doc.Element("Spektrometer");
+                var measurement = spektrometer.Element("Measurement");
+                LoadBasicConfiguration(measurement.ElementsBeforeSelf());
+                LoadMeasurementConfiguration(measurement);
+                LoadCamera(spektrometer.Element("Camera"));
+            }
+        }
+
+        private void LoadCamera(XElement xElement)
+        {
+            var cameraController = CameraController.GetInstance();
+            var calibPoint = GraphController.GetInstance().CalibrationPoints;
+
+            var cameraID = xElement.Attribute("id").Value;
+            var cameraIndex = cameraController.GetIndexOfCameraByID(cameraID);
+            if (cameraIndex >= 0)
+            {
+                cameraController.SelectCamera(cameraIndex);
+                var calibrationPoints = xElement.Elements();
+
+                foreach (var point in calibrationPoints)
+                {
+                    var calibrationPoint = new Point
+                    {
+                        X = Double.Parse(point.Attribute("x").Value),
+                        Y = Double.Parse(point.Attribute("y").Value)
+                    };
+                    calibPoint.AddPoint(calibrationPoint);
+                }
+            }
+        }
+
+        private void LoadMeasurementConfiguration(XElement measurement)
+        {
+            var graphData = GraphController.GetInstance().GraphData;
+
+            var showPeaks = measurement.Element("showPeaks").Value;
+            graphData.ShowPeaks = showPeaks.Equals("false") ? false : true;
+
+            var globalPeak = measurement.Element("globalPeak").Value;
+            graphData.GlobalPeak = globalPeak.Equals("false") ? false : true;
+
+            var showValues = measurement.Element("showValues");
+            var show = showValues.Element("show").Value;
+            graphData.ShowValues = show.Equals("false") ? false : true;
+
+            var offset = showValues.Element("offset").Value;
+            graphData.Treshold = Int32.Parse(offset);
+
+            var fillChart = measurement.Element("fillChart").Value;
+            graphData.Filter = (Filter)Enum.Parse(typeof(Filter), fillChart);
+        }
+
+        private void LoadBasicConfiguration(IEnumerable<XElement> xElement)
+        {
+            var imageController = ImageController.GetInstance();
+            foreach (var element in xElement)
+            {
+                if (element.Name.LocalName.Equals("rowIndex"))
+                {
+                    var value = Int32.Parse(element.Value);
+                    imageController.SetRowIndex(value);
+                }
+                else if (element.Name.LocalName.Equals("rowCount"))
+                {
+                    var value = Int32.Parse(element.Value);
+                    imageController.SetRowCount(value);
+                }
+                else if (element.Name.LocalName.Equals("imageCount"))
+                {
+                    var value = Int32.Parse(element.Value);
+                    imageController.SetImageCount(value);
+                }
+                else if (element.Name.LocalName.Equals("saveLocation"))
+                {
+                    Export.savePath = element.Value;
+                }
+                else if (element.Name.LocalName.Equals("loadLocation"))
+                {
+                    loadPath = element.Value;
+                }
+            }
+        }
+
         /** 
          Importuje dáta z grafu ako .txt súbor,
          kde prvý stĺpec sú hodnoty červenej zložky,
          druhý stĺpec oddelený medzerou sú hodnoty zelenej zložky,
          tretí modrej, ako List sa potom posiela GraphControlleru.
             */
-        public void importChartData(string path)
+        public void ImportChartData(string path)
         {
             if (!File.Exists(path))
             {
@@ -107,10 +199,11 @@ namespace Spektrometer.Logic
          Importuje obrázok z kamery, ako .png a potom uloží ImageController,
          ako new Image...
          */
-        public void importCameraImage(string path)
+        public void ImportCameraImage(string path)
         {
             try
             {
+                _imageController.SetImageCount(1);
                 Stream imageStreamSource = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 BitmapSource bitmapSource = decoder.Frames[0];

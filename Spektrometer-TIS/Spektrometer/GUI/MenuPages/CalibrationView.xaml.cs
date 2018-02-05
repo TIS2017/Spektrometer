@@ -46,7 +46,7 @@ namespace Spektrometer.GUI
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
-        protected override void SetReferencesFromSpektrometerService()
+        protected override void SetReferences()
         {
             _graphController = GraphController.GetInstance();
             _import = new Import();
@@ -69,7 +69,7 @@ namespace Spektrometer.GUI
             {
                 // Open document 
                 string path = Path.GetFullPath(dialogWindow.FileName);
-                Import.importCalibrationFile(path);
+                _import.ImportCalibrationFile(path);
             }
         }
     }

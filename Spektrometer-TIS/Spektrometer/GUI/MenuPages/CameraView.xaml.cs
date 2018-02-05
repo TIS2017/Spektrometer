@@ -16,6 +16,14 @@ namespace Spektrometer.GUI
     {
         private CameraController _cameraController;
         private ImageController _imageController;
+        private int _rowIndex;
+        private int _changedRowIndex;
+        private int _rowCount;
+        private int _changedRowCount;
+        private int _imageCount;
+        private int _changedImageCount;
+        private int _cameraIndex;
+
         public List<string> list = new List<string>();
 
         public CameraController CameraController
@@ -49,16 +57,20 @@ namespace Spektrometer.GUI
 
         public void DefaulteSettings()
         {
-            rowIndex.Text = ImageController.GetRowIndex().ToString();
-            rowCount.Text = ImageController.GetRowCount().ToString();
+            _rowIndex = _changedRowIndex = ImageController.GetRowIndex();
+            rowIndex.Text = _rowIndex.ToString();
+            _rowCount = _changedRowCount = ImageController.GetRowCount();
+            rowCount.Text = _rowCount.ToString();
+            _imageCount = _changedImageCount = ImageController.GetImageCount();
+            numOfPic.Text = _imageCount.ToString();
             BtnImageAreaSet.Content = "Set";
 
             // Nefunguje uplne spravne, opravit - zobrazenie *
-            int ix = CameraController.GetCameraIndex();
-            if (ix != -1)
+            _cameraIndex = CameraController.GetCameraIndex();
+            if (_cameraIndex != -1)
             {
                 //Debug.WriteLine("Test");
-                CameraListBox.SelectedItem = list[ix];
+                CameraListBox.SelectedItem = list[_cameraIndex];
             }
             BtnCameraChoice.Content = "Set";
         }
@@ -74,7 +86,8 @@ namespace Spektrometer.GUI
 
         public void SetRowIndex(int rowIndex)
         {
-            this.rowIndex.Text = rowIndex.ToString();
+            _rowIndex = rowIndex;
+            this.rowIndex.Text = _rowIndex.ToString();
             BtnImageAreaSet.Content = "Set";
         }
 
@@ -85,7 +98,7 @@ namespace Spektrometer.GUI
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
-        protected override void SetReferencesFromSpektrometerService()
+        protected override void SetReferences()
         {
             _cameraController = CameraController.GetInstance();
             _imageController = ImageController.GetInstance();
@@ -95,16 +108,17 @@ namespace Spektrometer.GUI
 
         private void SetCamera(object sender, RoutedEventArgs e)
         {
-            if (CameraController.GetCameraIndex() != -1)
+            int selectedCamera = this.CameraListBox.SelectedIndex;
+            if (selectedCamera != _cameraIndex)
             {
-                CameraController.CameraStop();
+                if (CameraController.GetCameraIndex() != -1)
+                {
+                    CameraController.CameraStop();
+                }
+                _cameraIndex = selectedCamera;
+                _cameraController.SelectCamera(_cameraIndex);
+                BtnCameraChoice.Content = "Set";
             }
-            string selected = CameraListBox.Text;
-            CameraListBox.SelectedItem = selected;
-            int ix = list.FindIndex(item => item == selected);
-            _cameraController.SelectCamera(ix);
-            BtnCameraChoice.Content = "Set";
-
         }
 
         public void SetCameraImage(BitmapSource bitmap)
@@ -114,26 +128,71 @@ namespace Spektrometer.GUI
 
         private void CameraChosen(object sender, SelectionChangedEventArgs e)
         {
-            BtnCameraChoice.Content = "*Set";
+            if (CameraListBox.SelectedIndex != _cameraIndex)
+                BtnCameraChoice.Content = "*Set";
         }
 
         private void RowIndexChanged(object sender, TextChangedEventArgs e)
         {
+            if (ConvertableToInt(rowIndex.Text))
+            {
+                _changedRowIndex = Int32.Parse(rowIndex.Text);
+            }
             BtnImageAreaSet.Content = "*Set";
         }
 
         private void RowCountChanged(object sender, TextChangedEventArgs e)
         {
+            if (ConvertableToInt(rowCount.Text))
+            {
+                _changedRowCount = Int32.Parse(rowCount.Text);
+            }
+            BtnImageAreaSet.Content = "*Set";
+        }
+
+        private void numOfPic_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ConvertableToInt(numOfPic.Text))
+            {
+                _changedImageCount = Int32.Parse(numOfPic.Text);
+            }
             BtnImageAreaSet.Content = "*Set";
         }
 
         private void ImageAreaSet(object sender, RoutedEventArgs e)
         {
-            int y = Int32.Parse(rowIndex.Text);
-            int h = Int32.Parse(rowCount.Text);
-            ImageController.SetRowIndex(y);
-            ImageController.SetRowCount(h);
+            if (_changedRowIndex != _rowIndex)
+            {
+                _rowIndex = _changedRowIndex;
+                ImageController.SetRowIndex(_rowIndex);
+            }
+            rowIndex.Text = _rowIndex.ToString();
+            if (_changedRowCount != _rowCount)
+            {
+                _rowCount = _changedRowCount;
+                ImageController.SetRowCount(_rowCount);
+            }
+            rowCount.Text = _rowCount.ToString();
+            if (_changedImageCount != _imageCount)
+            {
+                _imageCount = _changedImageCount;
+                ImageController.SetImageCount(_imageCount);
+            }
+            numOfPic.Text = _imageCount.ToString();
             BtnImageAreaSet.Content = "Set";
+        }
+
+        private bool ConvertableToInt(string number)
+        {
+            try
+            {
+                Int32.Parse(number);
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void ShowSettings(object sender, RoutedEventArgs e)
@@ -142,11 +201,6 @@ namespace Spektrometer.GUI
             {
                 CameraController.ShowSettings();
             } else { return; }
-        }
-
-        private void numOfPic_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }
