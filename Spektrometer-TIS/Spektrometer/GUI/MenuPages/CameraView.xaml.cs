@@ -143,5 +143,10 @@ namespace Spektrometer.GUI
                 CameraController.ShowSettings();
             } else { return; }
         }
+
+        private void numOfPic_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
