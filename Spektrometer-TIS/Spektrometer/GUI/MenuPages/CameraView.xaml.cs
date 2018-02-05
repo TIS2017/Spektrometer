@@ -137,13 +137,8 @@ namespace Spektrometer.GUI
             if (ConvertableToInt(rowIndex.Text))
             {
                 _changedRowIndex = Int32.Parse(rowIndex.Text);
-                if (_changedRowIndex != _rowIndex)
-                    BtnImageAreaSet.Content = "*Set";
             }
-            else
-            {
-                rowIndex.Text = _changedRowIndex.ToString();
-            }
+            BtnImageAreaSet.Content = "*Set";
         }
 
         private void RowCountChanged(object sender, TextChangedEventArgs e)
@@ -151,13 +146,8 @@ namespace Spektrometer.GUI
             if (ConvertableToInt(rowCount.Text))
             {
                 _changedRowCount = Int32.Parse(rowCount.Text);
-                if (_changedRowCount != _rowCount)
-                    BtnImageAreaSet.Content = "*Set";
             }
-            else
-            {
-                rowCount.Text = _changedRowCount.ToString();
-            }
+            BtnImageAreaSet.Content = "*Set";
         }
 
         private void numOfPic_TextChanged(object sender, TextChangedEventArgs e)
@@ -165,13 +155,8 @@ namespace Spektrometer.GUI
             if (ConvertableToInt(numOfPic.Text))
             {
                 _changedImageCount = Int32.Parse(numOfPic.Text);
-                if (_changedImageCount != _imageCount)
-                    BtnImageAreaSet.Content = "*Set";
             }
-            else
-            {
-                numOfPic.Text = _changedImageCount.ToString();
-            }
+            BtnImageAreaSet.Content = "*Set";
         }
 
         private void ImageAreaSet(object sender, RoutedEventArgs e)
@@ -181,16 +166,19 @@ namespace Spektrometer.GUI
                 _rowIndex = _changedRowIndex;
                 ImageController.SetRowIndex(_rowIndex);
             }
+            rowIndex.Text = _rowIndex.ToString();
             if (_changedRowCount != _rowCount)
             {
                 _rowCount = _changedRowCount;
                 ImageController.SetRowCount(_rowCount);
             }
+            rowCount.Text = _rowCount.ToString();
             if (_changedImageCount != _imageCount)
             {
                 _imageCount = _changedImageCount;
                 ImageController.SetImageCount(_imageCount);
             }
+            numOfPic.Text = _imageCount.ToString();
             BtnImageAreaSet.Content = "Set";
         }
 
