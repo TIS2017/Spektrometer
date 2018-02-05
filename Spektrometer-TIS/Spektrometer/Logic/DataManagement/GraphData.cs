@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Spektrometer.Logic
 {
@@ -19,9 +19,10 @@ namespace Spektrometer.Logic
 
     public class GraphData
     {
-        public delegate void Update();
+        public delegate void NewDataEventHandler();
 
-        internal Update NewData { get; set; }
+        internal NewDataEventHandler OnChartDataChange { get; set; }
+        internal NewDataEventHandler OnCalculationDataChange { get; set; }
         private List<Color> _pixelData;
         private List<double> _intesityData;
         private List<Color> _referencedPicture;
@@ -35,15 +36,16 @@ namespace Spektrometer.Logic
         private bool _fillChart;
         private Filter _filter;
         private DisplayFormat _displayFormat;
+
         public List<Color> PixelData
         {
             get { return _pixelData; }
             set
             {
                 _pixelData = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public List<double> IntesityData
@@ -52,9 +54,9 @@ namespace Spektrometer.Logic
             set
             {
                 _intesityData = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
 
@@ -64,9 +66,9 @@ namespace Spektrometer.Logic
             set
             {
                 _referencedPicture = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
         public List<Color> ActualPicture
@@ -75,9 +77,9 @@ namespace Spektrometer.Logic
             set
             {
                 _actualPicture = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
         public bool ShowPeaks
@@ -86,9 +88,9 @@ namespace Spektrometer.Logic
             set
             {
                 _showPeaks = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public bool GlobalPeak
@@ -97,9 +99,9 @@ namespace Spektrometer.Logic
             set
             {
                 _globalPeak = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public bool ShowValues
@@ -108,9 +110,9 @@ namespace Spektrometer.Logic
             set
             {
                 _showValues = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public double Treshold
@@ -119,9 +121,9 @@ namespace Spektrometer.Logic
             set
             {
                 _treshold = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public bool Subtraction
@@ -130,9 +132,9 @@ namespace Spektrometer.Logic
             set
             {
                 _subtraction = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
         public bool Division
@@ -141,9 +143,9 @@ namespace Spektrometer.Logic
             set
             {
                 _division = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
         public bool FillChart
@@ -152,9 +154,9 @@ namespace Spektrometer.Logic
             set
             {
                 _fillChart = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public Filter Filter
@@ -163,9 +165,9 @@ namespace Spektrometer.Logic
             set
             {
                 _filter = value;
-                if (NewData == null)
+                if (OnChartDataChange == null)
                     return;
-                NewData();
+                OnChartDataChange();
             }
         }
         public DisplayFormat DisplayFormat
@@ -174,9 +176,9 @@ namespace Spektrometer.Logic
             set
             {
                 _displayFormat = value;
-                if (NewData == null)
+                if (OnCalculationDataChange == null)
                     return;
-                NewData();
+                OnCalculationDataChange();
             }
         }
 

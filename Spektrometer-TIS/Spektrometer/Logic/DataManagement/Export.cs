@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
@@ -14,10 +14,10 @@ namespace Spektrometer.Logic
         private GraphController GraphController;
         private ImageController _imageController;
 
-        public Export(GraphController gc, ImageController ic)
+        public Export()
         {
-            GraphController = gc;
-            _imageController = ic;
+            GraphController = GraphController.GetInstance();
+            _imageController = ImageController.GetInstance();
         }
 
         /**
@@ -76,10 +76,14 @@ namespace Spektrometer.Logic
         public void cameraImage(string path)
         {
             try
-            {   
-                // get image from imageController   
-                Bitmap img = _imageController.LastImage();
-                img.Save(path);
+            {
+                var img = _imageController.LastImage();
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(img));
+                    encoder.Save(fileStream);
+                }
             }
             catch
             {

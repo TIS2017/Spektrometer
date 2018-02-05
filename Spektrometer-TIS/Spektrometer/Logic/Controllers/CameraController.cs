@@ -6,11 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
     public class CameraController
     {
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
         public delegate void StopCameraHandler();
 
         public StopCameraHandler CameraStop;
@@ -19,12 +24,23 @@ namespace Spektrometer.Logic
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
         private VideoCaptureDevice _videoSource;
         private int _cameraIndex;
+        private readonly int REQUARED_WIDTH = 1280;
+        private static CameraController cameraControllerInstance;
 
-        public CameraController(ImageController ic)
+        private CameraController()
         {
-            _imageController = ic;
+            _imageController = ImageController.GetInstance();
             _cameraIndex = -1;
             CameraStop += StopCamera;
+        }
+
+        public static CameraController GetInstance()
+        {
+            if (cameraControllerInstance == null)
+            {
+                cameraControllerInstance = new CameraController();
+            }
+            return cameraControllerInstance;
         }
 
         /* Vrati list pripojenych zariadeni */
@@ -42,9 +58,27 @@ namespace Spektrometer.Logic
 
         public void SelectCamera(int index)
         {
-            _cameraIndex = index;
-            _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
-            _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+            if (index >= 0 && index < _videoDevices.Count)
+            {
+                _cameraIndex = index;
+                _videoSource = new VideoCaptureDevice(_videoDevices[index].MonikerString);
+                CheckAndSetVideoResolution();
+                _videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
+            }
+        }
+
+        private void CheckAndSetVideoResolution()
+        {
+            foreach (VideoCapabilities vc in _videoSource.VideoCapabilities) 
+            {
+                if (vc.FrameSize.Width == REQUARED_WIDTH)
+                {
+                    _videoSource.VideoResolution = vc;
+                    break;
+                }
+            }
+            if (_videoSource.VideoResolution == null)
+                MessageBox.Show("Kamera nepodporuje potrebnu sirku: " + REQUARED_WIDTH);
         }
 
         public void ShowSettings()
@@ -76,12 +110,35 @@ namespace Spektrometer.Logic
         {
             Bitmap bitmap = eventargs.Frame;
 
-            _imageController.NewImage(bitmap);
+            CreateBitmapSourceAndCallSendImageEvent(bitmap);
         }
 
         public int GetCameraIndex()
         {
             return _cameraIndex;
+        }
+        
+        public void CreateBitmapSourceAndCallSendImageEvent(Bitmap bitmap)
+        {
+            var bmp = (Bitmap)bitmap.Clone();
+            Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    var hBitmap = bmp.GetHbitmap();
+
+                    BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap
+                    (
+                        hBitmap,
+                        IntPtr.Zero,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+
+                    _imageController.NewImage(bitmapSource);
+
+                    DeleteObject(hBitmap);
+                })
+            );
         }
     }
 }

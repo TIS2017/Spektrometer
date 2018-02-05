@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Spektrometer.Logic
 {
@@ -14,10 +15,10 @@ namespace Spektrometer.Logic
         private GraphController GraphController;
         private ImageController _imageController;
 
-        public Import(GraphController gc, ImageController ic)
+        public Import()
         {
-            GraphController = gc;
-            _imageController = ic;
+            GraphController = GraphController.GetInstance();
+            _imageController = ImageController.GetInstance();
         }
 
         /**
@@ -97,7 +98,7 @@ namespace Spektrometer.Logic
             
             for(int i=0; i<R.Count; i++)
             {
-                graphData.Add(Color.FromArgb(R[i], G[i], B[i]));
+                graphData.Add(Color.FromRgb(Convert.ToByte(R[i]), Convert.ToByte(G[i]), Convert.ToByte(B[i])));
             }        
             GraphController.GraphData.PixelData = graphData;
         }
@@ -110,8 +111,10 @@ namespace Spektrometer.Logic
         {
             try
             {
-                Bitmap bitmap = new Bitmap(path);
-                _imageController.NewImage(bitmap);
+                Stream imageStreamSource = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+                PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+                BitmapSource bitmapSource = decoder.Frames[0];
+                _imageController.NewImage(bitmapSource);
             } catch(Exception e)
             {
                 MessageBox.Show("Chyba pri načítavaní. " + e.Message);

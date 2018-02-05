@@ -38,7 +38,6 @@ namespace Spektrometer.GUI
             set
             {
                 _imageController = value;
-                // nastav delegatovi v imageController SendImageEvent += tvoja funkcia
             }
         }
         public CameraView(MainWindow mainWindow) : base(mainWindow)
@@ -52,7 +51,7 @@ namespace Spektrometer.GUI
         {
             this.rowIndex.Text = ImageController.GetRowIndex().ToString();
             this.rowCount.Text = ImageController.GetRowCount().ToString();
-            this.BtnCameraChoice.Content = "Set";
+            BtnImageAreaSet.Content = "Set";
 
             // Nefunguje uplne spravne, opravit - zobrazenie *
             int ix = CameraController.GetCameraIndex();
@@ -61,6 +60,7 @@ namespace Spektrometer.GUI
                 //Debug.WriteLine("Test");
                 CameraListBox.SelectedItem = list[ix];
             }
+            BtnCameraChoice.Content = "Set";
         }
 
         public void SetCameraLIst()
@@ -72,17 +72,25 @@ namespace Spektrometer.GUI
             }
         }
 
+        public void SetRowIndex(int rowIndex)
+        {
+            this.rowIndex.Text = rowIndex.ToString();
+            BtnImageAreaSet.Content = "Set";
+        }
+
         private void MenuButton(object sender, RoutedEventArgs e)
         {
             _imageController.SendImageEvent -= SetCameraImage;
+            _imageController.NewRowIndex -= SetRowIndex;
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _cameraController = SpektrometerService.CameraController;
-            _imageController = SpektrometerService.ImageController;
+            _cameraController = CameraController.GetInstance();
+            _imageController = ImageController.GetInstance();
             _imageController.SendImageEvent += SetCameraImage;
+            _imageController.NewRowIndex += SetRowIndex;
         }
 
         private void SetCamera(object sender, RoutedEventArgs e)

@@ -47,7 +47,72 @@ namespace Spektrometer.GUI
 
         protected override void SetReferencesFromSpektrometerService()
         {
-            _graphController = SpektrometerService.GraphController;
+            _graphController = GraphController.GetInstance();
+        }
+
+        private void ShowPeaks(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
+            if (_graphController.GraphData.ShowPeaks)
+            {
+                Peaks.Content = "Hide";
+            } else
+            {
+                Peaks.Content = "Show";
+            }
+        }
+
+        private void SetGlobalPeak(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.GlobalPeak = GlobalPeakChecked.IsChecked.GetValueOrDefault();
+        }
+
+        private void SetShowValue(object sender, RoutedEventArgs e)
+        {
+            if (Value.Text != "")
+            {
+                _graphController.GraphData.Treshold = Int32.Parse(Value.Text);
+            }
+        }
+
+        private void ReferencePicture(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.ReferencedPicture = _graphController.GraphData.ActualPicture;
+        
+        }
+
+        private void Subtraction(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.Subtraction = !_graphController.GraphData.Subtraction;
+            BtnSubtraction.Content = _graphController.GraphData.Subtraction ? "Unset" : "Set";
+        }
+
+        private void Division(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.Division = !_graphController.GraphData.Division;
+            BtnDivision.Content = _graphController.GraphData.Division ? "Unset" : "Set";
+        }
+
+        private void FillChart(object sender, SelectionChangedEventArgs e)
+        {
+            switch (FillChartList.SelectedItem)
+            {
+                case "all":
+                    _graphController.GraphData.Filter = Filter.RGB;
+                    break;
+                case "red":
+                    _graphController.GraphData.Filter = Filter.R;
+                    break;
+                case "green":
+                    _graphController.GraphData.Filter = Filter.G;
+                    break;
+                case "blue":
+                    _graphController.GraphData.Filter = Filter.B;
+                    break;
+                default:
+                    _graphController.GraphData.Filter = Filter.RGB;
+                    break;
+            }
         }
     }
 }
