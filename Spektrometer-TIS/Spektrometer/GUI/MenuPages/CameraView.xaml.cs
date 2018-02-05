@@ -58,11 +58,11 @@ namespace Spektrometer.GUI
         public void DefaulteSettings()
         {
             _rowIndex = _changedRowIndex = ImageController.GetRowIndex();
-            this.rowIndex.Text = _rowIndex.ToString();
+            rowIndex.Text = _rowIndex.ToString();
             _rowCount = _changedRowCount = ImageController.GetRowCount();
-            this.rowCount.Text = _rowCount.ToString();
+            rowCount.Text = _rowCount.ToString();
             _imageCount = _changedImageCount = ImageController.GetImageCount();
-            this.numOfPic.Text = _imageCount.ToString();
+            numOfPic.Text = _imageCount.ToString();
             BtnImageAreaSet.Content = "Set";
 
             // Nefunguje uplne spravne, opravit - zobrazenie *
