@@ -1,77 +1,125 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Spektrometer.Logic.Import" Collapsed="true">
-    <Position X="3" Y="7.25" Width="1.5" />
-    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController">
+  <Class Name="Spektrometer.Logic.Import">
+    <Position X="3" Y="6" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="GraphController" Type="Spektrometer.Logic.GraphController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="7.042" />
+        <Point X="4.875" Y="7.042" />
+        <Point X="4.875" Y="7.392" />
+        <Point X="5.75" Y="7.392" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.219" Y="7.171" />
+        <Point X="3.219" Y="12.161" />
+        <Point X="11.625" Y="12.161" />
+        <Point X="11.625" Y="10.431" />
+      </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="1.657" Y="0.029" />
+        <Position X="0.038" Y="1.482" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AABBAAAAAAAAAAAAAAAAAAAQAAAAIAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AQBBAgAAAAAAAAAAAAAAAACQAAgAIAAgAAAIAAAAAAA=</HashCode>
       <FileName>Logic\DataManagement\Import.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="GraphController" />
       <Field Name="_imageController" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Spektrometer.Logic.CameraController" Collapsed="true">
-    <Position X="11.25" Y="8" Width="1.5" />
+  <Class Name="Spektrometer.Logic.CameraController">
+    <Position X="11.25" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.386" Y="0.133" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAEAAAAABCAAQAAAAAACQAAABQAAAAAA=</HashCode>
+      <HashCode>ABAAAAAFAQAAABgIAAIBwAAQBBAAAECgAAAACAABACA=</HashCode>
       <FileName>Logic\Controllers\CameraController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="_imageController" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Spektrometer.Logic.Export" Collapsed="true">
-    <Position X="0.75" Y="7.25" Width="1.5" />
-    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController" FixedFromPoint="true" FixedToPoint="true">
+  <Class Name="Spektrometer.Logic.Export">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="GraphController" Type="Spektrometer.Logic.GraphController" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="1.5" Y="7.812" />
-        <Point X="1.5" Y="8.187" />
-        <Point X="3.417" Y="8.187" Type="JumpStart" />
-        <Point X="3.583" Y="8.187" Type="JumpEnd" />
-        <Point X="6.542" Y="8.187" Type="JumpStart" />
-        <Point X="6.708" Y="8.187" Type="JumpEnd" />
-        <Point X="7.667" Y="8.187" Type="JumpStart" />
-        <Point X="7.833" Y="8.187" Type="JumpEnd" />
-        <Point X="9.417" Y="8.187" Type="JumpStart" />
-        <Point X="9.583" Y="8.187" Type="JumpEnd" />
-        <Point X="9.729" Y="8.187" Type="JumpStart" />
-        <Point X="9.895" Y="8.187" Type="JumpEnd" />
-        <Point X="10.875" Y="8.187" />
-        <Point X="10.875" Y="10.437" />
-        <Point X="11.875" Y="10.437" />
-        <Point X="11.875" Y="10.062" />
+        <Point X="1.938" Y="7.171" />
+        <Point X="1.938" Y="7.912" />
+        <Point X="3.136" Y="7.912" Type="JumpStart" />
+        <Point X="3.302" Y="7.912" Type="JumpEnd" />
+        <Point X="5.75" Y="7.912" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.051" Y="0.381" />
+        <Position X="0.094" Y="-0.225" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="7.171" />
+        <Point X="1.5" Y="12.396" />
+        <Point X="11.875" Y="12.396" />
+        <Point X="11.875" Y="10.431" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.089" Y="1.989" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AABAAAAAAAAAAAAAAABAAAgQAAAAAAAAAAAAAQAQAAA=</HashCode>
+      <HashCode>EQBAAAAAAAAAAAAAAABAgAgQCAAAAAAAAAAIAQAQAAA=</HashCode>
       <FileName>Logic\DataManagement\Export.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="GraphController" />
       <Field Name="_imageController" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Spektrometer.Logic.GraphController" Collapsed="true">
-    <Position X="6.5" Y="8.5" Width="1.5" />
+  <Class Name="Spektrometer.Logic.GraphController">
+    <Position X="5.75" Y="7" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="GraphData" Type="Spektrometer.Logic.GraphData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.875" Y="8.171" />
+        <Point X="5.875" Y="9.781" />
+        <Point X="5.25" Y="9.781" />
+      </Path>
+    </AssociationLine>
     <AssociationLine Name="_graphCalculator" Type="Spektrometer.Logic.GraphCalculator">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.057" Y="0.099" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="CalibrationPoints" Type="Spektrometer.Logic.CalibrationPoints" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.562" Y="8.171" />
+        <Point X="6.562" Y="9.625" />
+        <Point X="8.114" Y="9.625" />
+        <Point X="8.114" Y="10" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>BgQAAAAAAAAhACAAKAAAAAAIggAMAAAAAAEAACAFAQA=</HashCode>
+      <HashCode>AAQAAAAAAAAgAAAAAAAAAAAABAAEAAEAAAEAAAAABAA=</HashCode>
       <FileName>Logic\Controllers\GraphController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -79,111 +127,140 @@
       <Property Name="GraphData" />
       <Property Name="CalibrationPoints" />
     </ShowAsAssociation>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.Logic.ImageCalculator">
-    <Position X="9" Y="9.25" Width="1.5" />
+    <Position X="12.75" Y="11" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ACAAAAAAAAgAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>Logic\Calculators\ImageCalculator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Spektrometer.GUI.CameraRecordView">
-    <Position X="11.75" Y="1.5" Width="1.75" />
-    <NestedTypes>
-      <Delegate Name="Spektrometer.GUI.CameraRecordView.SetIndex" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>GUI\Content\CameraRecordView.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Delegate>
-    </NestedTypes>
+    <Position X="11.5" Y="1.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.25" Y="2.409" />
+        <Point X="14.114" Y="2.409" />
+        <Point X="14.114" Y="9.693" />
+        <Point X="12.75" Y="9.693" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.062" Y="-0.273" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>CACBAAAACAAAAAAAIAAAAAAQAAAAAAAAAACAEAAAAAA=</HashCode>
       <FileName>GUI\Content\CameraRecordView.xaml.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_imageController" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Spektrometer.GUI.GraphView" Collapsed="true">
-    <Position X="4.75" Y="2.5" Width="1.5" />
+  <Class Name="Spektrometer.GUI.GraphView">
+    <Position X="9.5" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GUI\Content\GraphView.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Spektrometer.GUI.TopToolBar">
-    <Position X="9.25" Y="2.5" Width="1.5" />
-    <AssociationLine Name="_cameraController" Type="Spektrometer.Logic.CameraController" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.812" Y="3.603" />
-        <Point X="9.812" Y="8.281" />
-        <Point X="10.792" Y="8.281" Type="JumpStart" />
-        <Point X="10.958" Y="8.281" Type="JumpEnd" />
-        <Point X="11.25" Y="8.281" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="_graphController" Type="Spektrometer.Logic.GraphController" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="9.5" Y="3.603" />
-        <Point X="9.5" Y="8.537" />
-        <Point X="8" Y="8.537" />
-      </Path>
-    </AssociationLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAAAA=</HashCode>
-      <FileName>GUI\Content\TopToolBar.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_cameraController" />
-      <Field Name="_graphController" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Spektrometer.MainWindow">
-    <Position X="7" Y="0.5" Width="1.5" />
+    <Position X="6.75" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="cameraController" Type="Spektrometer.Logic.CameraController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="1.791" />
+        <Point X="7.75" Y="3.5" />
+        <Point X="8.292" Y="3.5" Type="JumpStart" />
+        <Point X="8.458" Y="3.5" Type="JumpEnd" />
+        <Point X="9.5" Y="3.5" />
+        <Point X="9.5" Y="6.979" />
+        <Point X="11.25" Y="6.979" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <HashCode>QAAIAAAAAAAAAAAAAAEAAIEAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cameraController" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.Logic.GraphCalculator">
-    <Position X="3.75" Y="11.25" Width="1.5" />
+    <Position X="8.75" Y="7.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAAAAABAAAIAAAAAAAAAAgAAAAAEAAAAA=</HashCode>
       <FileName>Logic\Calculators\GraphCalculator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Spektrometer.Logic.ImageController" Collapsed="true">
-    <Position X="11.25" Y="9.5" Width="1.5" />
-    <AssociationLine Name="_cameraRecordViewer" Type="Spektrometer.GUI.CameraRecordView" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="12.75" Y="9.662" />
-        <Point X="13.198" Y="9.662" Type="JumpStart" />
-        <Point X="13.365" Y="9.662" Type="JumpEnd" />
-        <Point X="14" Y="9.662" />
-        <Point X="14" Y="2.825" />
-        <Point X="13.5" Y="2.825" />
-      </Path>
-    </AssociationLine>
+  <Class Name="Spektrometer.Logic.ImageController">
+    <Position X="11.25" Y="9" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <AssociationLine Name="_imageInfo" Type="Spektrometer.Logic.ImageInfo">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.062" Y="0.06" />
+        <Position X="-0.918" Y="0.365" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_graphController" Type="Spektrometer.Logic.GraphController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="9.479" />
+        <Point X="7.625" Y="9.479" />
+        <Point X="7.625" Y="7.912" />
+        <Point X="7.25" Y="7.912" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.659" Y="-0.638" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_imageCalculator" Type="Spektrometer.Logic.ImageCalculator" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.75" Y="10.25" />
+        <Point X="14" Y="10.25" />
+        <Point X="14" Y="11" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.023" Y="0.51" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAIgAAACAAABAIAIAAQAAAQAAAAAAAAAgAEAAAAAAA=</HashCode>
+      <HashCode>AAAIAAAACIAABQAAIAAQIAARBIAAAAAEAiEEAAAAAAI=</HashCode>
       <FileName>Logic\Controllers\ImageController.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_cameraRecordViewer" />
       <Field Name="_imageInfo" />
       <Field Name="_graphController" />
+      <Field Name="_imageCalculator" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Spektrometer.GUI.ExportView">
-    <Position X="0.75" Y="4.75" Width="1.5" />
+    <Position X="0.75" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAIAAAAIAAIAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABIAAAgIAAAAAAAAAAAABAAAQAAAAAAAAAAAAAEAAAE=</HashCode>
       <FileName>GUI\MenuPages\ExportView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -192,9 +269,13 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.GUI.ImportView">
-    <Position X="3" Y="4.75" Width="1.5" />
+    <Position X="3" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAICAIAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAgICAAAAAAAIAAAAAAAQAAAAAAAAAAAAAEAAAE=</HashCode>
       <FileName>GUI\MenuPages\ImportView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -203,14 +284,24 @@
     <Lollipop Position="0.178" />
   </Class>
   <Class Name="Spektrometer.GUI.MeasurementView">
-    <Position X="7.5" Y="4.75" Width="1.75" />
-    <AssociationLine Name="_graphController" Type="Spektrometer.Logic.GraphController">
+    <Position X="7.5" Y="3.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="_graphController" Type="Spektrometer.Logic.GraphController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.125" Y="5.05" />
+        <Point X="8.125" Y="6.625" />
+        <Point X="6.875" Y="6.625" />
+        <Point X="6.875" Y="7" />
+      </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.954" Y="0.28" />
+        <Position X="-1.18" Y="0.484" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AABAAAAIAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <HashCode>QABAAAAIAQAAQAAAAAAAAAAIABACAAAAAgAAAAUAAAA=</HashCode>
       <FileName>GUI\MenuPages\MeasurementView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -218,15 +309,19 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Spektrometer.GUI.MenuView" Collapsed="true">
-    <Position X="10.25" Y="5" Width="1.5" />
+  <Class Name="Spektrometer.GUI.MenuView">
+    <Position X="10.25" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <AssociationLine Name="_cameraController" Type="Spektrometer.Logic.CameraController">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.371" Y="0.187" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAIAAAAAAAAIAAAAAAAAAgBAAAAgABAAAAQ=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAIAAAAABAAAgBAAAAgABEAAAQ=</HashCode>
       <FileName>GUI\MenuPages\MenuView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -235,9 +330,19 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Spektrometer.GUI.MenuComponent">
-    <Position X="2" Y="2" Width="1.5" />
+    <Position X="2" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="MainWindow" Type="Spektrometer.MainWindow" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.5" Y="2.125" />
+        <Point X="7.188" Y="2.125" />
+        <Point X="7.188" Y="1.791" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>GUI\MenuPages\MenuComponent.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -245,14 +350,18 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Spektrometer.GUI.CalibrationView">
-    <Position X="5.25" Y="4.75" Width="1.5" />
+    <Position X="5.25" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <AssociationLine Name="_graphController" Type="Spektrometer.Logic.GraphController">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.649" Y="-0.304" />
+        <Position X="-0.635" Y="0.472" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AABAAAAICAIAAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <HashCode>AABAAAAICAAAAAAAIAAAAAAAAAAAAAAAAgAAAAEAAAE=</HashCode>
       <FileName>GUI\MenuPages\CalibrationView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -261,36 +370,79 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Spektrometer.Logic.ImageInfo" Collapsed="true">
-    <Position X="8.75" Y="12.25" Width="1.5" />
+  <Class Name="Spektrometer.Logic.ImageInfo">
+    <Position X="9" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAIAgAAAACACAAAQAAAAAAAAAAAABAA=</HashCode>
       <FileName>Logic\DataManagement\ImageInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Spektrometer.Logic.GraphData" Collapsed="true">
-    <Position X="3.25" Y="9.75" Width="1.5" />
+  <Class Name="Spektrometer.Logic.GraphData">
+    <Position X="3.75" Y="8.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Spektrometer.Logic.GraphData.NewDataEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Logic\DataManagement\GraphData.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>UAABAAAAIAEiRAAAAAIAADAAADACIKAQiAAUAgAgQAA=</HashCode>
+      <HashCode>UAABAAAAIAEiRAAAAAIAADAABDACIKAQiAAUEgAAQAA=</HashCode>
       <FileName>Logic\DataManagement\GraphData.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Spektrometer.Logic.CalibrationPoints" Collapsed="true">
-    <Position X="4.75" Y="10.5" Width="1.5" />
+  <Class Name="Spektrometer.Logic.CalibrationPoints">
+    <Position X="7.25" Y="10" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Spektrometer.Logic.CalibrationPoints.Update" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Logic\DataManagement\CalibrationPoints.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAEAAgAAA=</HashCode>
       <FileName>Logic\DataManagement\CalibrationPoints.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Spektrometer.GUI.CameraView">
-    <Position X="12.25" Y="4.75" Width="1.5" />
+    <Position X="12.25" Y="3.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <AssociationLine Name="_cameraController" Type="Spektrometer.Logic.CameraController">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.781" Y="0.165" />
+        <Position X="-3.017" Y="-0.23" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_imageController" Type="Spektrometer.Logic.ImageController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.25" Y="5.309" />
+        <Point X="13.25" Y="9.318" />
+        <Point X="12.75" Y="9.318" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.064" Y="0.282" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAgAIAAIAAAAAgAAKAAAQAAAAAAAAAAQAABAAAAA=</HashCode>
+      <HashCode>AAABAkAIAEAAAAAkoAAaQAAQADAgAAAAAAwABFkAACA=</HashCode>
       <FileName>GUI\MenuPages\CameraView.xaml.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

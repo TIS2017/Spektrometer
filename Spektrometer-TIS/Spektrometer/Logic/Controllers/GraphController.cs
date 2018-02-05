@@ -26,7 +26,8 @@ namespace Spektrometer.Logic
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
-            _graphCalculator = new GraphCalculator();          
+            _graphCalculator = new GraphCalculator();
+            CalibrationPoints = new CalibrationPoints();
         }
 
         public static GraphController GetInstance()
