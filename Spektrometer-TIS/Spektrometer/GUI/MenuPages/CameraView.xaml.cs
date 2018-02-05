@@ -49,8 +49,8 @@ namespace Spektrometer.GUI
 
         public void DefaulteSettings()
         {
-            this.rowIndex.Text = ImageController.GetRowIndex().ToString();
-            this.rowCount.Text = ImageController.GetRowCount().ToString();
+            rowIndex.Text = ImageController.GetRowIndex().ToString();
+            rowCount.Text = ImageController.GetRowCount().ToString();
             BtnImageAreaSet.Content = "Set";
 
             // Nefunguje uplne spravne, opravit - zobrazenie *
@@ -99,8 +99,8 @@ namespace Spektrometer.GUI
             {
                 CameraController.CameraStop();
             }
-            string selected = this.CameraListBox.Text;
-            this.CameraListBox.SelectedItem = selected;
+            string selected = CameraListBox.Text;
+            CameraListBox.SelectedItem = selected;
             int ix = list.FindIndex(item => item == selected);
             _cameraController.SelectCamera(ix);
             BtnCameraChoice.Content = "Set";
@@ -129,8 +129,8 @@ namespace Spektrometer.GUI
 
         private void ImageAreaSet(object sender, RoutedEventArgs e)
         {
-            int y = Int32.Parse(this.rowIndex.Text);
-            int h = Int32.Parse(this.rowCount.Text);
+            int y = Int32.Parse(rowIndex.Text);
+            int h = Int32.Parse(rowCount.Text);
             ImageController.SetRowIndex(y);
             ImageController.SetRowCount(h);
             BtnImageAreaSet.Content = "Set";
