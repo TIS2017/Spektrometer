@@ -158,7 +158,7 @@ namespace Spektrometer.Logic
          druhý stĺpec oddelený medzerou sú hodnoty zelenej zložky,
          tretí modrej, ako List sa potom posiela GraphControlleru.
             */
-        public void importChartData(string path)
+        public void ImportChartData(string path)
         {
             if (!File.Exists(path))
             {
@@ -199,10 +199,11 @@ namespace Spektrometer.Logic
          Importuje obrázok z kamery, ako .png a potom uloží ImageController,
          ako new Image...
          */
-        public void importCameraImage(string path)
+        public void ImportCameraImage(string path)
         {
             try
             {
+                _imageController.SetImageCount(1);
                 Stream imageStreamSource = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 PngBitmapDecoder decoder = new PngBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
                 BitmapSource bitmapSource = decoder.Frames[0];

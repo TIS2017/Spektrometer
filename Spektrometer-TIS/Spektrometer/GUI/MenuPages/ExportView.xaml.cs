@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 //using System.Windows.Shapes;
 using Microsoft.Win32;
 using Spektrometer.Logic;
@@ -75,7 +78,7 @@ namespace Spektrometer.GUI
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Bitmap Image|*.bmp|Jpeg Image|*.jpg|Gif Image|*.gif",
+                Filter = "Png Image|*.png",
                 Title = "Save Chart Image"
             };
             saveFileDialog.ShowDialog();
@@ -83,7 +86,7 @@ namespace Spektrometer.GUI
             if (saveFileDialog.FileName != "")
             {
                 string path = Path.GetFullPath(saveFileDialog.FileName);
-                Export.chartImage(path);
+                Export.chartImage(path, MainWindow.graphView.canGraph);
             }
         }
 
@@ -91,7 +94,7 @@ namespace Spektrometer.GUI
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "Bitmap Image|*.bmp|Jpeg Image|*.jpg|Gif Image|*.gif",
+                Filter = "Png Image|*.png",
                 Title = "Save Camera Image"
             };
             saveFileDialog.ShowDialog();

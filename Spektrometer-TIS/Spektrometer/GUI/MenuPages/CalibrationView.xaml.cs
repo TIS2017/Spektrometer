@@ -69,7 +69,7 @@ namespace Spektrometer.GUI
             {
                 // Open document 
                 string path = Path.GetFullPath(dialogWindow.FileName);
-                Import.importCalibrationFile(path);
+                _import.ImportCalibrationFile(path);
             }
         }
     }

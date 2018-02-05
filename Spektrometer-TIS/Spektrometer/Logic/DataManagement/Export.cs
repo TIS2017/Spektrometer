@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
@@ -166,13 +168,27 @@ namespace Spektrometer.Logic
         /**
          Export grafu ako .png súbor na zadanú adresu.
          */
-        public void chartImage(string path)
+        public void chartImage(string path, Canvas canvas)
         {
-            // treba získať obrázok (Bitmapu) z GraphView...
-            throw new System.NotImplementedException();
-          /*  RenderTargetBitmap rtb = new RenderTargetBitmap();
-            await renderTargetBitmap.RenderAsync(uielement);
-            image.Source = rtb;*/
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(canvas);
+            double dpi = 96d;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, PixelFormats.Default);
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                VisualBrush vb = new VisualBrush(canvas);
+                dc.DrawRectangle(vb, null, new Rect(new Point(), bounds.Size));
+            }
+
+            rtb.Render(dv);
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            using (var fs = File.OpenWrite(path))
+            {
+                pngEncoder.Save(fs);
+            }
         }
     }
 }
