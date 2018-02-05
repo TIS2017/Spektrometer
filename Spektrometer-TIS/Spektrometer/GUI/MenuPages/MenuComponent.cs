@@ -16,8 +16,8 @@ namespace Spektrometer.GUI
         public MenuComponent(MainWindow mainWindow)
         {
             MainWindow = mainWindow;
-            SetReferencesFromSpektrometerService();
+            SetReferences();
         }
-        protected abstract void SetReferencesFromSpektrometerService();
+        protected abstract void SetReferences();
     }
 }

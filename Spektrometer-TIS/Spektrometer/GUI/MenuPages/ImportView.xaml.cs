@@ -33,7 +33,7 @@ namespace Spektrometer.GUI
             MainWindow.ChangeFrameContent(new MenuView(MainWindow));
         }
 
-        protected override void SetReferencesFromSpektrometerService()
+        protected override void SetReferences()
         {
             _import = new Import();
         }

@@ -65,7 +65,7 @@ namespace Spektrometer.GUI
             MainWindow.ChangeFrameContent(new ExportView(MainWindow));
         }
 
-        protected override void SetReferencesFromSpektrometerService()
+        protected override void SetReferences()
         {
             _cameraController = CameraController.GetInstance();
         }

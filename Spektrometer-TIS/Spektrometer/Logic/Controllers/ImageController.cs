@@ -140,7 +140,12 @@ namespace Spektrometer.Logic
                 Monitor.Exit(_imageInfo);
             }
         }
-        
+
+        internal int GetImageCount()
+        {
+            return _imageInfo.historyCount;
+        }
+
         public BitmapSource LastImage()
         {
            return _imageInfo.lastImage;
