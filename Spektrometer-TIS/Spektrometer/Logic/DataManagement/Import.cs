@@ -70,7 +70,7 @@ namespace Spektrometer.Logic
                     {
                         calibrationPointsCount++;
                         var point = new System.Windows.Point(x, y);
-                        GraphController.CalibrationPoints.AddPoint(point);
+                        _graphController.CalibrationPoints.AddPoint(point);
                     }               
                 }
             }
@@ -79,7 +79,7 @@ namespace Spektrometer.Logic
                 MessageBox.Show("Nedostatok kalibračných bodov, prosím doplňte "+(3-calibrationPointsCount)+
                 ", alebo viac bodov do kalibračného súboru !");
 
-                GraphController.CalibrationPoints.CalibrationPointsList = new List<Point>();
+                _graphController.CalibrationPoints.CalibrationPointsList = new List<Point>();
             }
         }
 
