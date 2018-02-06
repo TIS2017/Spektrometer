@@ -57,7 +57,7 @@
             </Border>
             
             <DockPanel VerticalAlignment="Center">
-                <CheckBox Name="saveChecbox" Content="Save camera images automatically" Foreground="White" FontSize="13" VerticalAlignment="Center" Unchecked="saveChecboxUnChacked" Checked="saveCheckBoxChecked"/>
+                <CheckBox Name="saveChecbox" Content="Save camera images automatically" Foreground="White" FontSize="13" VerticalAlignment="Center" Unchecked="SaveChecboxUnchecked" Checked="SaveCheckBoxChecked"/>
             </DockPanel>
 
             <DockPanel>

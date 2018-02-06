@@ -14,14 +14,24 @@ namespace Spektrometer.Logic
 {
     public class Import
     {
-        private GraphController GraphController;
+        private GraphController _graphController;
         private ImageController _imageController;
-        internal static string loadPath = Directory.GetCurrentDirectory();
+        internal string loadPath = Directory.GetCurrentDirectory();
+        private static Import self;
 
-        public Import()
+        private Import()
         {
-            GraphController = GraphController.GetInstance();
+            _graphController = GraphController.GetInstance();
             _imageController = ImageController.GetInstance();
+        }
+
+        public static Import GetInstance()
+        {
+            if (self == null)
+            {
+                self = new Import();
+            }
+            return self;
         }
 
         /**
@@ -88,6 +98,9 @@ namespace Spektrometer.Logic
 
         private void LoadCamera(XElement xElement)
         {
+            if (xElement == null)
+                return;
+
             var cameraController = CameraController.GetInstance();
             var calibPoint = GraphController.GetInstance().CalibrationPoints;
 
@@ -134,6 +147,7 @@ namespace Spektrometer.Logic
         private void LoadBasicConfiguration(IEnumerable<XElement> xElement)
         {
             var imageController = ImageController.GetInstance();
+            var export = Export.GetInstance();
             foreach (var element in xElement)
             {
                 if (element.Name.LocalName.Equals("rowIndex"))
@@ -153,11 +167,15 @@ namespace Spektrometer.Logic
                 }
                 else if (element.Name.LocalName.Equals("saveLocation"))
                 {
-                    Export.savePath = element.Value;
+                    export.savePath = element.Value;
                 }
                 else if (element.Name.LocalName.Equals("loadLocation"))
                 {
                     loadPath = element.Value;
+                }
+                else if (element.Name.LocalName.Equals("automaticSaveLocation"))
+                {
+                    export.automaticSavePath = element.Value;
                 }
             }
         }
@@ -170,40 +188,33 @@ namespace Spektrometer.Logic
             */
         public void ImportChartData(string path)
         {
-            if (!File.Exists(path))
+            try
             {
-                MessageBox.Show("Súbor sa nenašiel !");
-                return;
-            }
-
-            string[] row;
-            List<int> R = new List<int>();
-            List<int> G = new List<int>();
-            List<int> B = new List<int>();
-            List<Color> graphData = new List<Color>();
-
-            using (StreamReader chart = new StreamReader(path))
-            {
-                while (!chart.EndOfStream)
+                if (!File.Exists(path))
                 {
-                    row = chart.ReadLine().Split(' ');
-                    try
+                    MessageBox.Show("Súbor sa nenašiel !");
+                    return;
+                }
+
+                List<Color> graphData = new List<Color>();
+                using (var chart = new StreamReader(path))
+                {
+                    while (!chart.EndOfStream)
                     {
-                        R.Add(Convert.ToInt32(row[0]));
-                        G.Add(Convert.ToInt32(row[1]));
-                        B.Add(Convert.ToInt32(row[2]));
-                    }
-                    catch
-                    {
+                        var line = chart.ReadLine().Split(' ');
+                        var red = Convert.ToInt32(line[0]);
+                        var green = Convert.ToInt32(line[1]);
+                        var blue = Convert.ToInt32(line[2]);
+                        graphData.Add(Color.FromRgb(Convert.ToByte(red), Convert.ToByte(green), Convert.ToByte(blue)));
                     }
                 }
+                
+                _graphController.GraphData.ActualPicture = graphData;
             }
-            
-            for(int i=0; i<R.Count; i++)
+            catch(Exception)
             {
-                graphData.Add(Color.FromRgb(Convert.ToByte(R[i]), Convert.ToByte(G[i]), Convert.ToByte(B[i])));
-            }        
-            GraphController.GraphData.PixelData = graphData;
+                MessageBox.Show("Nepodarilo sa načítať súbor!");
+            }
         }
 
         /**

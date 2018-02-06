@@ -12,30 +12,7 @@ namespace Spektrometer.GUI
     {
         private Import _import;
         private GraphController _graphController;
-
-        public Import Import
-        {
-            get
-            {
-                return _import;
-            }
-            set
-            {
-                _import = value;
-            }
-        }
-        public GraphController GraphController
-        {
-            get
-            {
-                return _graphController;
-            }
-            set
-            {
-                _graphController = value;
-            }
-        }
-
+        
         public CalibrationView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
@@ -49,7 +26,7 @@ namespace Spektrometer.GUI
         protected override void SetReferences()
         {
             _graphController = GraphController.GetInstance();
-            _import = new Import();
+            _import = Import.GetInstance();
         }
 
         private void CalibrationFile(object sender, RoutedEventArgs e)
