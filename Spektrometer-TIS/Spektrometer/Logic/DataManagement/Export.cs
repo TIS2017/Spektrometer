@@ -38,7 +38,7 @@ namespace Spektrometer.Logic
 
                 for (int i = 0; i < graphData.Count; i++)
                 {
-                    File.WriteLine(graphData[i].X + " " + graphData[i].Y);
+                    File.WriteLine(graphData[i].X + "\t" + graphData[i].Y);
                 }
                 File.Close();
             }
