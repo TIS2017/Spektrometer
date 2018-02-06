@@ -23,18 +23,7 @@ namespace Spektrometer.GUI
     public partial class MeasurementView : MenuComponent
     {
         private GraphController _graphController;
-
-        public GraphController GraphController
-        {
-            get
-            {
-                return _graphController;
-            }
-            set
-            {
-                _graphController = value;
-            }
-        }
+        
         public MeasurementView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
@@ -77,8 +66,10 @@ namespace Spektrometer.GUI
 
         private void ReferencePicture(object sender, RoutedEventArgs e)
         {
-            _graphController.GraphData.ReferencedPicture = _graphController.GraphData.ActualPicture;
-        
+            if (_graphController.GraphData.ActualPicture.Count > 0)
+                _graphController.GraphData.ReferencedPicture = _graphController.GraphData.ActualPicture;
+            else
+                MessageBox.Show("Ziadne data pre ulozenie referencneho snimku.");
         }
 
         private void Subtraction(object sender, RoutedEventArgs e)
