@@ -16,27 +16,17 @@ namespace Spektrometer.Logic
         /**
          * Vráti index (x-ovej osi) globálneho maxima v grafe,
          * ktorý treba na grafe vyznačiť
-         * **/
+         */
         public int globalMax(List<Color> pic)
         {
             int index = 0;
-            int max = -9;
+            int max = 0;
             for(int i=0; i<pic.Count; i++)
             {
-                if (pic[i].R > max)
+                if ((pic[i].R + pic[i].G + pic[i].B) > max)
                 {
                     index = i;
-                    max = pic[i].R;
-                }
-                else if (pic[i].G > max)
-                {
-                    index = i;
-                    max = pic[i].G;
-                }
-                else if (pic[i].B > max)
-                {
-                    index = i;
-                    max = pic[i].B;
+                    max = pic[i].R + pic[i].G + pic[i].B;
                 }
             }
             return index;
@@ -45,7 +35,7 @@ namespace Spektrometer.Logic
         /**
          * Vráti zoznam indexov (x-ová os), tých vrcholov,
          * ktorých hodnota (y-ová os) presiahla požadovanú hodnotu (threshold).
-         * */
+         */
         public List<int> peaks(List<Color> pic, double threshold)
         {
             List<int> indexes = new List<int>();
@@ -57,7 +47,7 @@ namespace Spektrometer.Logic
                 }
             }
             return indexes;
-        }
+        } 
 
         /**
          * Funkcia slúži na výpočet parametrov a0,a1,a2, pomocou ktorých funkcia convertToNanometers

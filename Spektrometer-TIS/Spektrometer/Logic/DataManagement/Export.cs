@@ -31,23 +31,22 @@ namespace Spektrometer.Logic
         public void calibrationFile(string path)
         {
             try {
-                StreamWriter File = new StreamWriter(path);
-
-                var graphData = new List<System.Windows.Point>();
-                graphData = GraphController.CalibrationPoints.CalibrationPointsList;
-
-                for (int i = 0; i < graphData.Count; i++)
+                using (StreamWriter File = new StreamWriter(path))
                 {
-                    File.WriteLine(graphData[i].X + "\t" + graphData[i].Y);
+                    var graphData = new List<System.Windows.Point>();
+                    graphData = GraphController.CalibrationPoints.CalibrationPointsList;
+
+                    for (int i = 0; i < graphData.Count; i++)
+                    {
+                        File.WriteLine(graphData[i].X + "\t" + graphData[i].Y);
+                    }
                 }
-                File.Close();
             }
-            catch
+            catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !");
+                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !\n"+e.Message);
                 return;
             }
-
         }
         
         /**
@@ -68,9 +67,9 @@ namespace Spektrometer.Logic
                 }
                 File.Close();
             }
-            catch
+            catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !");
+                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !"+e.Message);
                 return;
             }
         }
@@ -158,9 +157,9 @@ namespace Spektrometer.Logic
                     encoder.Save(fileStream);
                 }
             }
-            catch
+            catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !");
+                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !"+e.Message);
                 return;
             }
         }

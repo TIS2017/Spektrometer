@@ -40,7 +40,7 @@ namespace Spektrometer.Logic
             string[] row;
             double x = 0;
             double y = 0;
-            int calibrationPointsCount = 0;
+            int calibrationPointsCount = 0;       
 
             using (var calibFile = new StreamReader(path))
             {
@@ -53,7 +53,7 @@ namespace Spektrometer.Logic
                         y = Convert.ToDouble(row[1]);
                     }
                     catch
-                    {
+                    {                      
                     }
 
                     if (y != 0)
@@ -61,7 +61,7 @@ namespace Spektrometer.Logic
                         calibrationPointsCount++;
                         var point = new System.Windows.Point(x, y);
                         GraphController.CalibrationPoints.AddPoint(point);
-                    }
+                    }               
                 }
             }
             if(calibrationPointsCount < 3)
@@ -176,27 +176,28 @@ namespace Spektrometer.Logic
                 return;
             }
 
-            string[] riadok;
+            string[] row;
             List<int> R = new List<int>();
             List<int> G = new List<int>();
             List<int> B = new List<int>();
             List<Color> graphData = new List<Color>();
 
-            StreamReader chart = new StreamReader(path);
-            while (!chart.EndOfStream)
+            using (StreamReader chart = new StreamReader(path))
             {
-                riadok = chart.ReadLine().Split(' ');
-                try
+                while (!chart.EndOfStream)
                 {
-                    R.Add(Convert.ToInt32(riadok[0]));
-                    G.Add(Convert.ToInt32(riadok[1]));
-                    B.Add(Convert.ToInt32(riadok[2]));
+                    row = chart.ReadLine().Split(' ');
+                    try
+                    {
+                        R.Add(Convert.ToInt32(row[0]));
+                        G.Add(Convert.ToInt32(row[1]));
+                        B.Add(Convert.ToInt32(row[2]));
+                    }
+                    catch
+                    {
+                    }
                 }
-                catch
-                {
-                }               
             }
-            chart.Close();
             
             for(int i=0; i<R.Count; i++)
             {
