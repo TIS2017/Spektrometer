@@ -44,33 +44,43 @@ namespace Spektrometer.Logic
         {
             if (!File.Exists(path))
             {
-                MessageBox.Show("Súbor sa nenašiel !");
+                MessageBox.Show("Súbor so zadanou cestou: "+ path +" sa nepodarilo nájsť !");
                 return;
             }
-            string[] riadok;
-            double x = -999;
-            double y = -999;
+            string[] row;
+            double x = 0;
+            double y = 0;
+            int calibrationPointsCount = 0;       
 
-            StreamReader calibFile = new StreamReader(path);
-            while (!calibFile.EndOfStream)
+            using (var calibFile = new StreamReader(path))
             {
-                riadok = calibFile.ReadLine().Split(' ');
+                while (!calibFile.EndOfStream)
+                {
+                    row = calibFile.ReadLine().Split('\t');
                     try
-                        {
-                            x = Convert.ToDouble(riadok[0]);
-                            y = Convert.ToDouble(riadok[1]);
-                        } 
-                    catch
                     {
+                        x = Convert.ToDouble(row[0]);
+                        y = Convert.ToDouble(row[1]);
+                    }
+                    catch
+                    {                      
                     }
 
-                if(x!= -999 && y!= -999){
-                    var point = new System.Windows.Point(x,y);
-
-                    _graphController.CalibrationPoints.AddPoint(point);
+                    if (y != 0)
+                    {
+                        calibrationPointsCount++;
+                        var point = new System.Windows.Point(x, y);
+                        GraphController.CalibrationPoints.AddPoint(point);
+                    }               
                 }
             }
-           calibFile.Close();
+            if(calibrationPointsCount < 3)
+            {
+                MessageBox.Show("Nedostatok kalibračných bodov, prosím doplňte "+(3-calibrationPointsCount)+
+                ", alebo viac bodov do kalibračného súboru !");
+
+                GraphController.CalibrationPoints.CalibrationPointsList = new List<Point>();
+            }
         }
 
         internal void LoadConfig()
