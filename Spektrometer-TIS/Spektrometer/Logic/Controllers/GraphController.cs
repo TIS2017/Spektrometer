@@ -44,7 +44,7 @@ namespace Spektrometer.Logic
         {
             var tmp = GraphData.ActualPicture;
             // TODO:
-            GraphData.PixelData = tmp;
+            GraphData.GraphDataInPixels = tmp;
 
             if (RedrawChart == null) {
                 throw new NullReferenceException("");

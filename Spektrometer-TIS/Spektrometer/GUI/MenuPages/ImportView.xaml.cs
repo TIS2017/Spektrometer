@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
+using Microsoft.Win32;
 using Spektrometer.Logic;
 
 namespace Spektrometer.GUI
@@ -24,16 +25,18 @@ namespace Spektrometer.GUI
 
         protected override void SetReferences()
         {
-            _import = new Import();
+            _import = Import.GetInstance();
         }
 
         private void CalibrationFile(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dialogWindow = new Microsoft.Win32.OpenFileDialog();
-            
-            dialogWindow.DefaultExt = ".txt";
-            dialogWindow.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            
+            var dialogWindow = new OpenFileDialog
+            {
+                DefaultExt = ".txt",
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                InitialDirectory = _import.loadPath
+            };
+
             bool? result = dialogWindow.ShowDialog();
             
             if (result == true)
@@ -45,9 +48,12 @@ namespace Spektrometer.GUI
 
         private void ChartData(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dialogWindow = new Microsoft.Win32.OpenFileDialog(); 
-            dialogWindow.DefaultExt = ".txt";
-            dialogWindow.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"; 
+            var dialogWindow = new OpenFileDialog
+            {
+                DefaultExt = ".txt",
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                InitialDirectory = _import.loadPath
+            };
             bool? result = dialogWindow.ShowDialog();
 
             if (result == true)
@@ -59,9 +65,12 @@ namespace Spektrometer.GUI
 
         private void CameraImage(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dialogWindow = new Microsoft.Win32.OpenFileDialog();
-            dialogWindow.DefaultExt = ".png";
-            dialogWindow.Filter = "png Image|*.png|Bitmap Image|*.bmp|Jpeg Image|*.jpg|Gif Image|*.gif";
+           var dialogWindow = new OpenFileDialog
+           {
+                DefaultExt = ".png",
+                Filter = "png Image|*.png",
+                InitialDirectory = _import.loadPath
+            };
 
             bool? result = dialogWindow.ShowDialog();
 

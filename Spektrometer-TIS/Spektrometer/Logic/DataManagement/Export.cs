@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,16 +16,33 @@ namespace Spektrometer.Logic
 {
     public class Export
     {
-        private GraphController GraphController;
+        private GraphController _graphController;
         private ImageController _imageController;
-        internal static string savePath = Directory.GetCurrentDirectory();
+        internal string savePath;
+        internal string automaticSavePath;
+        private double _time;
+        private bool _saving = false;
+        private static Export self;
 
-        public Export()
+
+        private Thread automaticImageSaving;
+
+        private Export()
         {
-            GraphController = GraphController.GetInstance();
+            _graphController = GraphController.GetInstance();
             _imageController = ImageController.GetInstance();
+            savePath = Directory.GetCurrentDirectory();
+            automaticSavePath = Directory.GetCurrentDirectory();
         }
 
+        public static Export GetInstance()
+        {
+            if (self == null)
+            {
+                self = new Export();
+            }
+            return self;
+        }
         /**
         Export .txt súboru s kalibračnými bodmi na zadanú adresu.
          */
@@ -34,7 +52,7 @@ namespace Spektrometer.Logic
                 StreamWriter File = new StreamWriter(path);
 
                 var graphData = new List<System.Windows.Point>();
-                graphData = GraphController.CalibrationPoints.CalibrationPointsList;
+                graphData = _graphController.CalibrationPoints.CalibrationPointsList;
 
                 for (int i = 0; i < graphData.Count; i++)
                 {
@@ -57,16 +75,15 @@ namespace Spektrometer.Logic
         {
             try
             {
-                StreamWriter File = new StreamWriter(path);
-
-                List<double> intesityData = new List<double>();
-                intesityData = GraphController.GraphData.IntesityData;
-
-                for (int i = 0; i < intesityData.Count; i++)
+                using (var File = new StreamWriter(path))
                 {
-                    File.WriteLine(intesityData);
+                    var graphPixelData = _graphController.GraphData.GraphDataInPixels;
+
+                    foreach (var pixel in graphPixelData)
+                    {
+                        File.WriteLine(string.Format("{0} {1} {2}", pixel.R, pixel.G, pixel.B));
+                    }
                 }
-                File.Close();
             }
             catch
             {
@@ -91,13 +108,14 @@ namespace Spektrometer.Logic
         private XElement[] BasicConfiguration()
         {
             var imageController = ImageController.GetInstance();
-            var result = new XElement[5];
+            var result = new XElement[6];
             
             result[0] = new XElement("rowIndex", imageController.GetRowIndex());
             result[1] = new XElement("rowCount", imageController.GetRowCount());
             result[2] = new XElement("imageCount", imageController.GetImageCount());
             result[3] = new XElement("saveLocation", savePath);
-            result[4] = new XElement("loadLocation", Import.loadPath);
+            result[4] = new XElement("loadLocation", Import.GetInstance().loadPath);
+            result[5] = new XElement("automaticSaveLocation", automaticSavePath);
 
             return result;
         }
@@ -131,6 +149,8 @@ namespace Spektrometer.Logic
             var calibData = GraphController.GetInstance().CalibrationPoints.CalibrationPointsList;
             var cameraController = CameraController.GetInstance();
 
+            if (cameraController.GetCameraIndex() == -1)
+                return null;
             var camera = new XElement("Camera");
             camera.SetAttributeValue("id", cameraController.GetSelectedCameraID());
             foreach (var point in calibData)
@@ -150,13 +170,16 @@ namespace Spektrometer.Logic
         {
             try
             {
-                var img = _imageController.LastImage();
-                using (var fileStream = new FileStream(path, FileMode.Create))
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    BitmapEncoder encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(img));
-                    encoder.Save(fileStream);
-                }
+                    var img = _imageController.LastImage().Clone();
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        BitmapEncoder encoder = new PngBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(img));
+                        encoder.Save(fileStream);
+                    }
+                });
             }
             catch
             {
@@ -189,6 +212,32 @@ namespace Spektrometer.Logic
             {
                 pngEncoder.Save(fs);
             }
+        }
+
+        public void StartSavingAutomatically(double time)
+        {
+            _time = time;
+            _saving = true;
+            automaticImageSaving = new Thread(new ThreadStart(SavingImages));
+            automaticImageSaving.Start();
+        }
+
+        private void SavingImages()
+        {
+            var camera = CameraController.GetInstance();
+            while (_saving)
+            {
+                if (camera.IsRunning())
+                {
+                    self.cameraImage($"{self.automaticSavePath}-{DateTime.Now.ToString("d.M.yyyy_HH-mm-ss.fff")}.png");
+                    Thread.Sleep((int)(self._time * 1000));
+                }
+            }
+        }
+
+        public void StopSavingAutomatically()
+        {
+            _saving = false;
         }
     }
 }

@@ -162,5 +162,18 @@ namespace Spektrometer.Logic
                 })
             );
         }
+
+        public bool IsRunning()
+        {
+            try
+            {
+                if (_videoSource != null && _videoSource.IsRunning)
+                    return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
     }
 }

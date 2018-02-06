@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 
 using Spektrometer.GUI;
 using Spektrometer.Logic;
+using System.Threading;
 
 namespace Spektrometer
 {
@@ -30,7 +31,7 @@ namespace Spektrometer
             InitializeComponent();
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
 
-            Import import = new Import();
+            Import import = Import.GetInstance();
             import.LoadConfig();
             Closing += OnWindowClosing;
 
@@ -66,7 +67,7 @@ namespace Spektrometer
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            Export export = new Export();
+            var export = Export.GetInstance();
             export.SaveConfig();
         }
     }
