@@ -31,8 +31,11 @@ namespace Spektrometer.GUI
         double finalX = 0;
         double finalY = 0;
 
-        double minValueRange = 0;
-        double maxValueRange = 0;
+        private double _minValueRange;
+        private double _maxValueRange;
+        private bool _entered;
+        private bool _dragging;
+        private double _lastMouseXPosition;
 
         double step;
 
@@ -51,7 +54,7 @@ namespace Spektrometer.GUI
 
             GraphController.GetInstance().RedrawChart += DrawGraph;
         }
-
+        
         public void DrawGraph(List<Color> pixelData)
         {
             if (pixelData == null)
@@ -81,7 +84,8 @@ namespace Spektrometer.GUI
 
             if (start)
             {
-                maxValueRange = pixelData.Count;
+                _maxValueRange = pixelData.Count;
+                _minValueRange = 0;
                 graphMargin = margin;
                 graphWidth = canGraph.Width;
                 start = false;
@@ -92,7 +96,7 @@ namespace Spektrometer.GUI
 
             //if (maxValueRange == pixelData.Count)
             //{
-                step = ((maxValueRange - minValueRange) / (canGraph.Width - margin));
+                step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
             //} 
            
             //MessageBox.Show("GRAPH WIDTH: " + graphWidth);
@@ -119,7 +123,7 @@ namespace Spektrometer.GUI
                 double count = 0;
 
                 PointCollection points = new PointCollection();
-                for (double x = minValueRange; x <= maxValueRange; x += step)
+                for (double x = _minValueRange; x <= _maxValueRange; x += step)
                 {
                     double yValue = 0;
                     switch (data_set)
@@ -159,7 +163,7 @@ namespace Spektrometer.GUI
             xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
 
             double countAxisX = 0;
-            for (double x = minValueRange; x <= maxValueRange; x += step)
+            for (double x = _minValueRange; x <= _maxValueRange; x += step)
             {
                 if (x > counterForAxisX)
                 {
@@ -225,30 +229,99 @@ namespace Spektrometer.GUI
 
         }
 
-        private void canGraph_MouseDown(object sender, MouseButtonEventArgs e)
+        private void canGraph_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            isDown = true;
-            Point point = e.GetPosition(this);
-            initialX = point.X;
-            initialY = point.Y;
+            DrawGraph(pixelData);
+        }
+
+        private void canGraph_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (pixelData == null)
+                return;
+            var point = e.GetPosition(canGraph);
+            if (e.Delta > 0)
+                ZoomInGraph(point);
+            else
+                ZoomOutGraph(point);
+            DrawGraph(pixelData);
+        }
+
+        private void ZoomOutGraph(Point mouse)
+        {
+            var range = _maxValueRange - _minValueRange;
+            var ratio = (mouse.X - graphMargin) / (canGraph.Width - graphMargin);
+            var leftLenght = range * ratio;
+            var rightLenght = range - leftLenght;
+            if (_minValueRange - leftLenght < 0)
+            {
+                _minValueRange = 0;
+            }
+            else
+            {
+                _minValueRange -= leftLenght;
+            }
+
+            if (_maxValueRange + rightLenght > pixelData.Count)
+            {
+                _maxValueRange = pixelData.Count;
+            }
+            else
+            {
+                _maxValueRange += rightLenght;
+            }
+        }
+
+        private void ZoomInGraph(Point mouse)
+        {
+            var range = _maxValueRange - _minValueRange;
+            var ratio = (mouse.X - graphMargin) / (canGraph.Width - graphMargin);
+            var leftLenght = range * ratio;
+            var rightLenght = range - leftLenght;
+            leftLenght *= 0.5;
+            rightLenght *= 0.5;
+            _minValueRange += leftLenght;
+            _maxValueRange -= rightLenght;
+            if (_maxValueRange <= _minValueRange)
+            {
+                _minValueRange -= 10;
+                _maxValueRange += 10;
+            }
         }
 
         private void canGraph_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            Point point = e.GetPosition(this);
-            finalX = point.X;
-            finalY = point.Y;
-
-            minValueRange = initialX - graphMargin;
-            maxValueRange = finalX - graphMargin;
-
-            step = 1;
-            graphWidth = finalX - initialX;
+            _dragging = false;
         }
 
-        private void canGraph_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void canGraph_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DrawGraph(pixelData);
+            if (_entered)
+                _dragging = true;
+        }
+
+        private void canGraph_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_dragging)
+            {
+                var deltaX = _lastMouseXPosition - e.GetPosition(canGraph).X;
+                if (_minValueRange + deltaX < 0 || _maxValueRange + deltaX > pixelData.Count)
+                    return;
+                _minValueRange += deltaX;
+                _maxValueRange += deltaX;
+                DrawGraph(pixelData);
+            }
+            _lastMouseXPosition = e.GetPosition(canGraph).X;
+        }
+
+        private void canGraph_MouseEnter(object sender, MouseEventArgs e)
+        {
+            _entered = true;
+        }
+
+        private void canGraph_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _entered = false;
+            _dragging = false;
         }
     }
 }
