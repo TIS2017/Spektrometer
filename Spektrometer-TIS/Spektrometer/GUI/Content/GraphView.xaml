@@ -6,7 +6,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="500">
     <Grid x:Name="gridCanvas">
-        <Canvas Name="canGraph" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding ActualWidth, ElementName=gridCanvas, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=gridCanvas, Mode=OneWay}">
+        <Canvas Name="canGraph" Background="White" VerticalAlignment="Center" HorizontalAlignment="Center" Width="{Binding ActualWidth, ElementName=gridCanvas, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=gridCanvas, Mode=OneWay}" MouseDown="canGraph_MouseDown" MouseUp="canGraph_MouseUp">
         </Canvas>
     </Grid>
 </UserControl>
