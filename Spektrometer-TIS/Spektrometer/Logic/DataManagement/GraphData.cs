@@ -11,6 +11,8 @@ namespace Spektrometer.Logic
     public enum Filter
     {
         RGB, R, G, B
+
+
     }
     public enum DisplayFormat
     {
@@ -23,7 +25,7 @@ namespace Spektrometer.Logic
 
         internal NewDataEventHandler OnChartDataChange { get; set; }
         internal NewDataEventHandler OnCalculationDataChange { get; set; }
-        private List<Color> _pixelData;
+        private List<Color> _graphDataInPixels;
         private List<double> _intesityData;
         private List<Color> _referencedPicture;
         private List<Color> _actualPicture;
@@ -37,12 +39,12 @@ namespace Spektrometer.Logic
         private Filter _filter;
         private DisplayFormat _displayFormat;
 
-        public List<Color> PixelData
+        public List<Color> GraphDataInPixels
         {
-            get { return _pixelData; }
+            get { return _graphDataInPixels; }
             set
             {
-                _pixelData = value;
+                _graphDataInPixels = value;
                 if (OnChartDataChange == null)
                     return;
                 OnChartDataChange();
@@ -184,14 +186,14 @@ namespace Spektrometer.Logic
 
         public GraphData()
         {
-            PixelData = new List<Color>();
+            GraphDataInPixels = new List<Color>();
             IntesityData = new List<double>();
             ReferencedPicture = new List<Color>();
             ActualPicture = new List<Color>();
             ShowPeaks = false;
             GlobalPeak = false;
             ShowValues = false;
-            Treshold = 0;
+            Treshold = -1;
             Subtraction = false;
             Division = false;
             FillChart = false;

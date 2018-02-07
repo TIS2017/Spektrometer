@@ -16,30 +16,21 @@ namespace Spektrometer.Logic
         public List<Color> Average(Stack<List<Color>> pics)
         {
             List<Color> avg = new List<Color>();
-            List<Color> pom = new List<Color>();
+            List<Color> temp = new List<Color>();
 
-            var A = new List<int>();
-            var R = new List<int>();
-            var G = new List<int>();
-            var B = new List<int>();
-
-            for(int i=0; i<1280; i++)
-            {
-                A.Add(0);
-                R.Add(0);
-                G.Add(0);
-                B.Add(0);
-            }
-
+            var A = new List<int>(new int[1280]);
+            var R = new List<int>(new int[1280]);
+            var G = new List<int>(new int[1280]);
+            var B = new List<int>(new int[1280]);
             for (int i = 0; i < pics.Count; i++)
             {
                 for (int j = 0; j < pics.ElementAt(i).Count; j++)
                 {
-                    pom = pics.ElementAt(i);
-                    A[j] = A[j] + pom[j].A;
-                    R[j] = R[j] + pom[j].R;
-                    G[j] = G[j] + pom[j].G;
-                    B[j] = B[j] + pom[j].B;
+                    temp = pics.ElementAt(i);
+                    A[j] += temp[j].A;
+                    R[j] += temp[j].R;
+                    G[j] += temp[j].G;
+                    B[j] += temp[j].B;
                 }
             }
 
@@ -115,6 +106,47 @@ namespace Spektrometer.Logic
                 result.Add(Color.FromArgb(Convert.ToByte(A), Convert.ToByte(R), Convert.ToByte(G), Convert.ToByte(B)));
             }
 
+            return result;
+        }
+
+        /**
+         * Funkcia vráti podiel aktuálneho a referenčného obrázka.
+         */
+        public List<Color> DivisionOfActualAndReferencePicture(List<Color> actualPicture, List<Color> referencePicture)
+        {
+            int redColor = 0;
+            int greenColor = 0;
+            int blueColor = 0;
+            List<Color> result = new List<Color>();
+
+            for (int i = 0; i < actualPicture.Count; i++)
+            {
+                if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                {
+                    redColor = 255;
+                }
+                else
+                {
+                    redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                }
+                if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                {
+                    greenColor = 255;
+                }
+                else
+                {
+                    greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                }
+                if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                {
+                    blueColor = 255;
+                }
+                else
+                {
+                    blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                }
+                result.Add(Color.FromArgb(Convert.ToByte(255), Convert.ToByte(redColor), Convert.ToByte(greenColor), Convert.ToByte(blueColor)));
+            }
             return result;
         }
     }

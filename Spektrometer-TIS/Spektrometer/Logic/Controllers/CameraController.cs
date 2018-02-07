@@ -18,7 +18,7 @@ namespace Spektrometer.Logic
         public static extern bool DeleteObject(IntPtr hObject);
         public delegate void StopCameraHandler();
 
-        public StopCameraHandler CameraStop;
+        public StopCameraHandler CameraStop { get; set; }
 
         private ImageController _imageController;
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -55,6 +55,28 @@ namespace Spektrometer.Logic
             return cameraList;
         }
 
+        public string GetSelectedCameraID()
+        {
+            if (_cameraIndex >= 0)
+                return _videoDevices[_cameraIndex].MonikerString;
+            return null;
+        }
+
+        public int GetIndexOfCameraByID(string monikerString)
+        {
+            var cameraIndex = -1;
+
+            for (var i = 0; i < _videoDevices.Count; i++)
+            {
+                if (_videoDevices[i].MonikerString.Equals(monikerString))
+                {
+                    cameraIndex = i;
+                    break;
+                }
+            }
+
+            return cameraIndex;
+        }
 
         public void SelectCamera(int index)
         {
@@ -139,6 +161,19 @@ namespace Spektrometer.Logic
                     DeleteObject(hBitmap);
                 })
             );
+        }
+
+        public bool IsRunning()
+        {
+            try
+            {
+                if (_videoSource != null && _videoSource.IsRunning)
+                    return true;
+            }
+            catch
+            {
+            }
+            return false;
         }
     }
 }

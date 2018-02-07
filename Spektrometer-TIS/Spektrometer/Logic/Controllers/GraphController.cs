@@ -26,7 +26,8 @@ namespace Spektrometer.Logic
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
-            _graphCalculator = new GraphCalculator();          
+            _graphCalculator = new GraphCalculator();
+            CalibrationPoints = new CalibrationPoints();
         }
 
         public static GraphController GetInstance()
@@ -43,7 +44,7 @@ namespace Spektrometer.Logic
         {
             var tmp = GraphData.ActualPicture;
             // TODO:
-            GraphData.PixelData = tmp;
+            GraphData.GraphDataInPixels = tmp;
 
             if (RedrawChart == null) {
                 throw new NullReferenceException("");

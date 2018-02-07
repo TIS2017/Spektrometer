@@ -48,11 +48,27 @@
                 </DockPanel>
             </Border>
 
-            <DockPanel>
-                <Image Source="/Spektrometer;component/GUI/images/icons8-picture-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
-                <Label Content="Camera image: " Foreground="White" FontSize="16"/>
-                <Button Content="Export" Height="26" Width="75" HorizontalAlignment="Right" Click="CameraImage"/>
+            <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
+                <DockPanel>
+                    <Image Source="/Spektrometer;component/GUI/images/icons8-picture-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
+                    <Label Content="Camera image: " Foreground="White" FontSize="16"/>
+                    <Button Content="Export" Height="26" Width="75" HorizontalAlignment="Right" Click="CameraImage"/>
+                </DockPanel>
+            </Border>
+            
+            <DockPanel VerticalAlignment="Center">
+                <CheckBox Name="saveChecbox" Content="Save camera images automatically" Foreground="White" FontSize="13" VerticalAlignment="Center" Unchecked="SaveChecboxUnchecked" Checked="SaveCheckBoxChecked"/>
             </DockPanel>
+
+            <DockPanel>
+                <Label Content="Time offset (sec): " Foreground="White" FontSize="16" />
+                <TextBox Name="saveImg" Height="26" HorizontalAlignment="Right" TextWrapping="Wrap" Text="" Width="70" ></TextBox>
+            </DockPanel>
+            
+            <DockPanel>
+                <Label Name="path" Content="path: " Foreground="White" FontSize="10" Width="228" ></Label>
+            </DockPanel>
+            
         </StackPanel>
     </Grid>
 </local:MenuComponent>

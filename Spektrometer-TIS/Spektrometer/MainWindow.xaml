@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Spektrometer"
 
-        MinHeight="600" MinWidth="1000"
+        MinHeight="720" MinWidth="1000"
         WindowState="Normal" 
         MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
         MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
@@ -35,7 +35,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-
 
                     <DockPanel Grid.Column="0" HorizontalAlignment="Center">
                         <Label Content="Display format: " FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -82,7 +81,7 @@
                     </gui:GraphView>
                 </Grid>
                 <Grid Name="cameraRecordGrid" Grid.Row="2">
-                    <gui:CameraRecordView>
+                    <gui:CameraRecordView Margin="60 0 0 0">
                         
                     </gui:CameraRecordView>
                 </Grid>

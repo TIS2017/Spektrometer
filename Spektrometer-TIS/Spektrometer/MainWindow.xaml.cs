@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -16,6 +14,7 @@ using System.Windows.Shapes;
 
 using Spektrometer.GUI;
 using Spektrometer.Logic;
+using System.Threading;
 
 namespace Spektrometer
 {
@@ -30,6 +29,12 @@ namespace Spektrometer
         public MainWindow()
         {
             InitializeComponent();
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
+
+            Import import = Import.GetInstance();
+            import.LoadConfig();
+            Closing += OnWindowClosing;
+
             menu.Content = new MenuView(this);
             cameraController = CameraController.GetInstance();
         }
@@ -58,6 +63,12 @@ namespace Spektrometer
         {
             var open = menu.FindResource("open") as Storyboard;
             open.Begin();
+        }
+
+        public void OnWindowClosing(object sender, CancelEventArgs e)
+        {
+            var export = Export.GetInstance();
+            export.SaveConfig();
         }
     }
 }
