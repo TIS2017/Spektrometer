@@ -26,6 +26,24 @@ namespace Spektrometer.GUI
 {
     public partial class GraphView
     {
+        double initialX = 0;
+        double initialY = 0;
+        double finalX = 0;
+        double finalY = 0;
+
+        double minValueRange = 0;
+        double maxValueRange = 0;
+
+        double step;
+
+        double graphWidth;
+
+        double graphMargin;
+        Boolean isDown;
+        Boolean start = true;
+
+        List<double> dataXcoords;
+
         public GraphView()
         {
             InitializeComponent();
@@ -38,8 +56,10 @@ namespace Spektrometer.GUI
 
             canGraph.Children.Clear();
 
+            
+
             const double margin = 30;
-            double step = pixelData.Count / canGraph.Width;
+
             double xmin = margin;
             double xmax = canGraph.Width - margin;
             double ymin = margin;
@@ -52,6 +72,24 @@ namespace Spektrometer.GUI
             double counterForAxisX = lengthBetweenTwoAxisXPoints;
             double counterForAxisY = ymax-lengthBetweenTwoAxisYPoints;
 
+
+            if (start)
+            {
+                maxValueRange = pixelData.Count;
+                graphMargin = margin;
+                graphWidth = canGraph.Width;
+                start = false;
+            }
+
+            if (maxValueRange == pixelData.Count)
+            {
+                step = pixelData.Count / canGraph.Width;
+            } 
+           
+            double stepForData = (canGraph.Width / (maxValueRange-minValueRange));
+            MessageBox.Show("GRAPH WIDTH: " + graphWidth);
+
+            //MAXIMUM
             Line l = new Line();
             l.X1 = margin + 100 + step;
             l.X2 = margin + 100 + step;
@@ -62,7 +100,55 @@ namespace Spektrometer.GUI
             l.StrokeDashArray = new DoubleCollection(new[] { 10d });
             canGraph.Children.Add(l);
 
-            // Make the X axis.
+
+
+            //==================== ADDING GRAPH DATA ======================
+            Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
+
+            dataXcoords = new List<double>();
+            for (int data_set = 0; data_set < 3; data_set++)
+            {
+                double count = 0;
+
+                PointCollection points = new PointCollection();
+                for (double x = minValueRange; x <= maxValueRange; x += step)
+                {
+                    if (count <= 1290)
+                    {
+                        double yValue = 0;
+                        switch (data_set)
+                        {
+                            case 0:
+                                yValue = ymax - pixelData.ElementAt((int)x).R;
+                                break;
+                            case 1:
+                                yValue = ymax - pixelData.ElementAt((int)x).G;
+                                break;
+                            case 2:
+                                yValue = ymax - pixelData.ElementAt((int)x).B;
+                                break;
+                            default:
+                                throw new Exception("");
+
+                        }
+                        points.Add(new Point(xmin + count, yValue));
+                        count += Math.Round(stepForData);
+
+                        if (data_set == 0)
+                        {
+                            dataXcoords.Add(xmin + count);
+                        }
+                    }
+                }
+                MessageBox.Show("" + count);
+                Polyline polyline = new Polyline();
+                polyline.StrokeThickness = 1;
+                polyline.Stroke = brushes[data_set];
+                polyline.Points = points;
+                canGraph.Children.Add(polyline);
+
+
+            // X AXIS
             GeometryGroup xaxis_geom = new GeometryGroup();
             xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
             for (double x = xmin; x <= canGraph.Width; x += step)
@@ -90,7 +176,7 @@ namespace Spektrometer.GUI
 
             canGraph.Children.Add(xaxis_path);
 
-            // Make the Y axis.
+            // Y AXIS
             GeometryGroup yaxis_geom = new GeometryGroup();
             yaxis_geom.Children.Add(new LineGeometry(new Point(xmin, 0), new Point(xmin, canGraph.Height)));
             for (double y = ymax; y >= margin; y -= step)
@@ -124,44 +210,32 @@ namespace Spektrometer.GUI
 
 
 
-            //==================== ADDING GRAPH DATA ======================
-            Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue };
 
-            for (int data_set = 0; data_set < 3; data_set++)
-            {
-                int count = 0;
-
-                PointCollection points = new PointCollection();
-                for (double x = 0; x <= pixelData.Count; x += step)
-                {                    
-                    double yValue = 0;
-                    switch(data_set)
-                    {
-                        case 0:
-                            yValue = ymax - pixelData.ElementAt((int)x).R;
-                            break;
-                        case 1:
-                            yValue = ymax - pixelData.ElementAt((int)x).G;
-                            break;
-                        case 2:
-                            yValue = ymax - pixelData.ElementAt((int)x).B;
-                            break;
-                        default:
-                            throw new Exception("");                           
-
-                    }
-                    points.Add(new Point(xmin + count, yValue));
-                    count++;
-                }
-                //MessageBox.Show(""+pocet);
-                Polyline polyline = new Polyline();
-                polyline.StrokeThickness = 1;
-                polyline.Stroke = brushes[data_set];
-                polyline.Points = points;
-
-                canGraph.Children.Add(polyline);
             }
 
+            MessageBox.Show("STEP_DATA: " + stepForData + " X: " + initialX + " Y: " + finalX + " STEP: " + step + " WIDTH: " + canGraph.Width);
+
+        }
+
+        private void canGraph_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isDown = true;
+            Point point = e.GetPosition(this);
+            initialX = point.X;
+            initialY = point.Y;
+        }
+
+        private void canGraph_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Point point = e.GetPosition(this);
+            finalX = point.X;
+            finalY = point.Y;
+
+            minValueRange = initialX - graphMargin;
+            maxValueRange = finalX - graphMargin;
+
+            step = 1;
+            graphWidth = finalX - initialX;
         }
     }
 }
