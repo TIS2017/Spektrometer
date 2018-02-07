@@ -70,10 +70,10 @@ namespace Spektrometer.Logic
                     var index = column * bytesPerPixel + row * width * bytesPerPixel;
                     if (blue.Count <= column)
                         blue.Add(0);
-                    blue[column] += pixelBuffer[index + 1];
+                    blue[column] += pixelBuffer[index];
                     if (green.Count <= column)
                         green.Add(0);
-                    green[column] += pixelBuffer[index];
+                    green[column] += pixelBuffer[index + 1];
                     if (red.Count <= column)
                         red.Add(0);
                     red[column] += pixelBuffer[index + 2];
