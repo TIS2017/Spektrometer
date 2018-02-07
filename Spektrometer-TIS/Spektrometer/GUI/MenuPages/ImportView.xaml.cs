@@ -41,8 +41,8 @@ namespace Spektrometer.GUI
             
             if (result == true)
             {
-                string path = Path.GetFullPath(dialogWindow.FileName);
-                _import.ImportCalibrationFile(path);
+                _import.loadPath = Path.GetFullPath(dialogWindow.FileName);
+                _import.ImportCalibrationFile(_import.loadPath);
             }
         }
 
@@ -58,8 +58,8 @@ namespace Spektrometer.GUI
 
             if (result == true)
             {
-                string path = Path.GetFullPath(dialogWindow.FileName);
-                _import.ImportChartData(path);
+                _import.loadPath = Path.GetFullPath(dialogWindow.FileName);
+                _import.ImportChartData(_import.loadPath);
             }
         }
 
@@ -76,8 +76,8 @@ namespace Spektrometer.GUI
 
             if (result == true)
             {
-                string path = Path.GetFullPath(dialogWindow.FileName);
-                _import.ImportCameraImage(path);
+                _import.loadPath = Path.GetFullPath(dialogWindow.FileName);
+                _import.ImportCameraImage(_import.loadPath);
             }
         }
     }
