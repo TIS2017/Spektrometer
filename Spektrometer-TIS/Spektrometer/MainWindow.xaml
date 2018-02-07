@@ -9,8 +9,6 @@
 
         MinHeight="720" MinWidth="1000"
         WindowState="Normal" 
-        MaxWidth="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Width}"
-        MaxHeight="{Binding Source={x:Static SystemParameters.WorkArea}, Path=Height}"
         WindowStartupLocation="CenterScreen">
     <!--Height="{Binding SystemParameters.PrimaryScreenHeight}"
         Width="{Binding SystemParameters.PrimaryScreenWidth}"-->
