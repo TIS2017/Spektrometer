@@ -125,8 +125,8 @@ namespace Spektrometer.GUI
             }
             else
             {
-                maxValueRange = intensity.ElementAt(intensity.Count - 1);
-                minValueRange = intensity.ElementAt(0);
+                maxValueRange = intensity.ElementAt((int)_maxValueRange-1);
+                minValueRange = intensity.ElementAt((int)_minValueRange);
             }
             stepAxisX = (maxValueRange - minValueRange) / (canGraph.Width - margin);
             // X AXIS
