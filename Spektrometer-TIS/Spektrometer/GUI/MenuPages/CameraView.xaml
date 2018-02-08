@@ -33,15 +33,15 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="Y: " Foreground="White" FontSize="18" Margin="0, 0, 20, 0"/>
-                <TextBox Name="rowIndex" Height="22" TextWrapping="Wrap" Text="" Width="140" TextChanged="RowIndexChanged"/>
+                <TextBox Name="rowIndex" Height="22" TextWrapping="Wrap" Text="" Width="169" TextChanged="RowIndexChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="H: " Foreground="White" FontSize="18"  Margin="0, 0, 20, 0"/>
-                <TextBox Name="rowCount" Height="22" TextWrapping="Wrap" Text="" Width="138" TextChanged="RowCountChanged"/>
+                <TextBox Name="rowCount" Height="22" TextWrapping="Wrap" Text="" Width="160" TextChanged="RowCountChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Pictures:" Foreground="White" FontSize="18"  Margin="0, 0, 0, 0"/>
-                <TextBox Name="numOfPic" Height="22" TextWrapping="Wrap" Text="" Width="114" TextChanged="numOfPic_TextChanged"/>
+                <TextBox Name="numOfPic" Height="22" TextWrapping="Wrap" Text="" Width="135" TextChanged="numOfPic_TextChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
@@ -51,7 +51,7 @@
             <Label Content="Camera choice" Foreground="White" FontSize="18"/>
 
 
-            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 85">
+            <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 40">
                 <ComboBox Name="CameraListBox" Margin="5, 0, 10, 0" Width="129" SelectionChanged="CameraChosen">
                     <!--<ComboBoxItem IsSelected="True">Choose</ComboBoxItem>-->
                 </ComboBox>

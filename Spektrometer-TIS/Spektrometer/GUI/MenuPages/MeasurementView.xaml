@@ -45,7 +45,7 @@
             </DockPanel>
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
-                    <Button Content="Show" Height="30" Width="70" HorizontalAlignment="Left" Click="SetShowValue"/>
+                    <Button Content="Show" Height="30" Width="70" HorizontalAlignment="Right" Click="SetShowValue"/>
                 </DockPanel>
             </Border>
 
@@ -71,8 +71,8 @@
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
-                    <Label Content="Fill chart" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
-                    <ComboBox Name="FillChartList" Margin="40 ,0, 0,0" Width="115" HorizontalAlignment="Right" SelectionChanged="FillChart">
+                    <Label Content="Filter" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
+                    <ComboBox Name="FilterChartList" Margin="40 ,0, 0,0" Width="115" HorizontalAlignment="Right" SelectionChanged="FilterChart">
                         <ComboBoxItem IsSelected="True" Content="all"/>
                         <ComboBoxItem Content="red"/>
                         <ComboBoxItem Content="green"/>
@@ -81,6 +81,10 @@
 
                 </DockPanel>
             </Border>
+            <DockPanel VerticalAlignment="Center">
+                <CheckBox VerticalAlignment="Center" Margin="0, 0, 10, 0" Checked="FillChartChecked" Unchecked="FillChartUnChecked"></CheckBox>
+                <Label Content="Fill chart" Foreground="White" FontSize="16"></Label>
+            </DockPanel>
         </StackPanel>
     </Grid>
 </local:MenuComponent>
