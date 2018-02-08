@@ -16,6 +16,7 @@ namespace Spektrometer.Logic
     {
         public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
+        private ImageCalculator _imageCalculator;
         public CalibrationPoints CalibrationPoints { get; }
         private static GraphController graphControllerInstance;
 
@@ -29,6 +30,7 @@ namespace Spektrometer.Logic
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
             _graphCalculator = new GraphCalculator();
+            _imageCalculator = new ImageCalculator();
             GetPeakIndexes += _graphCalculator.peaks;
 
             CalibrationPoints = new CalibrationPoints();
@@ -49,6 +51,31 @@ namespace Spektrometer.Logic
             var tmp = GraphData.ActualPicture;
             // TODO:
             GraphData.GraphDataInPixels = tmp;
+
+            if(GraphData.Subtraction)
+            {
+                _imageCalculator.DifferenceBetweenActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture); 
+            }
+
+            if (GraphData.Division)
+            {
+                _imageCalculator.DivisionOfActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+            }
+
+            if (GraphData.ShowValues)
+            {
+                _graphCalculator.peaks(GraphData.ActualPicture, GraphData.Treshold);
+            }
+
+            if(GraphData.ShowPeaks)
+            {
+                // TODO:
+            }
+
+            if(GraphData.GlobalPeak)
+            {
+                _graphCalculator.globalMax(GraphData.ActualPicture);
+            }
 
             if (RedrawChart == null) {
                 throw new NullReferenceException("");

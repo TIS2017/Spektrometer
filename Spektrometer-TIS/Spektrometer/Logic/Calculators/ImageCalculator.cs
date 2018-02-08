@@ -99,10 +99,38 @@ namespace Spektrometer.Logic
 
             for(int i =0; i<actualPicture.Count; i++)
             {
-                A = actualPicture[i].A - referencePicture[i].A;
-                R = actualPicture[i].R - referencePicture[i].R;
-                G = actualPicture[i].G - referencePicture[i].G;
-                B = actualPicture[i].B - referencePicture[i].B;
+                if ((actualPicture[i].A - referencePicture[i].A) < 0)
+                {
+                    A = 0;
+                }
+                else
+                {
+                    A = actualPicture[i].A - referencePicture[i].A;
+                }
+                if ((actualPicture[i].R - referencePicture[i].R) < 0)
+                {
+                    R = 0;
+                }
+                else
+                {
+                    R = actualPicture[i].R - referencePicture[i].R;
+                }
+                if ((actualPicture[i].G - referencePicture[i].G) < 0)
+                {
+                    G = 0;
+                }
+                else
+                {
+                    G = actualPicture[i].G - referencePicture[i].G;
+                }
+                if ((actualPicture[i].B - referencePicture[i].B) < 0)
+                {
+                    B = 0;
+                }
+                else
+                {
+                    B = actualPicture[i].B - referencePicture[i].B;
+                }
                 result.Add(Color.FromArgb(Convert.ToByte(A), Convert.ToByte(R), Convert.ToByte(G), Convert.ToByte(B)));
             }
 
@@ -121,29 +149,50 @@ namespace Spektrometer.Logic
 
             for (int i = 0; i < actualPicture.Count; i++)
             {
-                if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                if (referencePicture[i].R > 0)
                 {
-                    redColor = 255;
+                    if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                    {
+                        redColor = 255;
+                    }
+                    else
+                    {
+                        redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                    }
                 }
                 else
                 {
-                    redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                    redColor = actualPicture[i].R;
                 }
-                if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                if (referencePicture[i].G > 0)
                 {
-                    greenColor = 255;
+                    if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                    {
+                        greenColor = 255;
+                    }
+                    else
+                    {
+                        greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                    }
                 }
                 else
                 {
-                    greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                    greenColor = actualPicture[i].G;
                 }
-                if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                if (referencePicture[i].B > 0)
                 {
-                    blueColor = 255;
+                    if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                    {
+                        blueColor = 255;
+                    }
+                    else
+                    {
+                        blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                    }
                 }
                 else
                 {
-                    blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                    blueColor = actualPicture[i].B;
                 }
                 result.Add(Color.FromArgb(Convert.ToByte(255), Convert.ToByte(redColor), Convert.ToByte(greenColor), Convert.ToByte(blueColor)));
             }
