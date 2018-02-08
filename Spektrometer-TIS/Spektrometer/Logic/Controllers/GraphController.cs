@@ -30,6 +30,7 @@ namespace Spektrometer.Logic
             GraphData.OnCalculationDataChange += Recalculate;
             GraphData.OnChartDataChange += UpdateGraph;
             _graphCalculator = new GraphCalculator();
+            _imageCalculator = new ImageCalculator();
 
             CalibrationPoints = new CalibrationPoints();
         }

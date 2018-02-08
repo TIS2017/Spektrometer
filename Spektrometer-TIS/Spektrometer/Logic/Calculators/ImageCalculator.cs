@@ -151,13 +151,13 @@ namespace Spektrometer.Logic
             {
                 if (referencePicture[i].R > 0)
                 {
-                    if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                    if ((actualPicture[i].R / referencePicture[i].R) * actualPicture[i].R >= 255)
                     {
                         redColor = 255;
                     }
                     else
                     {
-                        redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                        redColor = (actualPicture[i].R / referencePicture[i].R) * actualPicture[i].R;
                     }
                 }
                 else
@@ -166,13 +166,13 @@ namespace Spektrometer.Logic
                 }
                 if (referencePicture[i].G > 0)
                 {
-                    if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                    if ((actualPicture[i].G / referencePicture[i].G) * actualPicture[i].G >= 255)
                     {
                         greenColor = 255;
                     }
                     else
                     {
-                        greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                        greenColor = (actualPicture[i].G / referencePicture[i].G) * actualPicture[i].G;
                     }
                 }
                 else
@@ -181,13 +181,13 @@ namespace Spektrometer.Logic
                 }
                 if (referencePicture[i].B > 0)
                 {
-                    if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                    if ((actualPicture[i].B / referencePicture[i].B) * actualPicture[i].B >= 255)
                     {
                         blueColor = 255;
                     }
                     else
                     {
-                        blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                        blueColor = (actualPicture[i].B / referencePicture[i].B) * actualPicture[i].B;
                     }
                 }
                 else
