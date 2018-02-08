@@ -149,29 +149,50 @@ namespace Spektrometer.Logic
 
             for (int i = 0; i < actualPicture.Count; i++)
             {
-                if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                if (referencePicture[i].R > 0)
                 {
-                    redColor = 255;
+                    if ((actualPicture[i].R / referencePicture[i].R) * 255 >= 255)
+                    {
+                        redColor = 255;
+                    }
+                    else
+                    {
+                        redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                    }
                 }
                 else
                 {
-                    redColor = (actualPicture[i].R / referencePicture[i].R) * 255;
+                    redColor = actualPicture[i].R;
                 }
-                if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                if (referencePicture[i].G > 0)
                 {
-                    greenColor = 255;
+                    if ((actualPicture[i].G / referencePicture[i].G) * 255 >= 255)
+                    {
+                        greenColor = 255;
+                    }
+                    else
+                    {
+                        greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                    }
                 }
                 else
                 {
-                    greenColor = (actualPicture[i].G / referencePicture[i].G) * 255;
+                    greenColor = actualPicture[i].G;
                 }
-                if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                if (referencePicture[i].B > 0)
                 {
-                    blueColor = 255;
+                    if ((actualPicture[i].B / referencePicture[i].B) * 255 >= 255)
+                    {
+                        blueColor = 255;
+                    }
+                    else
+                    {
+                        blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                    }
                 }
                 else
                 {
-                    blueColor = (actualPicture[i].B / referencePicture[i].B) * 255;
+                    blueColor = actualPicture[i].B;
                 }
                 result.Add(Color.FromArgb(Convert.ToByte(255), Convert.ToByte(redColor), Convert.ToByte(greenColor), Convert.ToByte(blueColor)));
             }
