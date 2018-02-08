@@ -99,10 +99,38 @@ namespace Spektrometer.Logic
 
             for(int i =0; i<actualPicture.Count; i++)
             {
-                A = actualPicture[i].A - referencePicture[i].A;
-                R = actualPicture[i].R - referencePicture[i].R;
-                G = actualPicture[i].G - referencePicture[i].G;
-                B = actualPicture[i].B - referencePicture[i].B;
+                if ((actualPicture[i].A - referencePicture[i].A) < 0)
+                {
+                    A = 0;
+                }
+                else
+                {
+                    A = actualPicture[i].A - referencePicture[i].A;
+                }
+                if ((actualPicture[i].R - referencePicture[i].R) < 0)
+                {
+                    R = 0;
+                }
+                else
+                {
+                    R = actualPicture[i].R - referencePicture[i].R;
+                }
+                if ((actualPicture[i].G - referencePicture[i].G) < 0)
+                {
+                    G = 0;
+                }
+                else
+                {
+                    G = actualPicture[i].G - referencePicture[i].G;
+                }
+                if ((actualPicture[i].B - referencePicture[i].B) < 0)
+                {
+                    B = 0;
+                }
+                else
+                {
+                    B = actualPicture[i].B - referencePicture[i].B;
+                }
                 result.Add(Color.FromArgb(Convert.ToByte(A), Convert.ToByte(R), Convert.ToByte(G), Convert.ToByte(B)));
             }
 
