@@ -49,12 +49,12 @@ namespace Spektrometer.Logic
             var tmp = GraphData.ActualPicture;
             if (GraphData.Subtraction)
             {
-                _imageCalculator.DifferenceBetweenActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+                tmp = _imageCalculator.DifferenceBetweenActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
             }
 
             if (GraphData.Division)
             {
-                _imageCalculator.DivisionOfActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+                tmp = _imageCalculator.DivisionOfActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
             }
             GraphData.GraphDataInPixels = tmp;
         }
