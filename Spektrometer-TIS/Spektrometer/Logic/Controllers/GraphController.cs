@@ -16,6 +16,7 @@ namespace Spektrometer.Logic
     {
         public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
+        private ImageCalculator _imageCalculator;
         public CalibrationPoints CalibrationPoints { get; }
         private static GraphController graphControllerInstance;
 
@@ -46,7 +47,15 @@ namespace Spektrometer.Logic
         public void Recalculate()
         {
             var tmp = GraphData.ActualPicture;
-            // TODO:
+            if (GraphData.Subtraction)
+            {
+                _imageCalculator.DifferenceBetweenActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+            }
+
+            if (GraphData.Division)
+            {
+                _imageCalculator.DivisionOfActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+            }
             GraphData.GraphDataInPixels = tmp;
         }
 
