@@ -84,9 +84,9 @@ namespace Spektrometer.GUI
             BtnDivision.Content = _graphController.GraphData.Division ? "Unset" : "Set";
         }
 
-        private void FillChart(object sender, SelectionChangedEventArgs e)
+        private void FilterChart(object sender, SelectionChangedEventArgs e)
         {
-            switch (FillChartList.SelectedItem)
+            switch (FilterChartList.SelectedItem)
             {
                 case "all":
                     _graphController.GraphData.Filter = Filter.RGB;
@@ -104,6 +104,16 @@ namespace Spektrometer.GUI
                     _graphController.GraphData.Filter = Filter.RGB;
                     break;
             }
+        }
+
+        private void FillChartChecked(object sender, RoutedEventArgs e)
+        {
+            // call method to start fillChart
+        }
+
+        private void FillChartUnChecked(object sender, RoutedEventArgs e)
+        {
+            // call method to stop fillChart
         }
     }
 }

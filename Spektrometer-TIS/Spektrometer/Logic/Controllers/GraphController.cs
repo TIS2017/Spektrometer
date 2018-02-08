@@ -21,12 +21,16 @@ namespace Spektrometer.Logic
 
         public delegate void RedrawChartHandler(List<Color> pixelData);
         public RedrawChartHandler RedrawChart;
+        public delegate List<int> GetPeakIndexesHandler(List<System.Windows.Media.Color> pic, double threshold);
+        public GetPeakIndexesHandler GetPeakIndexes;
 
         private GraphController()
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
             _graphCalculator = new GraphCalculator();
+            GetPeakIndexes += _graphCalculator.peaks;
+
             CalibrationPoints = new CalibrationPoints();
         }
 
