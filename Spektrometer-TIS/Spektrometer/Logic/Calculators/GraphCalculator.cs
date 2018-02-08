@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Media;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace Spektrometer.Logic
 {
@@ -17,7 +18,7 @@ namespace Spektrometer.Logic
          * Vráti index (x-ovej osi) globálneho maxima v grafe,
          * ktorý treba na grafe vyznačiť
          */
-        public int globalMax(List<Color> pic)
+        public int globalMax(List<System.Windows.Media.Color> pic)
         {
             int index = 0;
             int max = 0;
@@ -36,7 +37,7 @@ namespace Spektrometer.Logic
          * Vráti zoznam indexov (x-ová os), tých vrcholov,
          * ktorých hodnota (y-ová os) presiahla požadovanú hodnotu (threshold).
          */
-        public List<int> peaks(List<Color> pic, double threshold)
+        public List<int> peaks(List<System.Windows.Media.Color> pic, double threshold)
         {
             List<int> indexes = new List<int>();
             for (int i = 0; i < pic.Count; i++)
@@ -102,7 +103,7 @@ namespace Spektrometer.Logic
         /**
          * Funkcia vráti už pole nanometrov konkrétneho obrázka konverziou jeho pixelov.
          */
-        public List<double> convertPixelsToNanometers(List<Color> picture)
+        public List<double> convertPixelsToNanometers(List<System.Windows.Media.Color> picture)
         {
             List<double> nanometers = new List<double>();
             for (int i = 0; i < picture.Count; i++)
