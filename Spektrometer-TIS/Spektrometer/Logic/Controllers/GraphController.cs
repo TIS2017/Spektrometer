@@ -19,17 +19,16 @@ namespace Spektrometer.Logic
         public CalibrationPoints CalibrationPoints { get; }
         private static GraphController graphControllerInstance;
 
-        public delegate void RedrawChartHandler(List<Color> pixelData);
-        public RedrawChartHandler RedrawChart;
-        public delegate List<int> GetPeakIndexesHandler(List<System.Windows.Media.Color> pic, double threshold);
-        public GetPeakIndexesHandler GetPeakIndexes;
+        public delegate void RedrawChartHandler();
+
+        public RedrawChartHandler RedrawChart { get; set; }
 
         private GraphController()
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
+            GraphData.OnChartDataChange += UpdateGraph;
             _graphCalculator = new GraphCalculator();
-            GetPeakIndexes += _graphCalculator.peaks;
 
             CalibrationPoints = new CalibrationPoints();
         }
@@ -49,15 +48,11 @@ namespace Spektrometer.Logic
             var tmp = GraphData.ActualPicture;
             // TODO:
             GraphData.GraphDataInPixels = tmp;
+        }
 
-            if (RedrawChart == null) {
-                throw new NullReferenceException("");
-            } else
-            {
-                RedrawChart(tmp);
-            }
-            
-            
+        public void UpdateGraph()
+        {
+            RedrawChart?.Invoke();
         }
     }
 }

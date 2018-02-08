@@ -36,7 +36,7 @@
 
                     <DockPanel Grid.Column="0" HorizontalAlignment="Center">
                         <Label Content="Display format: " FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ComboBox Width="200" Height="30" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <ComboBox Name="dispayFormat" SelectionChanged="DisplayFormatChanged" Width="200" Height="30" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <ComboBoxItem IsSelected="True" Content="pixel" Height="40" />
                             <ComboBoxItem Content="nanometer" Height="40"/>
                         </ComboBox>

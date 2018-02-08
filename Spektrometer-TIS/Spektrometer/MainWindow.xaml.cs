@@ -70,5 +70,26 @@ namespace Spektrometer
             var export = Export.GetInstance();
             export.SaveConfig();
         }
+
+        private void DisplayFormatChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var graphController = GraphController.GetInstance();
+            if (dispayFormat.SelectedIndex == 1)
+            {
+                if (graphController.CalibrationPoints.CalibrationPointsList.Count < 3)
+                {
+                    dispayFormat.SelectedIndex = 0;
+                    MessageBox.Show("Nedostato kalibracnych bodov.");
+                }
+                else
+                {
+                    graphController.GraphData.DisplayFormat = DisplayFormat.wavelength;
+                }
+            }
+            else
+            {
+                graphController.GraphData.DisplayFormat = DisplayFormat.pixel;
+            }
+        }
     }
 }

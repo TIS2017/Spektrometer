@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Media;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Spektrometer.Logic
 {
@@ -18,7 +16,7 @@ namespace Spektrometer.Logic
          * Vráti index (x-ovej osi) globálneho maxima v grafe,
          * ktorý treba na grafe vyznačiť
          */
-        public int globalMax(List<System.Windows.Media.Color> pic)
+        public int globalMax(List<Color> pic)
         {
             int index = 0;
             int max = 0;
@@ -37,14 +35,45 @@ namespace Spektrometer.Logic
          * Vráti zoznam indexov (x-ová os), tých vrcholov,
          * ktorých hodnota (y-ová os) presiahla požadovanú hodnotu (threshold).
          */
-        public List<int> peaks(List<System.Windows.Media.Color> pic, double threshold)
+        public Dictionary<KeyValuePair<int, Brush>, int> Peaks(List<Color> pic, double threshold)
         {
-            List<int> indexes = new List<int>();
+            var indexes = new Dictionary<KeyValuePair<int,Brush>, int>();
+            var epsilon = 30;
+            var maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
+            var maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
+            var maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
             for (int i = 0; i < pic.Count; i++)
             {
-                if (pic[i].R >= threshold || pic[i].G >= threshold || pic[i].B >= threshold)
+                var indexAndValueRed = new KeyValuePair<int,int>(i,pic[i].R);
+                var indexAndValueGreen = new KeyValuePair<int, int>(i, pic[i].G);
+                var indexAndValueBlue = new KeyValuePair<int, int>(i, pic[i].B);
+
+                if (indexAndValueRed.Value >= threshold && maxIndexAndValueRed.Value < indexAndValueRed.Value)
                 {
-                    indexes.Add(i);
+                    maxIndexAndValueRed = new KeyValuePair<int,int> (indexAndValueRed.Key,indexAndValueRed.Value);
+                }
+                if (indexAndValueGreen.Value >= threshold && maxIndexAndValueGreen.Value < indexAndValueGreen.Value)
+                {
+                    maxIndexAndValueGreen = new KeyValuePair<int, int>(indexAndValueGreen.Key, indexAndValueGreen.Value);
+                }
+                if (indexAndValueBlue.Value >= threshold && maxIndexAndValueBlue.Value < indexAndValueBlue.Value)
+                {
+                    maxIndexAndValueBlue = new KeyValuePair<int, int>(indexAndValueBlue.Key, indexAndValueBlue.Value);
+                }
+                if (i - maxIndexAndValueRed.Key > epsilon && maxIndexAndValueRed.Value > 0)
+                {
+                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueRed.Key,Brushes.Red), maxIndexAndValueRed.Value);
+                    maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
+                }
+                if (i - maxIndexAndValueGreen.Key > epsilon && maxIndexAndValueGreen.Value > 0)
+                {
+                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueGreen.Key, Brushes.Green), maxIndexAndValueGreen.Value);
+                    maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
+                }
+                if (i - maxIndexAndValueBlue.Key > epsilon && maxIndexAndValueBlue.Value > 0)
+                {
+                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueBlue.Key, Brushes.Blue), maxIndexAndValueBlue.Value);
+                    maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
                 }
             }
             return indexes;
@@ -103,7 +132,7 @@ namespace Spektrometer.Logic
         /**
          * Funkcia vráti už pole nanometrov konkrétneho obrázka konverziou jeho pixelov.
          */
-        public List<double> convertPixelsToNanometers(List<System.Windows.Media.Color> picture)
+        public List<double> convertPixelsToNanometers(List<Color> picture)
         {
             List<double> nanometers = new List<double>();
             for (int i = 0; i < picture.Count; i++)
