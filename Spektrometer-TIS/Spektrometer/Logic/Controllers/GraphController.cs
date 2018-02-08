@@ -20,18 +20,16 @@ namespace Spektrometer.Logic
         public CalibrationPoints CalibrationPoints { get; }
         private static GraphController graphControllerInstance;
 
-        public delegate void RedrawChartHandler(List<Color> pixelData);
-        public RedrawChartHandler RedrawChart;
-        public delegate List<int> GetPeakIndexesHandler(List<System.Windows.Media.Color> pic, double threshold);
-        public GetPeakIndexesHandler GetPeakIndexes;
+        public delegate void RedrawChartHandler();
+
+        public RedrawChartHandler RedrawChart { get; set; }
 
         private GraphController()
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
+            GraphData.OnChartDataChange += UpdateGraph;
             _graphCalculator = new GraphCalculator();
-            _imageCalculator = new ImageCalculator();
-            GetPeakIndexes += _graphCalculator.peaks;
 
             CalibrationPoints = new CalibrationPoints();
         }
@@ -49,42 +47,21 @@ namespace Spektrometer.Logic
         public void Recalculate()
         {
             var tmp = GraphData.ActualPicture;
-            // TODO:
-            GraphData.GraphDataInPixels = tmp;
-
-            if(GraphData.Subtraction)
+            if (GraphData.Subtraction)
             {
-                _imageCalculator.DifferenceBetweenActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture); 
+                tmp = _imageCalculator.DifferenceBetweenActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
             }
 
             if (GraphData.Division)
             {
-                _imageCalculator.DivisionOfActualAndReferencePicture(GraphData.ActualPicture, GraphData.ReferencedPicture);
+                tmp = _imageCalculator.DivisionOfActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
             }
+            GraphData.GraphDataInPixels = tmp;
+        }
 
-            if (GraphData.ShowValues)
-            {
-                _graphCalculator.peaks(GraphData.ActualPicture, GraphData.Treshold);
-            }
-
-            if(GraphData.ShowPeaks)
-            {
-                // TODO:
-            }
-
-            if(GraphData.GlobalPeak)
-            {
-                _graphCalculator.globalMax(GraphData.ActualPicture);
-            }
-
-            if (RedrawChart == null) {
-                throw new NullReferenceException("");
-            } else
-            {
-                RedrawChart(tmp);
-            }
-            
-            
+        public void UpdateGraph()
+        {
+            RedrawChart?.Invoke();
         }
     }
 }

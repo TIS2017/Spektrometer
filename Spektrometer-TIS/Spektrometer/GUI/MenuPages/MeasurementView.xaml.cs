@@ -86,18 +86,18 @@ namespace Spektrometer.GUI
 
         private void FilterChart(object sender, SelectionChangedEventArgs e)
         {
-            switch (FilterChartList.SelectedItem)
+            switch (FilterChartList.SelectedIndex)
             {
-                case "all":
+                case 0:
                     _graphController.GraphData.Filter = Filter.RGB;
                     break;
-                case "red":
+                case 1:
                     _graphController.GraphData.Filter = Filter.R;
                     break;
-                case "green":
+                case 2:
                     _graphController.GraphData.Filter = Filter.G;
                     break;
-                case "blue":
+                case 3:
                     _graphController.GraphData.Filter = Filter.B;
                     break;
                 default:
