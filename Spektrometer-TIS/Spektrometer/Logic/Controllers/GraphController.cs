@@ -16,20 +16,21 @@ namespace Spektrometer.Logic
     {
         public GraphData GraphData { get; }
         private GraphCalculator _graphCalculator;
+        private ImageCalculator _imageCalculator;
         public CalibrationPoints CalibrationPoints { get; }
         private static GraphController graphControllerInstance;
 
-        public delegate void RedrawChartHandler(List<Color> pixelData);
-        public RedrawChartHandler RedrawChart;
-        public delegate List<int> GetPeakIndexesHandler(List<System.Windows.Media.Color> pic, double threshold);
-        public GetPeakIndexesHandler GetPeakIndexes;
+        public delegate void RedrawChartHandler();
+
+        public RedrawChartHandler RedrawChart { get; set; }
 
         private GraphController()
         {
             GraphData = new GraphData();
             GraphData.OnCalculationDataChange += Recalculate;
+            GraphData.OnChartDataChange += UpdateGraph;
             _graphCalculator = new GraphCalculator();
-            GetPeakIndexes += _graphCalculator.peaks;
+            _imageCalculator = new ImageCalculator();
 
             CalibrationPoints = new CalibrationPoints();
         }
@@ -47,17 +48,21 @@ namespace Spektrometer.Logic
         public void Recalculate()
         {
             var tmp = GraphData.ActualPicture;
-            // TODO:
-            GraphData.GraphDataInPixels = tmp;
-
-            if (RedrawChart == null) {
-                throw new NullReferenceException("");
-            } else
+            if (GraphData.Subtraction)
             {
-                RedrawChart(tmp);
+                tmp = _imageCalculator.DifferenceBetweenActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
             }
-            
-            
+
+            if (GraphData.Division)
+            {
+                tmp = _imageCalculator.DivisionOfActualAndReferencePicture(tmp, GraphData.ReferencedPicture);
+            }
+            GraphData.GraphDataInPixels = tmp;
+        }
+
+        public void UpdateGraph()
+        {
+            RedrawChart?.Invoke();
         }
     }
 }
