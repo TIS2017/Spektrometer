@@ -66,7 +66,34 @@ namespace Spektrometer.Logic
                 return;
             }
         }
-        
+
+        /**
+         * Export Maxím z grafu do .txt súboru.
+         */
+        public void MaximumValues(string path)
+        {
+            try
+            {
+                using (var File = new StreamWriter(path))
+                {
+                    var graphData = _graphController.GraphData.ActualPicture;
+                    var treshold = _graphController.GraphData.Treshold;
+                    var graphCalculator = new GraphCalculator();
+                    var MaximumValues = graphCalculator.Peaks(graphData, treshold);
+
+                    foreach (var maximum in MaximumValues)
+                    {
+                        File.WriteLine(maximum.Key.Key);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !" + e.Message);
+                return;
+            }
+        }
+
         /**
          Export grafu ako .txt súbor s vlnovými dĺžkami.
          */
