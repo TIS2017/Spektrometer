@@ -45,7 +45,7 @@
             </DockPanel>
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
-                    <Button Content="Show" Height="30" Width="70" HorizontalAlignment="Right" Click="SetShowValue"/>
+                    <Button x:Name="Values" Content="Show" Height="30" Width="70" HorizontalAlignment="Right" Click="SetShowValue"/>
                 </DockPanel>
             </Border>
 

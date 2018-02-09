@@ -79,7 +79,7 @@ namespace Spektrometer
                 if (graphController.CalibrationPoints.CalibrationPointsList.Count < 3)
                 {
                     dispayFormat.SelectedIndex = 0;
-                    MessageBox.Show("Nedostato kalibracnych bodov.");
+                    MessageBox.Show("Nedostatok kalibracnych bodov.");
                 }
                 else
                 {

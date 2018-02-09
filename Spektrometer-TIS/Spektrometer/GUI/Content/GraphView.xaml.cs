@@ -109,8 +109,6 @@ namespace Spektrometer.GUI
                 ShowGlobalPeak();
             if (_graphData.ShowPeaks)
                 ShowPeaks();
-            if (_graphData.ShowValues)
-                ShowValues();
         }
 
         private void DrawAxisX()
@@ -198,11 +196,28 @@ namespace Spektrometer.GUI
 
         private void ShowGlobalPeak()
         {
+            var globalPeakIndex = _graphCalculator.globalMax(pixelData);
 
+            Line l = new Line();
+            l.X1 = l.X2 = (globalPeakIndex - _minValueRange) * (1 / step) + margin;
+            l.Y1 = ymax;
+            l.Y2 = (ymax - 290 * stepAxisY) * 0.5;
+            l.Stroke = Brushes.Black;
+            l.StrokeThickness = 1;
+            l.StrokeDashArray = new DoubleCollection(new[] { 5d });
+            canGraph.Children.Add(l);
+
+            TextBlock maxValueTxt = new TextBlock();
+            maxValueTxt.Text = String.Format("{0:0}", globalPeakIndex);
+            Canvas.SetTop(maxValueTxt, l.Y2 * 0.1);
+            Canvas.SetLeft(maxValueTxt, l.X1 - 10);
+            canGraph.Children.Add(maxValueTxt);
         }
 
         private void ShowPeaks()
         {
+            bool showValues = _graphData.ShowValues;
+
             var treshold = _graphData.Treshold;
             var indexes = _graphCalculator.Peaks(pixelData, treshold);
 
@@ -214,18 +229,22 @@ namespace Spektrometer.GUI
                     Line l = new Line();
                     l.X1 = l.X2 = (maxIndex.Key.Key - _minValueRange) * (1/step) + margin;
                     l.Y1 = ymax;
-                    l.Y2 = ymax - maxIndex.Value * stepAxisY;
-                    l.Stroke = Brushes.Black;
-                    l.StrokeThickness = 1;
-                    l.StrokeDashArray = new DoubleCollection(new[] { 10d });
+                    l.Y2 = (ymax - 260 * stepAxisY) * 0.5;
+                    l.Stroke = Brushes.Gray;
+                    l.StrokeThickness = 0.5;
+                    l.StrokeDashArray = new DoubleCollection(new[] { 5d });
                     canGraph.Children.Add(l);
+
+                    if (showValues)
+                    {
+                        TextBlock maxValueTxt = new TextBlock();
+                        maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
+                        Canvas.SetTop(maxValueTxt, l.Y2 * 0.6);
+                        Canvas.SetLeft(maxValueTxt, l.X1 - 10);
+                        canGraph.Children.Add(maxValueTxt);
+                    }
                 }
             }
-        }
-
-        private void ShowValues()
-        {
-            throw new NotImplementedException();
         }
 
         private void SetBrushes()
