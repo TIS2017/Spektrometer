@@ -41,19 +41,26 @@ namespace Spektrometer.GUI
 
         private void ShowPeaks(object sender, RoutedEventArgs e)
         {
-            _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
             if (_graphController.GraphData.ShowPeaks)
             {
-                Peaks.Content = "Hide";
+                Peaks.Content = "Show";             
             } else
             {
-                Peaks.Content = "Show";
+                Peaks.Content = "Hide";
             }
+            _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
         }
 
         private void SetGlobalPeak(object sender, RoutedEventArgs e)
         {
-            _graphController.GraphData.GlobalPeak = GlobalPeakChecked.IsChecked.GetValueOrDefault();
+            if (_graphController.GraphData.GlobalPeak)
+            {
+                GlobalPeakChecked.IsChecked = false;
+            } else
+            {
+                GlobalPeakChecked.IsChecked = true;
+            }
+            _graphController.GraphData.GlobalPeak = !_graphController.GraphData.GlobalPeak;
         }
 
         private void SetShowValue(object sender, RoutedEventArgs e)
@@ -61,7 +68,20 @@ namespace Spektrometer.GUI
             if (Value.Text != "")
             {
                 _graphController.GraphData.Treshold = Int32.Parse(Value.Text);
+
+                if (_graphController.GraphData.ShowValues)
+                {
+                    Values.Content = "Show";
+                    _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
+                }
+                else
+                {
+                    Values.Content = "Hide";
+                    _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
+                }
             }
+
+
         }
 
         private void ReferencePicture(object sender, RoutedEventArgs e)
