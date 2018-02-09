@@ -83,6 +83,9 @@ namespace Spektrometer
                 }
                 else
                 {
+                    var graphCalculator = new GraphCalculator();
+                    graphCalculator.calculateParameters(graphController.CalibrationPoints.CalibrationPointsList);
+                    graphController.GraphData.IntesityData = graphCalculator.convertPixelsToNanometers(graphController.GraphData.GraphDataInPixels);
                     graphController.GraphData.DisplayFormat = DisplayFormat.wavelength;
                 }
             }
