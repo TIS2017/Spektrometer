@@ -27,24 +27,25 @@
                 <Label HorizontalAlignment="Center" Content="Measurement" Foreground="White" FontSize="26"/>
             </StackPanel>
 
-            <DockPanel >
+            <!--<DockPanel >
                 <Label Content="Show peaks" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
                 <Button Name="Peaks" Content="Show" Width="70" HorizontalAlignment="Right" Grid.IsSharedSizeScope="True" Click="ShowPeaks"/>
-            </DockPanel>
+            </DockPanel>-->
 
-            <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
+            <!--<Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <StackPanel Margin="10,10,10,20">
-                    <CheckBox Name="GlobalPeakChecked" Content="Global peek" Foreground="White" FontSize="14" Checked="SetGlobalPeak"/>
+                    
                 </StackPanel>
-            </Border>
+            </Border>-->
 
 
             <DockPanel>
-                <Label Content="Show values" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
+                <Label Content="Show peaks" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
                 <TextBox Name="Value" Height="30" TextWrapping="Wrap" Width="110" HorizontalAlignment="Right"/>
             </DockPanel>
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
-                <DockPanel>
+                <DockPanel VerticalAlignment="Center">
+                    <CheckBox Name="GlobalPeakChecked" Content="Global peek" Foreground="White" FontSize="14" Checked="SetGlobalPeak" Unchecked="UnsetGlobalPeak"/>
                     <Button x:Name="Values" Content="Show" Height="30" Width="70" HorizontalAlignment="Right" Click="SetShowValue"/>
                 </DockPanel>
             </Border>
@@ -81,10 +82,6 @@
 
                 </DockPanel>
             </Border>
-            <DockPanel VerticalAlignment="Center">
-                <CheckBox VerticalAlignment="Center" Margin="0, 0, 10, 0" Checked="FillChartChecked" Unchecked="FillChartUnChecked"></CheckBox>
-                <Label Content="Fill chart" Foreground="White" FontSize="16"></Label>
-            </DockPanel>
         </StackPanel>
     </Grid>
 </local:MenuComponent>

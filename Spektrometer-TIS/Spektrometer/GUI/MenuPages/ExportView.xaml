@@ -42,6 +42,14 @@
 
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel>
+                    <Image Source="/Spektrometer;component/GUI/images/icons8-file-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
+                    <Label Content="Peaks data: " Foreground="White" FontSize="16"/>
+                    <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right" Click="PeaksData"/>
+                </DockPanel>
+            </Border>
+
+            <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
+                <DockPanel>
                     <Image Source="/Spektrometer;component/GUI/images/icons8-picture-24.png" Height="20" Width="20" HorizontalAlignment="Left"/>
                     <Label Content="Chart image: " Foreground="White" FontSize="16"/>
                     <Button Content="Export" Height="25" Width="75" HorizontalAlignment="Right" Click="ChartImage"/>

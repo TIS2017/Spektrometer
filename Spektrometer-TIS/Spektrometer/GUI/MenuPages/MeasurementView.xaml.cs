@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using Spektrometer.Logic;
 
@@ -27,6 +16,14 @@ namespace Spektrometer.GUI
         public MeasurementView(MainWindow mainWindow) : base(mainWindow)
         {
             InitializeComponent();
+            if (_graphController.GraphData.ShowPeaks)
+            {
+                Values.Content = "Hide";
+            }
+            else
+            {
+                Values.Content = "Show";
+            }
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
@@ -39,28 +36,14 @@ namespace Spektrometer.GUI
             _graphController = GraphController.GetInstance();
         }
 
-        private void ShowPeaks(object sender, RoutedEventArgs e)
-        {
-            if (_graphController.GraphData.ShowPeaks)
-            {
-                Peaks.Content = "Show";             
-            } else
-            {
-                Peaks.Content = "Hide";
-            }
-            _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
-        }
-
         private void SetGlobalPeak(object sender, RoutedEventArgs e)
         {
-            if (_graphController.GraphData.GlobalPeak)
-            {
-                GlobalPeakChecked.IsChecked = false;
-            } else
-            {
-                GlobalPeakChecked.IsChecked = true;
-            }
-            _graphController.GraphData.GlobalPeak = !_graphController.GraphData.GlobalPeak;
+            _graphController.GraphData.GlobalPeak = true;
+        }
+
+        private void UnsetGlobalPeak(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.GlobalPeak = false;
         }
 
         private void SetShowValue(object sender, RoutedEventArgs e)
@@ -71,17 +54,28 @@ namespace Spektrometer.GUI
 
                 if (_graphController.GraphData.ShowValues)
                 {
+                    Values.Content = "Hide";
+                }
+                else
+                {
                     Values.Content = "Show";
-                    _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
+                }
+                _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
+                _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
+            }
+            else
+            {
+             
+                if (_graphController.GraphData.ShowPeaks)
+                {
+                    Values.Content = "Show";
                 }
                 else
                 {
                     Values.Content = "Hide";
-                    _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
                 }
+                _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
             }
-
-
         }
 
         private void ReferencePicture(object sender, RoutedEventArgs e)
@@ -124,16 +118,6 @@ namespace Spektrometer.GUI
                     _graphController.GraphData.Filter = Filter.RGB;
                     break;
             }
-        }
-
-        private void FillChartChecked(object sender, RoutedEventArgs e)
-        {
-            // call method to start fillChart
-        }
-
-        private void FillChartUnChecked(object sender, RoutedEventArgs e)
-        {
-            // call method to stop fillChart
         }
     }
 }
