@@ -33,6 +33,7 @@ namespace Spektrometer.Logic
             _imageCalculator = new ImageCalculator();
 
             CalibrationPoints = new CalibrationPoints();
+            CalibrationPoints.NewData += IntensityData;
         }
 
         public static GraphController GetInstance()
@@ -63,6 +64,12 @@ namespace Spektrometer.Logic
         public void UpdateGraph()
         {
             RedrawChart?.Invoke();
+        }
+
+        public void IntensityData()
+        {
+            _graphCalculator.calculateParameters(CalibrationPoints.CalibrationPointsList);
+            GraphData.IntesityData = _graphCalculator.convertPixelsToNanometers(1280);
         }
     }
 }
