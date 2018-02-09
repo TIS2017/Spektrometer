@@ -141,5 +141,23 @@ namespace Spektrometer.GUI
                 saveChecbox.IsChecked = false;
             }
         }
+
+        private void PeaksData(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                Title = "Save Chart Data File",
+                InitialDirectory = _export.savePath
+            };
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != "")
+            {
+                var fileName = Path.GetFileName(saveFileDialog.FileName);
+                _export.savePath = Path.GetDirectoryName(saveFileDialog.FileName);
+                _export.MaximumValues($"{_export.savePath}{Path.DirectorySeparatorChar}{fileName}");
+            }
+        }
     }
 }
