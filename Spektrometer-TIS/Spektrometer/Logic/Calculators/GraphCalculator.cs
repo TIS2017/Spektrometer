@@ -38,16 +38,25 @@ namespace Spektrometer.Logic
         public Dictionary<KeyValuePair<int, Brush>, int> Peaks(List<Color> pic, double threshold)
         {
             var indexes = new Dictionary<KeyValuePair<int,Brush>, int>();
-            var epsilon = 30;
+            var epsilon = 1;
             var maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
             var maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
             var maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
+            var previousValueRed = -1;
+            var previousValueGreen = -1;
+            var previousValueBlue = -1;
             for (int i = 0; i < pic.Count; i++)
             {
                 var indexAndValueRed = new KeyValuePair<int,int>(i,pic[i].R);
                 var indexAndValueGreen = new KeyValuePair<int, int>(i, pic[i].G);
                 var indexAndValueBlue = new KeyValuePair<int, int>(i, pic[i].B);
 
+                if (i > 0)
+                {
+                    previousValueRed = pic[i-1].R;
+                    previousValueGreen = pic[i-1].G;
+                    previousValueBlue = pic[i-1].B;
+                }
                 if (indexAndValueRed.Value >= threshold && maxIndexAndValueRed.Value < indexAndValueRed.Value)
                 {
                     maxIndexAndValueRed = new KeyValuePair<int,int> (indexAndValueRed.Key,indexAndValueRed.Value);
@@ -60,17 +69,17 @@ namespace Spektrometer.Logic
                 {
                     maxIndexAndValueBlue = new KeyValuePair<int, int>(indexAndValueBlue.Key, indexAndValueBlue.Value);
                 }
-                if (i - maxIndexAndValueRed.Key > epsilon && maxIndexAndValueRed.Value > 0)
+                if (i - maxIndexAndValueRed.Key > epsilon && maxIndexAndValueRed.Value > 0 && previousValueRed > indexAndValueRed.Value)
                 {
                     indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueRed.Key,Brushes.Red), maxIndexAndValueRed.Value);
                     maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
                 }
-                if (i - maxIndexAndValueGreen.Key > epsilon && maxIndexAndValueGreen.Value > 0)
+                if (i - maxIndexAndValueGreen.Key > epsilon && maxIndexAndValueGreen.Value > 0 && previousValueGreen > indexAndValueGreen.Value)
                 {
                     indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueGreen.Key, Brushes.Green), maxIndexAndValueGreen.Value);
                     maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
                 }
-                if (i - maxIndexAndValueBlue.Key > epsilon && maxIndexAndValueBlue.Value > 0)
+                if (i - maxIndexAndValueBlue.Key > epsilon && maxIndexAndValueBlue.Value > 0 && previousValueBlue > indexAndValueBlue.Value)
                 {
                     indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueBlue.Key, Brushes.Blue), maxIndexAndValueBlue.Value);
                     maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
