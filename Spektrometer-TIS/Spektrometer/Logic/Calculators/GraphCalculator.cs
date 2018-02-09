@@ -16,7 +16,7 @@ namespace Spektrometer.Logic
          * Vráti index (x-ovej osi) globálneho maxima v grafe,
          * ktorý treba na grafe vyznačiť
          */
-        public int globalMax(List<Color> pic)
+        public KeyValuePair<int, int> globalMax(List<Color> pic)
         {
             int index = 0;
             int max = 0;
@@ -28,7 +28,8 @@ namespace Spektrometer.Logic
                     max = pic[i].R + pic[i].G + pic[i].B;
                 }
             }
-            return index;
+            int theHighestValue = Math.Max(Math.Max(pic[index].R, pic[index].G), pic[index].B);
+            return new KeyValuePair<int, int>(index, theHighestValue);
         }
 
         /**

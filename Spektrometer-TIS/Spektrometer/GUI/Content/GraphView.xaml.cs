@@ -196,20 +196,23 @@ namespace Spektrometer.GUI
 
         private void ShowGlobalPeak()
         {
-            var globalPeakIndex = _graphCalculator.globalMax(pixelData);
+            KeyValuePair<int, int> keyValuePair = _graphCalculator.globalMax(pixelData);
+            int globalPeakIndex = keyValuePair.Key;
+            int globalPeakValue = keyValuePair.Value;
 
             Line l = new Line();
             l.X1 = l.X2 = (globalPeakIndex - _minValueRange) * (1 / step) + margin;
             l.Y1 = ymax;
-            l.Y2 = (ymax - 290 * stepAxisY) * 0.5;
+            l.Y2 = (ymax - globalPeakValue * stepAxisY);
             l.Stroke = Brushes.Black;
             l.StrokeThickness = 1;
             l.StrokeDashArray = new DoubleCollection(new[] { 5d });
             canGraph.Children.Add(l);
 
             TextBlock maxValueTxt = new TextBlock();
+            maxValueTxt.FontWeight = FontWeights.Bold;
             maxValueTxt.Text = String.Format("{0:0}", globalPeakIndex);
-            Canvas.SetTop(maxValueTxt, l.Y2 * 0.1);
+            Canvas.SetTop(maxValueTxt, l.Y2 - 20);
             Canvas.SetLeft(maxValueTxt, l.X1 - 10);
             canGraph.Children.Add(maxValueTxt);
         }
@@ -229,7 +232,7 @@ namespace Spektrometer.GUI
                     Line l = new Line();
                     l.X1 = l.X2 = (maxIndex.Key.Key - _minValueRange) * (1/step) + margin;
                     l.Y1 = ymax;
-                    l.Y2 = (ymax - 260 * stepAxisY) * 0.5;
+                    l.Y2 = ymax - maxIndex.Value * stepAxisY;
                     l.Stroke = Brushes.Gray;
                     l.StrokeThickness = 0.5;
                     l.StrokeDashArray = new DoubleCollection(new[] { 5d });
@@ -238,8 +241,9 @@ namespace Spektrometer.GUI
                     if (showValues)
                     {
                         TextBlock maxValueTxt = new TextBlock();
+                        maxValueTxt.FontWeight = FontWeights.UltraLight;
                         maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
-                        Canvas.SetTop(maxValueTxt, l.Y2 * 0.6);
+                        Canvas.SetTop(maxValueTxt, l.Y2 - 20);
                         Canvas.SetLeft(maxValueTxt, l.X1 - 10);
                         canGraph.Children.Add(maxValueTxt);
                     }
