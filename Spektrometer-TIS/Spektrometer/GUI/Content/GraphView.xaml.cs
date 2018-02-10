@@ -18,6 +18,7 @@ namespace Spektrometer.GUI
     public partial class GraphView
     {
         private GraphData _graphData;
+        private CalibrationPoints _calibrationPoints;
         private GraphCalculator _graphCalculator;
 
         public const double margin = 30;
@@ -26,22 +27,12 @@ namespace Spektrometer.GUI
         double xmax;
         double ymin;
         double ymax;
-
-        double lengthBetweenTwoAxisYPoints = 20;
-        double lengthBetweenTwoAxisXPoints = 100;
+        
         double axisLineWidth = 10;
 
         double stepAxisX;
         double stepAxisY;
-
-        double counterForAxisX;
-        double counterForAxisY;
-
-        double initialX = 0;
-        double initialY = 0;
-        double finalX = 0;
-        double finalY = 0;
-
+        
         private double _minValueRange;
         private double _maxValueRange;
         private bool _entered;
@@ -49,12 +40,10 @@ namespace Spektrometer.GUI
         private double _lastMouseXPosition;
 
         double step;
-        double graphWidth;
-        double graphMargin;
-        Boolean start = true;
 
         List<Color> pixelData;
         Brush[] brushes;
+        DisplayFormat? lastDiplayFormat;
 
         public GraphView()
         {
@@ -65,50 +54,96 @@ namespace Spektrometer.GUI
 
             _graphCalculator = new GraphCalculator();
             _graphData = graphController.GraphData;
+            _calibrationPoints = graphController.CalibrationPoints;
+
 
         }
         
         public void DrawGraph()
         {
-            if (_graphData.GraphDataInPixels.Count == 0)
-            {
-                return;
-            }
-            this.pixelData = _graphData.GraphDataInPixels;
-
             canGraph.Children.Clear();
+
 
             xmin = margin;
             xmax = canGraph.Width - margin;
             ymin = margin;
             ymax = canGraph.Height - margin;
-
-
-            if (start)
+            if (_graphData.DisplayFormat == DisplayFormat.parabola)
             {
-                _maxValueRange = pixelData.Count;
-                _minValueRange = 0;
-                graphMargin = margin;
-                graphWidth = canGraph.Width;
-                start = false;
+                if (lastDiplayFormat == null || !lastDiplayFormat.Equals(_graphData.DisplayFormat))
+                {
+                    _maxValueRange = _graphData.IntesityData.Count-1;
+                    _minValueRange = 0;
+                }
+                lastDiplayFormat = _graphData.DisplayFormat;
+                step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
+                DrawAxisX();
+                DrawAxisY();
+                DrawCalibrationGraph();
+            }
+            else
+            {
+                if (_graphData.GraphDataInPixels.Count == 0)
+                {
+                    return;
+                }
+                this.pixelData = _graphData.GraphDataInPixels;
+
+                if (lastDiplayFormat == null || !lastDiplayFormat.Equals(_graphData.DisplayFormat))
+                {
+                    _maxValueRange = pixelData.Count-1;
+                    _minValueRange = 0;
+                }
+                lastDiplayFormat = _graphData.DisplayFormat;
+                
+
+                SetBrushes();
+
+
+                step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
+                DrawGraphData();
+                DrawAxisX();
+                DrawAxisY();
+
+                if (_graphData.GlobalPeak)
+                    ShowGlobalPeak();
+                if (_graphData.ShowPeaks)
+                    ShowPeaks();
+            }
+        }
+
+        private void DrawCalibrationGraph()
+        {
+            var intensity = _graphData.IntesityData;
+            var count = 0;
+            PointCollection points = new PointCollection();
+            var stepAxisY = (canGraph.Height - margin) / (intensity.Last() + 100);
+
+            for (double x = _minValueRange; x <= _maxValueRange; x += step)
+            {
+                double yValue = ymax - intensity[(int)x] * (stepAxisY);
+                points.Add(new Point(xmin + count, yValue));
+                count++;
             }
 
-            stepAxisY = (canGraph.Height - (2 * margin)) / 300;
-            step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
+            Polyline polyline = new Polyline();
+            polyline.StrokeThickness = 10;
+            polyline.Stroke = Brushes.Black;
+            polyline.Points = points;
+            canGraph.Children.Add(polyline);
 
-            counterForAxisX = lengthBetweenTwoAxisXPoints;
-            counterForAxisY = ymax - (lengthBetweenTwoAxisYPoints * stepAxisY);
-
-            SetBrushes();
-
-            DrawGraphData();
-            DrawAxisX();
-            DrawAxisY();
-
-            if (_graphData.GlobalPeak)
-                ShowGlobalPeak();
-            if (_graphData.ShowPeaks)
-                ShowPeaks();
+            foreach (var point in _calibrationPoints.CalibrationPointsList)
+            {
+                if (point.X < _minValueRange || point.X > _maxValueRange)
+                    continue;
+                var circle = new Ellipse();
+                circle.Fill = Brushes.GreenYellow;
+                circle.Height = circle.Width = 15;
+                circle.Stroke = Brushes.Black;
+                TranslateTransform translate = new TranslateTransform(xmin + (point.X - _minValueRange) * (1/step), ymax - point.Y * stepAxisY);
+                circle.RenderTransform = translate;
+                canGraph.Children.Add(circle);
+            }
         }
 
         private void DrawAxisX()
@@ -116,24 +151,26 @@ namespace Spektrometer.GUI
             var intensity = _graphData.IntesityData;
             var maxValueRange = 0.0;
             var minValueRange = 0.0;
-            if (_graphData.DisplayFormat.Equals(DisplayFormat.pixel))
+            if (_graphData.DisplayFormat.Equals(DisplayFormat.pixel) || _graphData.DisplayFormat.Equals(DisplayFormat.parabola))
             {
                 maxValueRange = _maxValueRange;
                 minValueRange = _minValueRange;
             }
-            else
+            if (_graphData.DisplayFormat.Equals(DisplayFormat.wavelength))
             {
-                maxValueRange = intensity.ElementAt((int)_maxValueRange-1);
-                minValueRange = intensity.ElementAt((int)_minValueRange);
+                maxValueRange = intensity[(int)_maxValueRange];
+                minValueRange = intensity[(int)_minValueRange];
             }
             stepAxisX = (maxValueRange - minValueRange) / (canGraph.Width - margin);
+            if (stepAxisX == 0)
+                return;
             // X AXIS
             GeometryGroup xaxis_geom = new GeometryGroup();
             xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
 
             double countAxisX = 0;
             var lengthBetweenTwoAxisXPoints = (maxValueRange - minValueRange) / 13;
-            counterForAxisX = minValueRange;
+            var counterForAxisX = minValueRange;
             for (double x = minValueRange; x <= maxValueRange; x += stepAxisX)
             {
                 if (x > counterForAxisX)
@@ -163,7 +200,12 @@ namespace Spektrometer.GUI
         private void DrawAxisY()
         {  
             double countingAxisYPoints = 0;
-
+            var finishY = _graphData.DisplayFormat.Equals(DisplayFormat.parabola) ? _graphData.IntesityData.Last() : 260;
+            var lengthBetweenTwoAxisYPoints = finishY / 13;
+            var counterForAxisY = ymax - (lengthBetweenTwoAxisYPoints * stepAxisY);
+            stepAxisY = (canGraph.Height - (2 * margin)) / finishY;
+            if (stepAxisY == 0)
+                return;
             // Y AXIS
             GeometryGroup yaxis_geom = new GeometryGroup();
             yaxis_geom.Children.Add(new LineGeometry(new Point(xmin, 0), new Point(xmin, canGraph.Height)));
@@ -326,7 +368,7 @@ namespace Spektrometer.GUI
         private void ZoomOutGraph(Point mouse)
         {
             var range = _maxValueRange - _minValueRange;
-            var ratio = (mouse.X - graphMargin) / (canGraph.Width - graphMargin);
+            var ratio = (mouse.X - margin) / (canGraph.Width - margin);
             var leftLenght = range * ratio;
             var rightLenght = range - leftLenght;
             if (_minValueRange - leftLenght < 0)
@@ -340,7 +382,7 @@ namespace Spektrometer.GUI
 
             if (_maxValueRange + rightLenght > pixelData.Count)
             {
-                _maxValueRange = pixelData.Count;
+                _maxValueRange = pixelData.Count-1;
             }
             else
             {
@@ -351,7 +393,7 @@ namespace Spektrometer.GUI
         private void ZoomInGraph(Point mouse)
         {
             var range = _maxValueRange - _minValueRange;
-            var ratio = (mouse.X - graphMargin) / (canGraph.Width - graphMargin);
+            var ratio = (mouse.X - margin) / (canGraph.Width - margin);
             var leftLenght = range * ratio;
             var rightLenght = range - leftLenght;
             leftLenght *= 0.5;

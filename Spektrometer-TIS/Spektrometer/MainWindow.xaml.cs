@@ -74,7 +74,11 @@ namespace Spektrometer
         private void DisplayFormatChanged(object sender, SelectionChangedEventArgs e)
         {
             var graphController = GraphController.GetInstance();
-            if (dispayFormat.SelectedIndex == 1)
+            if (dispayFormat.SelectedIndex == 0)
+            {
+                graphController.GraphData.DisplayFormat = DisplayFormat.pixel;
+            }
+            else
             {
                 if (graphController.CalibrationPoints.CalibrationPointsList.Count < 3)
                 {
@@ -83,15 +87,11 @@ namespace Spektrometer
                 }
                 else
                 {
-                    var graphCalculator = new GraphCalculator();
-                    graphCalculator.calculateParameters(graphController.CalibrationPoints.CalibrationPointsList);
-                    graphController.GraphData.IntesityData = graphCalculator.convertPixelsToNanometers(graphController.GraphData.GraphDataInPixels);
-                    graphController.GraphData.DisplayFormat = DisplayFormat.wavelength;
+                    if (dispayFormat.SelectedIndex == 1)
+                        graphController.GraphData.DisplayFormat = DisplayFormat.wavelength;
+                    else
+                        graphController.GraphData.DisplayFormat = DisplayFormat.parabola;
                 }
-            }
-            else
-            {
-                graphController.GraphData.DisplayFormat = DisplayFormat.pixel;
             }
         }
     }

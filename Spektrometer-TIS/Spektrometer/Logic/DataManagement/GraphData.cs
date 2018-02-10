@@ -16,7 +16,7 @@ namespace Spektrometer.Logic
     }
     public enum DisplayFormat
     {
-        pixel, wavelength
+        pixel, wavelength, parabola
     }
 
     public class GraphData

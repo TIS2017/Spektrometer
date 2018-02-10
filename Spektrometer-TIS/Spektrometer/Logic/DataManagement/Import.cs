@@ -54,6 +54,7 @@ namespace Spektrometer.Logic
 
             using (var calibFile = new StreamReader(path))
             {
+                var calibrationPoints = new List<Point>();
                 while (!calibFile.EndOfStream)
                 {
                     row = calibFile.ReadLine().Split('\t');
@@ -70,9 +71,10 @@ namespace Spektrometer.Logic
                     {
                         calibrationPointsCount++;
                         var point = new System.Windows.Point(x, y);
-                        _graphController.CalibrationPoints.AddPoint(point);
+                        calibrationPoints.Add(point);
                     }               
                 }
+                _graphController.CalibrationPoints.CalibrationPointsList = calibrationPoints;
             }
             if(calibrationPointsCount < 3)
             {
@@ -110,6 +112,7 @@ namespace Spektrometer.Logic
             {
                 cameraController.SelectCamera(cameraIndex);
                 var calibrationPoints = xElement.Elements();
+                var calibP = new List<Point>();
 
                 foreach (var point in calibrationPoints)
                 {
@@ -118,8 +121,9 @@ namespace Spektrometer.Logic
                         X = Double.Parse(point.Attribute("x").Value),
                         Y = Double.Parse(point.Attribute("y").Value)
                     };
-                    calibPoint.AddPoint(calibrationPoint);
+                    calibP.Add(calibrationPoint);
                 }
+                calibPoint.CalibrationPointsList = calibP;
             }
         }
 

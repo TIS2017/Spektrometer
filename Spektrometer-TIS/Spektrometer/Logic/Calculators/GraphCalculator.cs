@@ -142,10 +142,10 @@ namespace Spektrometer.Logic
         /**
          * Funkcia vráti už pole nanometrov konkrétneho obrázka konverziou jeho pixelov.
          */
-        public List<double> convertPixelsToNanometers(List<Color> picture)
+        public List<double> convertPixelsToNanometers(int amount)
         {
             List<double> nanometers = new List<double>();
-            for (int i = 0; i < picture.Count; i++)
+            for (int i = 0; i < amount; i++)
             {
                 nanometers.Add(a0 + a1 * i + a2 * i * i);
             }

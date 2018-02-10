@@ -18,10 +18,10 @@ namespace Spektrometer.Logic
             List<Color> avg = new List<Color>();
             List<Color> temp = new List<Color>();
 
-            var A = new List<int>(new int[1280]);
-            var R = new List<int>(new int[1280]);
-            var G = new List<int>(new int[1280]);
-            var B = new List<int>(new int[1280]);
+            var A = new List<int>(new int[pics.ElementAt(0).Count]);
+            var R = new List<int>(new int[pics.ElementAt(0).Count]);
+            var G = new List<int>(new int[pics.ElementAt(0).Count]);
+            var B = new List<int>(new int[pics.ElementAt(0).Count]);
             for (int i = 0; i < pics.Count; i++)
             {
                 for (int j = 0; j < pics.ElementAt(i).Count; j++)
