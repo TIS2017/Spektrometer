@@ -164,6 +164,7 @@ namespace Spektrometer.GUI
             stepAxisX = (maxValueRange - minValueRange) / (canGraph.Width - margin);
             if (stepAxisX == 0)
                 return;
+
             // X AXIS
             GeometryGroup xaxis_geom = new GeometryGroup();
             xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
@@ -261,8 +262,6 @@ namespace Spektrometer.GUI
 
         private void ShowPeaks()
         {
-            bool showValues = _graphData.ShowValues;
-
             var treshold = _graphData.Treshold;
             var indexes = _graphCalculator.Peaks(pixelData, treshold);
 
@@ -279,16 +278,15 @@ namespace Spektrometer.GUI
                     l.StrokeThickness = 0.5;
                     l.StrokeDashArray = new DoubleCollection(new[] { 5d });
                     canGraph.Children.Add(l);
-
-                    if (showValues)
-                    {
-                        TextBlock maxValueTxt = new TextBlock();
-                        maxValueTxt.FontWeight = FontWeights.UltraLight;
-                        maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
-                        Canvas.SetTop(maxValueTxt, l.Y2 - 20);
-                        Canvas.SetLeft(maxValueTxt, l.X1 - 10);
-                        canGraph.Children.Add(maxValueTxt);
-                    }
+                    
+                    //SHOW PEAK VALUES
+                    TextBlock maxValueTxt = new TextBlock();
+                    maxValueTxt.FontWeight = FontWeights.UltraLight;
+                    maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
+                    Canvas.SetTop(maxValueTxt, l.Y2 - 20);
+                    Canvas.SetLeft(maxValueTxt, l.X1 - 10);
+                    canGraph.Children.Add(maxValueTxt);
+                    
                 }
             }
         }
