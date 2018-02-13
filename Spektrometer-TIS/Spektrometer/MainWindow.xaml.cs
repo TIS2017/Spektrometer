@@ -67,6 +67,7 @@ namespace Spektrometer
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
+            cameraController.CameraStop();
             var export = Export.GetInstance();
             export.SaveConfig();
         }
