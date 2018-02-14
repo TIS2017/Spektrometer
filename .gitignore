@@ -9,3 +9,4 @@
 *.user
 /Spektrometer-TIS/packages
 /Spektrometer-TIS/Spektrometer/obj/Release
+/Spektrometer-TIS/Spektrometer/bin/Release

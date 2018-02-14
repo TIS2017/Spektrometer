@@ -63,7 +63,6 @@ namespace Spektrometer.GUI
         {
             canGraph.Children.Clear();
 
-
             xmin = margin;
             xmax = canGraph.Width - margin;
             ymin = margin;
@@ -103,13 +102,61 @@ namespace Spektrometer.GUI
                 step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
                 DrawGraphData();
                 DrawAxisX();
-                DrawAxisY();
+                //if (_graphData.Division)
+                //    DrawAxisYWithNumbersZeroAndTwo();
+                //else
+                    DrawAxisY();
 
                 if (_graphData.GlobalPeak)
                     ShowGlobalPeak();
                 if (_graphData.ShowPeaks)
                     ShowPeaks();
             }
+        }
+
+        private void DrawAxisYWithNumbersZeroAndTwo()
+        {
+            double countingAxisYPoints = 0;
+            var finishY = 0.0;
+            if (_graphData.DisplayFormat.Equals(DisplayFormat.parabola))
+                finishY = _graphData.IntesityData.Last();
+            else if (_graphData.Division)
+                finishY = 2;
+            else
+                finishY = 260;
+            var lengthBetweenTwoAxisYPoints = finishY / 13;
+            var counterForAxisY = ymax - (lengthBetweenTwoAxisYPoints * stepAxisY);
+            stepAxisY = (canGraph.Height - (2 * margin)) / finishY;
+            if (stepAxisY == 0)
+                return;
+            // Y AXIS
+            GeometryGroup yaxis_geom = new GeometryGroup();
+            yaxis_geom.Children.Add(new LineGeometry(new Point(xmin, 0), new Point(xmin, canGraph.Height)));
+            for (double y = ymax; y >= ymin; y -= stepAxisY)
+            {
+                if (y < counterForAxisY)
+                {
+                    counterForAxisY -= lengthBetweenTwoAxisYPoints * stepAxisY;
+                    countingAxisYPoints++;
+
+                    yaxis_geom.Children.Add(new LineGeometry(
+                    new Point(xmin - axisLineWidth / 2, y),
+                    new Point(xmin + axisLineWidth / 2, y)));
+
+                    TextBlock txt = new TextBlock();
+                    txt.Text = String.Format("{0:0}", lengthBetweenTwoAxisYPoints * countingAxisYPoints);
+                    Canvas.SetTop(txt, y - 10);
+                    canGraph.Children.Add(txt);
+
+                }
+            }
+
+            Path yaxis_path = new Path();
+            yaxis_path.StrokeThickness = 1;
+            yaxis_path.Stroke = Brushes.Black;
+            yaxis_path.Data = yaxis_geom;
+
+            canGraph.Children.Add(yaxis_path);
         }
 
         private void DrawCalibrationGraph()
@@ -127,7 +174,7 @@ namespace Spektrometer.GUI
             }
 
             Polyline polyline = new Polyline();
-            polyline.StrokeThickness = 10;
+            polyline.StrokeThickness = 5;
             polyline.Stroke = Brushes.Black;
             polyline.Points = points;
             canGraph.Children.Add(polyline);
@@ -136,13 +183,16 @@ namespace Spektrometer.GUI
             {
                 if (point.X < _minValueRange || point.X > _maxValueRange)
                     continue;
-                var circle = new Ellipse();
-                circle.Fill = Brushes.GreenYellow;
-                circle.Height = circle.Width = 15;
-                circle.Stroke = Brushes.Black;
-                TranslateTransform translate = new TranslateTransform(xmin + (point.X - _minValueRange) * (1/step), ymax - point.Y * stepAxisY);
-                circle.RenderTransform = translate;
-                canGraph.Children.Add(circle);
+                var geoGrup = new GeometryGroup();
+                var circlee = new EllipseGeometry();
+                circlee.Center = new Point(xmin + (point.X - _minValueRange) * (1 / step), ymax - point.Y * stepAxisY);
+                geoGrup.Children.Add(circlee);
+                var path = new Path();
+                path.Stroke = Brushes.Black;
+                path.Fill = Brushes.GreenYellow;
+                path.Data = geoGrup;
+                canGraph.Children.Add(path);
+                circlee.RadiusX = circlee.RadiusY = 5;
             }
         }
 
@@ -170,8 +220,26 @@ namespace Spektrometer.GUI
             xaxis_geom.Children.Add(new LineGeometry(new Point(0, ymax), new Point(canGraph.Width, ymax))); //x-ova priamka
 
             double countAxisX = 0;
-            var lengthBetweenTwoAxisXPoints = (maxValueRange - minValueRange) / 13;
-            var counterForAxisX = minValueRange;
+            var lengthBetweenTwoAxisXPoints = 1;
+            var list = new List<int>() { 1, 5, 10, 25, 50, 100 };
+            for (int i = list.Count-1; i >= 0; i--)
+            {
+                if ((maxValueRange-minValueRange)/list[i] > 10)
+                {
+                    lengthBetweenTwoAxisXPoints = list[i];
+                    break;
+                }
+            }
+            var counterForAxisX = (int)minValueRange;
+            for (; counterForAxisX < maxValueRange; counterForAxisX++)
+            {
+                if (counterForAxisX % lengthBetweenTwoAxisXPoints == 0)
+                {
+                    break;
+                }
+            }
+
+            
             for (double x = minValueRange; x <= maxValueRange; x += stepAxisX)
             {
                 if (x > counterForAxisX)
@@ -201,8 +269,13 @@ namespace Spektrometer.GUI
         private void DrawAxisY()
         {  
             double countingAxisYPoints = 0;
-            var finishY = _graphData.DisplayFormat.Equals(DisplayFormat.parabola) ? _graphData.IntesityData.Last() : 260;
-            var lengthBetweenTwoAxisYPoints = finishY / 13;
+            var finishY = 0.0;
+            if (_graphData.DisplayFormat.Equals(DisplayFormat.parabola))
+                finishY = _graphData.IntesityData.Last();
+            else
+                finishY = 260;
+            //var finishY = _graphData.DisplayFormat.Equals(DisplayFormat.parabola) ? _graphData.IntesityData.Last() : 260;
+            var lengthBetweenTwoAxisYPoints = (int) finishY / 13;
             var counterForAxisY = ymax - (lengthBetweenTwoAxisYPoints * stepAxisY);
             stepAxisY = (canGraph.Height - (2 * margin)) / finishY;
             if (stepAxisY == 0)
@@ -222,7 +295,7 @@ namespace Spektrometer.GUI
                     new Point(xmin + axisLineWidth / 2, y)));
 
                     TextBlock txt = new TextBlock();
-                    txt.Text = String.Format("{0:0}", lengthBetweenTwoAxisYPoints * countingAxisYPoints);
+                    txt.Text = String.Format("{0:0.0000}", lengthBetweenTwoAxisYPoints * countingAxisYPoints/130);
                     Canvas.SetTop(txt, y - 10);
                     canGraph.Children.Add(txt);
 
