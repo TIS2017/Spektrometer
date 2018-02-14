@@ -146,7 +146,7 @@ namespace Spektrometer.Logic
             double greenColor = 0;
             double blueColor = 0;
             List<Color> result = new List<Color>();
-            int middleValue = 128;
+            int middleValue = 130;
 
             for (int i = 0; i < actualPicture.Count; i++)
             {
