@@ -57,17 +57,27 @@ namespace Spektrometer.Logic
                 var calibrationPoints = new List<Point>();
                 while (!calibFile.EndOfStream)
                 {
+                    x = -1;
+                    y = -1;             
                     row = calibFile.ReadLine().Split('\t');
-                    try
-                    {
-                        x = Convert.ToDouble(row[0]);
-                        y = Convert.ToDouble(row[1]);
+                    for (int i = 0; i < row.Length; i++)
+                    {                        
+                        try
+                        {
+                            if (x == -1)
+                            {
+                                x = Convert.ToDouble(row[i]);                                
+                            }
+                            else
+                            {
+                                y = Convert.ToDouble(row[i]);                                
+                            }
+                        }
+                        catch
+                        {
+                        }
                     }
-                    catch
-                    {                      
-                    }
-
-                    if (y != 0)
+                    if (y != -1)
                     {
                         calibrationPointsCount++;
                         var point = new System.Windows.Point(x, y);

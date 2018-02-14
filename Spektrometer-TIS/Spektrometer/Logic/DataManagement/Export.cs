@@ -83,8 +83,8 @@ namespace Spektrometer.Logic
 
                     foreach (var maximum in MaximumValues)
                     {
-                        string color = maximum.Key.Value.ToString().Equals(Brushes.Red) ? "Red" : maximum.Key.Value.Equals(Brushes.Green) ? "Green" : "Blue";
-                        File.WriteLine(string.Format("{0} {1}",color,maximum.Key.Key));
+                        string color = maximum.Key.Value.ToString().Equals(Brushes.Red) ? "Blue:" : maximum.Key.Value.Equals(Brushes.Green) ? "Green:" : "Red:";
+                        File.WriteLine(string.Format("{0}\t{1}",color,maximum.Key.Key));
                     }
                 }
             }
