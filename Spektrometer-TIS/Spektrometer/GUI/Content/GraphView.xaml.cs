@@ -102,9 +102,9 @@ namespace Spektrometer.GUI
                 step = ((_maxValueRange - _minValueRange) / (canGraph.Width - margin));
                 DrawGraphData();
                 DrawAxisX();
-                //if (_graphData.Division)
-                //    DrawAxisYWithNumbersZeroAndTwo();
-                //else
+                if (_graphData.Division)
+                    DrawAxisYWhenDivisionEnabled();
+                else
                     DrawAxisY();
 
                 if (_graphData.GlobalPeak)
@@ -114,7 +114,7 @@ namespace Spektrometer.GUI
             }
         }
 
-        private void DrawAxisYWithNumbersZeroAndTwo()
+        private void DrawAxisY()
         {
             double countingAxisYPoints = 0;
             var finishY = 0.0;
@@ -266,16 +266,15 @@ namespace Spektrometer.GUI
             canGraph.Children.Add(xaxis_path);
         }
 
-        private void DrawAxisY()
+        private void DrawAxisYWhenDivisionEnabled()
         {  
             double countingAxisYPoints = 0;
             var finishY = 0.0;
             if (_graphData.DisplayFormat.Equals(DisplayFormat.parabola))
                 finishY = _graphData.IntesityData.Last();
             else
-                finishY = 260;
-            //var finishY = _graphData.DisplayFormat.Equals(DisplayFormat.parabola) ? _graphData.IntesityData.Last() : 260;
-            var lengthBetweenTwoAxisYPoints = (int) finishY / 13;
+                finishY = 261;
+                var lengthBetweenTwoAxisYPoints = (int) finishY / 26;
             var counterForAxisY = ymax - (lengthBetweenTwoAxisYPoints * stepAxisY);
             stepAxisY = (canGraph.Height - (2 * margin)) / finishY;
             if (stepAxisY == 0)
@@ -295,7 +294,7 @@ namespace Spektrometer.GUI
                     new Point(xmin + axisLineWidth / 2, y)));
 
                     TextBlock txt = new TextBlock();
-                    txt.Text = String.Format("{0:0.0000}", lengthBetweenTwoAxisYPoints * countingAxisYPoints/130);
+                    txt.Text = String.Format("{0:0.00}", lengthBetweenTwoAxisYPoints * countingAxisYPoints/130);
                     Canvas.SetTop(txt, y - 10);
                     canGraph.Children.Add(txt);
 
