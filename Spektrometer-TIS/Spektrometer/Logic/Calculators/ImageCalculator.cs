@@ -142,22 +142,23 @@ namespace Spektrometer.Logic
          */
         public List<Color> DivisionOfActualAndReferencePicture(List<Color> actualPicture, List<Color> referencePicture)
         {
-            int redColor = 0;
-            int greenColor = 0;
-            int blueColor = 0;
+            double redColor = 0;
+            double greenColor = 0;
+            double blueColor = 0;
             List<Color> result = new List<Color>();
+            int middleValue = 128;
 
             for (int i = 0; i < actualPicture.Count; i++)
             {
                 if (referencePicture[i].R > 0)
                 {
-                    if ((actualPicture[i].R / referencePicture[i].R) * actualPicture[i].R >= 255)
+                    if ((Convert.ToDouble(actualPicture[i].R) / Convert.ToDouble(referencePicture[i].R)) * middleValue >= 255)
                     {
                         redColor = 255;
                     }
                     else
                     {
-                        redColor = (actualPicture[i].R / referencePicture[i].R) * actualPicture[i].R;
+                        redColor = (Convert.ToDouble(actualPicture[i].R) / Convert.ToDouble(referencePicture[i].R)) * middleValue;
                     }
                 }
                 else
@@ -166,13 +167,13 @@ namespace Spektrometer.Logic
                 }
                 if (referencePicture[i].G > 0)
                 {
-                    if ((actualPicture[i].G / referencePicture[i].G) * actualPicture[i].G >= 255)
+                    if ((Convert.ToDouble(actualPicture[i].G) / Convert.ToDouble(referencePicture[i].G)) * middleValue >= 255)
                     {
                         greenColor = 255;
                     }
                     else
                     {
-                        greenColor = (actualPicture[i].G / referencePicture[i].G) * actualPicture[i].G;
+                        greenColor = (Convert.ToDouble(actualPicture[i].G) / Convert.ToDouble(referencePicture[i].G)) * middleValue;
                     }
                 }
                 else
@@ -181,13 +182,13 @@ namespace Spektrometer.Logic
                 }
                 if (referencePicture[i].B > 0)
                 {
-                    if ((actualPicture[i].B / referencePicture[i].B) * actualPicture[i].B >= 255)
+                    if (Convert.ToDouble((actualPicture[i].B) / Convert.ToDouble(referencePicture[i].B)) * middleValue >= 255)
                     {
                         blueColor = 255;
                     }
                     else
                     {
-                        blueColor = (actualPicture[i].B / referencePicture[i].B) * actualPicture[i].B;
+                        blueColor = (Convert.ToDouble(actualPicture[i].B) / Convert.ToDouble(referencePicture[i].B)) * middleValue;
                     }
                 }
                 else
@@ -197,6 +198,6 @@ namespace Spektrometer.Logic
                 result.Add(Color.FromArgb(Convert.ToByte(255), Convert.ToByte(redColor), Convert.ToByte(greenColor), Convert.ToByte(blueColor)));
             }
             return result;
-        }
+        } 
     }
 }
