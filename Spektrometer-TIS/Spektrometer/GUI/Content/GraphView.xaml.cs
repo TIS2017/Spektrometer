@@ -354,7 +354,14 @@ namespace Spektrometer.GUI
                     //SHOW PEAK VALUES
                     TextBlock maxValueTxt = new TextBlock();
                     maxValueTxt.FontWeight = FontWeights.UltraLight;
-                    maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
+                    if (_graphData.DisplayFormat.Equals(DisplayFormat.pixel))
+                    {
+                        maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
+                    }
+                    else
+                    {
+                        maxValueTxt.Text = String.Format("{0:0}", _graphData.IntesityData[maxIndex.Key.Key]);
+                    }
                     Canvas.SetTop(maxValueTxt, l.Y2 - 20);
                     Canvas.SetLeft(maxValueTxt, l.X1 - 10);
                     canGraph.Children.Add(maxValueTxt);
