@@ -83,7 +83,7 @@ namespace Spektrometer.GUI
             if (_graphController.GraphData.ActualPicture.Count > 0)
                 _graphController.GraphData.ReferencedPicture = _graphController.GraphData.ActualPicture;
             else
-                MessageBox.Show("Ziadne data pre ulozenie referencneho snimku.");
+                MessageBox.Show("No data available for storing a reference picture.");
         }
 
         private void Subtraction(object sender, RoutedEventArgs e)
@@ -113,6 +113,9 @@ namespace Spektrometer.GUI
                     break;
                 case 3:
                     _graphController.GraphData.Filter = Filter.B;
+                    break;
+                case 4:
+                    _graphController.GraphData.Filter = Filter.MAX;
                     break;
                 default:
                     _graphController.GraphData.Filter = Filter.RGB;

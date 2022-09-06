@@ -10,7 +10,7 @@ namespace Spektrometer.Logic
 
     public enum Filter
     {
-        RGB, R, G, B
+        RGB, R, G, B, MAX
 
 
     }

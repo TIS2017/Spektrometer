@@ -100,7 +100,7 @@ namespace Spektrometer.Logic
                 }
             }
             if (_videoSource.VideoResolution == null)
-                MessageBox.Show("Kamera nepodporuje potrebnu sirku: " + REQUARED_WIDTH);
+                MessageBox.Show("Camera does not support the required width: " + REQUARED_WIDTH);
         }
 
         public void ShowSettings()

@@ -385,6 +385,10 @@ namespace Spektrometer.GUI
             {
                 brushes = new Brush[] { Brushes.Blue };
             }
+            else if (_graphData.Filter.Equals(Filter.MAX))
+            {
+                brushes = new Brush[] { Brushes.Chocolate };
+            }
         }
 
         private void DrawGraphData()
@@ -412,11 +416,21 @@ namespace Spektrometer.GUI
                     {
                         yValue = ymax - pixelData.ElementAt((int)x).B * stepAxisY;
                     }
+                    else if (brush.Equals(Brushes.Chocolate))
+                    {
+                        var r = pixelData.ElementAt((int)x).R;
+                        var g = pixelData.ElementAt((int)x).G;
+                        var b = pixelData.ElementAt((int)x).B;
+                        var mx = r;
+                        if (g > mx) mx = g;
+                        if (b > mx) mx = b;
+                        yValue = ymax - mx * stepAxisY;
+                    }
                     points.Add(new Point(xmin + count, yValue));
                     count++;
 
                 }
-
+                
                 Polyline polyline = new Polyline();
                 polyline.StrokeThickness = 1;
                 polyline.Stroke = brush;

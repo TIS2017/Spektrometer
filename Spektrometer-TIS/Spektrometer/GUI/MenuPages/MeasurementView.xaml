@@ -78,6 +78,7 @@
                         <ComboBoxItem Content="red"/>
                         <ComboBoxItem Content="green"/>
                         <ComboBoxItem Content="blue"/>
+                        <ComboBoxItem Content="max"/>
                     </ComboBox>
 
                 </DockPanel>
