@@ -83,7 +83,7 @@ namespace Spektrometer.GUI
             if (_graphController.GraphData.ActualPicture.Count > 0)
                 _graphController.GraphData.ReferencedPicture = _graphController.GraphData.ActualPicture;
             else
-                MessageBox.Show("Ziadne data pre ulozenie referencneho snimku.");
+                MessageBox.Show("No data available for storing a reference picture.");
         }
 
         private void Subtraction(object sender, RoutedEventArgs e)

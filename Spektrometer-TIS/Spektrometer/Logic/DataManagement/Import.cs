@@ -44,7 +44,7 @@ namespace Spektrometer.Logic
         {
             if (!File.Exists(path))
             {
-                MessageBox.Show("Súbor so zadanou cestou: "+ path +" sa nepodarilo nájsť !");
+                MessageBox.Show("The file with the specified path: "+ path +" could not be found!");
                 return;
             }
             string[] row;
@@ -88,8 +88,8 @@ namespace Spektrometer.Logic
             }
             if(calibrationPointsCount < 3)
             {
-                MessageBox.Show("Nedostatok kalibračných bodov, prosím doplňte "+(3-calibrationPointsCount)+
-                ", alebo viac bodov do kalibračného súboru !");
+                MessageBox.Show("Insufficient number of calibration points, please add "+(3-calibrationPointsCount)+
+                " more, or add more in the calibration file!");
 
                 _graphController.CalibrationPoints.CalibrationPointsList = new List<Point>();
             }
@@ -206,7 +206,7 @@ namespace Spektrometer.Logic
             {
                 if (!File.Exists(path))
                 {
-                    MessageBox.Show("Súbor sa nenašiel !");
+                    MessageBox.Show("The file was not found!");
                     return;
                 }
 
@@ -227,7 +227,7 @@ namespace Spektrometer.Logic
             }
             catch(Exception)
             {
-                MessageBox.Show("Nepodarilo sa načítať súbor!");
+                MessageBox.Show("The file could not be read!");
             }
         }
 
@@ -246,7 +246,7 @@ namespace Spektrometer.Logic
                 _imageController.NewImage(bitmapSource);
             } catch(Exception e)
             {
-                MessageBox.Show("Chyba pri načítavaní. " + e.Message);
+                MessageBox.Show("Error while reading. " + e.Message);
             }
         }
     }
