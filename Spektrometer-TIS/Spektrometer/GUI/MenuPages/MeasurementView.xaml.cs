@@ -114,6 +114,9 @@ namespace Spektrometer.GUI
                 case 3:
                     _graphController.GraphData.Filter = Filter.B;
                     break;
+                case 4:
+                    _graphController.GraphData.Filter = Filter.MAX;
+                    break;
                 default:
                     _graphController.GraphData.Filter = Filter.RGB;
                     break;
