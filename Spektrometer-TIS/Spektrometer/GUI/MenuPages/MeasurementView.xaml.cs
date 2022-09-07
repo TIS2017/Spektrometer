@@ -12,11 +12,14 @@ namespace Spektrometer.GUI
     public partial class MeasurementView : MenuComponent
     {
         private GraphController _graphController;
-        
+
+        private bool initializingOnly = false;
         public MeasurementView(MainWindow mainWindow) : base(mainWindow)
         {
+            initializingOnly = true;
             InitializeComponent();
-            if (_graphController.GraphData.ShowPeaks)
+            initializingOnly = false;
+            if (_graphController.GraphData.ShowValues)
             {
                 Values.Content = "Hide";
             }
@@ -24,6 +27,12 @@ namespace Spektrometer.GUI
             {
                 Values.Content = "Show";
             }
+            GlobalPeakChecked.IsChecked = _graphController.GraphData.GlobalPeak;
+            Value.Text = _graphController.GraphData.Treshold.ToString();
+            MinValeyHeight.Text = _graphController.GraphData.MinValeyHeight.ToString();
+            XMinDist.Text = _graphController.GraphData.XMinDist.ToString();
+            FilterChartList.SelectedIndex = (int)_graphController.GraphData.Filter;
+            FillChartChecked.IsChecked = _graphController.GraphData.FillChart;
         }
 
         private void MenuButton(object sender, RoutedEventArgs e)
@@ -46,36 +55,36 @@ namespace Spektrometer.GUI
             _graphController.GraphData.GlobalPeak = false;
         }
 
+        private void SetFillChart(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.FillChart = true;
+        }
+
+        private void UnsetFillChart(object sender, RoutedEventArgs e)
+        {
+            _graphController.GraphData.FillChart = false;
+        }
+
         private void SetShowValue(object sender, RoutedEventArgs e)
         {
-            if (Value.Text != "")
+            try
             {
                 _graphController.GraphData.Treshold = Int32.Parse(Value.Text);
+                _graphController.GraphData.XMinDist = Int32.Parse(XMinDist.Text);
+                _graphController.GraphData.MinValeyHeight = Int32.Parse(MinValeyHeight.Text);
+            }
+            catch (Exception) { }
 
-                if (_graphController.GraphData.ShowValues)
-                {
-                    Values.Content = "Hide";
-                }
-                else
-                {
-                    Values.Content = "Show";
-                }
-                _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
-                _graphController.GraphData.ShowValues = !_graphController.GraphData.ShowValues;
+            if (_graphController.GraphData.ShowValues)
+            {
+                Values.Content = "Show";                
+                _graphController.GraphData.ShowValues = false;
             }
             else
             {
-             
-                if (_graphController.GraphData.ShowPeaks)
-                {
-                    Values.Content = "Show";
-                }
-                else
-                {
-                    Values.Content = "Hide";
-                }
-                _graphController.GraphData.ShowPeaks = !_graphController.GraphData.ShowPeaks;
-            }
+                Values.Content = "Hide";                
+                _graphController.GraphData.ShowValues = true;
+            }           
         }
 
         private void ReferencePicture(object sender, RoutedEventArgs e)
@@ -100,6 +109,7 @@ namespace Spektrometer.GUI
 
         private void FilterChart(object sender, SelectionChangedEventArgs e)
         {
+            if (initializingOnly) return;
             switch (FilterChartList.SelectedIndex)
             {
                 case 0:

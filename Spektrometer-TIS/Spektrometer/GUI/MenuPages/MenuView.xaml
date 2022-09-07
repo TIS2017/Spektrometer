@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Spektrometer.GUI"
       mc:Ignorable="d" 
-      d:DesignHeight="auto" d:DesignWidth="120
-                     "
+      Height="auto" 
+      Width="120"
       Title="MenuView">
 
     <Grid Background="#FF3D8AF7" Margin="0,0,0,0" >

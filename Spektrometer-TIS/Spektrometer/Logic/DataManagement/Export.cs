@@ -62,7 +62,7 @@ namespace Spektrometer.Logic
             }
             catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !\n"+e.Message);
+                MessageBox.Show("The file with the specified path could not be created!\n"+e.Message);
                 return;
             }
         }
@@ -78,19 +78,24 @@ namespace Spektrometer.Logic
                 {
                     var graphData = _graphController.GraphData.ActualPicture;
                     var treshold = _graphController.GraphData.Treshold;
+                    var epsilon = _graphController.GraphData.XMinDist;
+                    var minheight = _graphController.GraphData.MinValeyHeight;
                     var graphCalculator = new GraphCalculator();
-                    var MaximumValues = graphCalculator.Peaks(graphData, treshold);
+                    var MaximumValues = graphCalculator.Peaks(graphData, treshold, epsilon, minheight);
 
                     foreach (var maximum in MaximumValues)
                     {
-                        string color = maximum.Key.Value.ToString().Equals(Brushes.Red) ? "Blue:" : maximum.Key.Value.Equals(Brushes.Green) ? "Green:" : "Red:";
-                        File.WriteLine(string.Format("{0}\t{1}",color,maximum.Key.Key));
+                        string color = maximum.Key.Key.ToString().Equals(Brushes.Red) ? "Red:" :
+                                       maximum.Key.Key.Equals(Brushes.Green) ? "Green:" :
+                                       maximum.Key.Key.Equals(Brushes.Blue) ? "Blue:" : "Chocolate:";
+                                       
+                        File.WriteLine(string.Format("{0}\t{1}",color,maximum.Key.Value));
                     }
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !" + e.Message);
+                MessageBox.Show("The file with the specified path could not be created!\n" + e.Message);
                 return;
             }
         }
@@ -114,7 +119,7 @@ namespace Spektrometer.Logic
             }
             catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !"+e.Message);
+                MessageBox.Show("The file with the specified path could not be created!\n" + e.Message);
                 return;
             }
         }
@@ -151,21 +156,29 @@ namespace Spektrometer.Logic
         {
             var graphData = GraphController.GetInstance().GraphData;
             var measurement = new XElement("Measurement");
-            var xElement = new XElement("showPeaks", graphData.ShowPeaks);
-            measurement.Add(xElement);
-
-            xElement = new XElement("globalPeak", graphData.GlobalPeak);
+           
+            var xElement = new XElement("globalPeak", graphData.GlobalPeak);
             measurement.Add(xElement);
 
             var showValues = new XElement("showValues");
-            xElement = new XElement("show", graphData.Treshold >= 0);
+            xElement = new XElement("show", graphData.ShowValues);
             showValues.Add(xElement);
 
             xElement = new XElement("offset", graphData.Treshold);
             showValues.Add(xElement);
+
+            xElement = new XElement("epsilon", graphData.XMinDist);
+            showValues.Add(xElement);
+
+            xElement = new XElement("height", graphData.MinValeyHeight);
+            showValues.Add(xElement);
+
             measurement.Add(showValues);
 
-            xElement = new XElement("fillChart", graphData.Filter);
+            xElement = new XElement("fillChart", graphData.FillChart);
+            measurement.Add(xElement);
+
+            xElement = new XElement("filter", graphData.Filter);
             measurement.Add(xElement);
 
             return measurement;
@@ -210,7 +223,7 @@ namespace Spektrometer.Logic
             }
             catch(Exception e)
             {
-                MessageBox.Show("Nepodarilo sa vytvoriť súbor so zadanou cestou !"+e.Message);
+                MessageBox.Show("The file with the specified path could not be created!\n" + e.Message);
                 return;
             }
         }

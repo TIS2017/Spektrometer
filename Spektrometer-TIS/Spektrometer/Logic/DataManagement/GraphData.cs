@@ -29,13 +29,14 @@ namespace Spektrometer.Logic
         private List<double> _intesityData;
         private List<Color> _referencedPicture;
         private List<Color> _actualPicture;
-        private bool _showPeaks;
         private bool _globalPeak;
+        private bool _fillChart;
         private bool _showValues;
-        private double _treshold;
+        private int _treshold;
+        private int _epsilon;
+        private int _minheight;
         private bool _subtraction;
         private bool _division;
-        private bool _fillChart;
         private Filter _filter;
         private DisplayFormat _displayFormat;
 
@@ -73,26 +74,25 @@ namespace Spektrometer.Logic
                 OnCalculationDataChange();
             }
         }
+
+        private bool processedPicture = true;
         public List<Color> ActualPicture
         {
             get  {  return _actualPicture;  }
             set
             {
-                _actualPicture = value;
-                if (OnCalculationDataChange == null)
-                    return;
-                OnCalculationDataChange();
-            }
-        }
-        public bool ShowPeaks
-        {
-            get  {  return _showPeaks;  }
-            set
-            {
-                _showPeaks = value;
-                if (OnChartDataChange == null)
-                    return;
-                OnChartDataChange();
+                if (processedPicture)
+                {
+                    processedPicture = false;
+                    _actualPicture = value;
+                    if (OnCalculationDataChange == null)
+                    {
+                        processedPicture = true;
+                        return;
+                    }
+                    OnCalculationDataChange();
+                    processedPicture = true;
+                }
             }
         }
         public bool GlobalPeak
@@ -117,12 +117,34 @@ namespace Spektrometer.Logic
                 OnChartDataChange();
             }
         }
-        public double Treshold
+        public int Treshold
         {
             get  {  return _treshold;  }
             set
             {
                 _treshold = value;
+                if (OnChartDataChange == null)
+                    return;
+                OnChartDataChange();
+            }
+        }
+        public int XMinDist
+        {
+            get { return _epsilon; }
+            set
+            {
+                _epsilon = value;
+                if (OnChartDataChange == null)
+                    return;
+                OnChartDataChange();
+            }
+        }
+        public int MinValeyHeight
+        {
+            get { return _minheight; }
+            set
+            {
+                _minheight = value;
                 if (OnChartDataChange == null)
                     return;
                 OnChartDataChange();
@@ -190,13 +212,12 @@ namespace Spektrometer.Logic
             IntesityData = new List<double>();
             ReferencedPicture = new List<Color>();
             ActualPicture = new List<Color>();
-            ShowPeaks = false;
             GlobalPeak = false;
             ShowValues = false;
             Treshold = -1;
             Subtraction = false;
             Division = false;
-            FillChart = false;
+            FillChart = false;            
             Filter = Filter.RGB;
             DisplayFormat = DisplayFormat.pixel;
         }
