@@ -129,6 +129,7 @@ namespace Spektrometer.Logic
             {
                 cameraStarted = false;
                 _videoSource.SignalToStop();
+                GraphController.GetInstance().GraphData.OnChartDataChange();
             }
         }
 
