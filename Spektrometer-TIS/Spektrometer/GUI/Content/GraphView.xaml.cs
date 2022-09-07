@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -109,7 +110,7 @@ namespace Spektrometer.GUI
 
                 if (_graphData.GlobalPeak)
                     ShowGlobalPeak();
-                if (_graphData.ShowPeaks)
+                if (_graphData.ShowValues)
                     ShowPeaks();
             }
         }
@@ -297,7 +298,6 @@ namespace Spektrometer.GUI
                     txt.Text = String.Format("{0:0.00}", lengthBetweenTwoAxisYPoints * countingAxisYPoints/130);
                     Canvas.SetTop(txt, y - 10);
                     canGraph.Children.Add(txt);
-
                 }
             }
 
@@ -335,18 +335,20 @@ namespace Spektrometer.GUI
         private void ShowPeaks()
         {
             var treshold = _graphData.Treshold;
-            var indexes = _graphCalculator.Peaks(pixelData, treshold);
+            var epsilon = _graphData.XMinDist;
+            var minheight = _graphData.MinValeyHeight;
+            var indexes = _graphCalculator.Peaks(pixelData, treshold, epsilon, minheight);
 
             foreach (var maxIndex in indexes)
             {
                 //MAXIMUM
-                if (brushes.Contains(maxIndex.Key.Value) && (maxIndex.Key.Key > _minValueRange && maxIndex.Key.Key < _maxValueRange))
+                if (brushes.Contains(maxIndex.Key.Key) && (maxIndex.Key.Value > _minValueRange && maxIndex.Key.Value < _maxValueRange))
                 {
                     Line l = new Line();
-                    l.X1 = l.X2 = (maxIndex.Key.Key - _minValueRange) * (1/step) + margin;
+                    l.X1 = l.X2 = (maxIndex.Key.Value - _minValueRange) * (1/step) + margin;
                     l.Y1 = ymax;
                     l.Y2 = ymax - maxIndex.Value * stepAxisY;
-                    l.Stroke = Brushes.Gray;
+                    l.Stroke = Brushes.Purple;
                     l.StrokeThickness = 0.5;
                     l.StrokeDashArray = new DoubleCollection(new[] { 5d });
                     canGraph.Children.Add(l);
@@ -356,11 +358,11 @@ namespace Spektrometer.GUI
                     maxValueTxt.FontWeight = FontWeights.UltraLight;
                     if (_graphData.DisplayFormat.Equals(DisplayFormat.pixel))
                     {
-                        maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Key);
+                        maxValueTxt.Text = String.Format("{0:0}", maxIndex.Key.Value);
                     }
                     else
                     {
-                        maxValueTxt.Text = String.Format("{0:0}", _graphData.IntesityData[maxIndex.Key.Key]);
+                        maxValueTxt.Text = String.Format("{0:0}", _graphData.IntesityData[maxIndex.Key.Value]);
                     }
                     Canvas.SetTop(maxValueTxt, l.Y2 - 20);
                     Canvas.SetLeft(maxValueTxt, l.X1 - 10);
@@ -394,49 +396,76 @@ namespace Spektrometer.GUI
         private void DrawGraphData()
         {
             //==================== ADDING GRAPH DATA ======================
-            
-
-            foreach (var brush in brushes)
+            try
             {
-                double count = 0;
-
-                PointCollection points = new PointCollection();
-                for (double x = _minValueRange; x <= _maxValueRange; x += step)
+                bool fill = _graphData.FillChart;
+                List<Polyline> chartLinesDrawnLast = new List<Polyline>();
+                foreach (var brush in brushes)
                 {
-                    double yValue = 0;
-                    if (brush.Equals(Brushes.Red))
-                    {
-                        yValue = ymax - pixelData.ElementAt((int)x).R * stepAxisY;
-                    }
-                    else if (brush.Equals(Brushes.Green))
-                    {
-                        yValue = ymax - pixelData.ElementAt((int)x).G * stepAxisY;
-                    }
-                    else if (brush.Equals(Brushes.Blue))
-                    {
-                        yValue = ymax - pixelData.ElementAt((int)x).B * stepAxisY;
-                    }
-                    else if (brush.Equals(Brushes.Chocolate))
-                    {
-                        var r = pixelData.ElementAt((int)x).R;
-                        var g = pixelData.ElementAt((int)x).G;
-                        var b = pixelData.ElementAt((int)x).B;
-                        var mx = r;
-                        if (g > mx) mx = g;
-                        if (b > mx) mx = b;
-                        yValue = ymax - mx * stepAxisY;
-                    }
-                    points.Add(new Point(xmin + count, yValue));
-                    count++;
+                    double count = 0;
+                    PointCollection points = new PointCollection();
 
+                    for (double x = _minValueRange; x <= _maxValueRange; x += step)
+                    {
+                        double yValue = 0;
+                        if (brush.Equals(Brushes.Red))
+                        {
+                            yValue = ymax - pixelData.ElementAt((int)x).R * stepAxisY;
+                        }
+                        else if (brush.Equals(Brushes.Green))
+                        {
+                            yValue = ymax - pixelData.ElementAt((int)x).G * stepAxisY;
+                        }
+                        else if (brush.Equals(Brushes.Blue))
+                        {
+                            yValue = ymax - pixelData.ElementAt((int)x).B * stepAxisY;
+                        }
+                        else if (brush.Equals(Brushes.Chocolate))
+                        {
+                            var r = pixelData.ElementAt((int)x).R;
+                            var g = pixelData.ElementAt((int)x).G;
+                            var b = pixelData.ElementAt((int)x).B;
+                            var mx = r;
+                            if (g > mx) mx = g;
+                            if (b > mx) mx = b;
+                            yValue = ymax - mx * stepAxisY;
+                        }
+                        points.Add(new Point(xmin + count, yValue));
+                        count++;
+                    }
+                    
+                    if (fill && !CameraController.GetInstance().cameraStarted)
+                    {
+                        double x = _minValueRange;                        
+                        foreach (Point point in points)
+                        {
+                            Line ln = new Line();
+                            ln.X1 = point.X;
+                            ln.Y1 = point.Y;
+                            ln.X2 = point.X;
+                            ln.Y2 = ymax;
+                            ln.Stroke = brush;
+                            ln.StrokeThickness = 1;
+                            var r = pixelData.ElementAt((int)x).R;
+                            var g = pixelData.ElementAt((int)x).G;
+                            var b = pixelData.ElementAt((int)x).B;
+                            Brush lnBrush = new SolidColorBrush(Color.FromRgb(r, g, b));                            
+                            ln.Stroke = lnBrush;                            
+                            x += step;
+                            canGraph.Children.Add(ln);                            
+                        } 
+                    }
+                    Polyline polyline = new Polyline();
+                    polyline.StrokeThickness = 1;
+                    polyline.Stroke = brush;
+                    polyline.Points = points;
+                    chartLinesDrawnLast.Add(polyline);
                 }
-                
-                Polyline polyline = new Polyline();
-                polyline.StrokeThickness = 1;
-                polyline.Stroke = brush;
-                polyline.Points = points;
-                canGraph.Children.Add(polyline);
-            }
+                foreach(Polyline line in chartLinesDrawnLast)
+                {                    
+                    canGraph.Children.Add(line);
+                }
+            } catch (Exception) {  /* when zooming in/out while this runs, it can crash, ignore */ }
         }
 
         private void canGraph_SizeChanged(object sender, SizeChangedEventArgs e)

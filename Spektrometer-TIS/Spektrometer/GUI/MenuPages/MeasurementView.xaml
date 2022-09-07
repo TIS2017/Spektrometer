@@ -40,9 +40,21 @@
 
 
             <DockPanel>
-                <Label Content="Show peaks" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
+                <Label Content="Peak min y:" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
                 <TextBox Name="Value" Height="30" TextWrapping="Wrap" Width="110" HorizontalAlignment="Right"/>
             </DockPanel>
+            
+                <DockPanel VerticalAlignment="Center">
+                    <Label Content="Peak min x dist:" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
+                    <TextBox Name="XMinDist" Height="30" TextWrapping="Wrap" Width="80" HorizontalAlignment="Right"/>
+                </DockPanel>
+            
+           
+                <DockPanel VerticalAlignment="Center">
+                    <Label Content="Peak min height:" Foreground="White" FontSize="16" HorizontalAlignment="Left"/>
+                    <TextBox Name="MinValeyHeight" Height="30" TextWrapping="Wrap" Width="80" HorizontalAlignment="Right"/>
+                </DockPanel>
+            
             <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
                 <DockPanel VerticalAlignment="Center">
                     <CheckBox Name="GlobalPeakChecked" Content="Global peek" Foreground="White" FontSize="14" Checked="SetGlobalPeak" Unchecked="UnsetGlobalPeak"/>
@@ -80,7 +92,11 @@
                         <ComboBoxItem Content="blue"/>
                         <ComboBoxItem Content="max"/>
                     </ComboBox>
-
+                </DockPanel>
+            </Border>
+            <Border BorderBrush="#FFFFFF" BorderThickness="0 0 0 2" VerticalAlignment="Top" >
+                <DockPanel>
+                    <CheckBox Name="FillChartChecked" Content="Fill Chart" Foreground="White" FontSize="14" DockPanel.Dock="Bottom" Checked="SetFillChart" Unchecked="UnsetFillChart"/>
                 </DockPanel>
             </Border>
         </StackPanel>

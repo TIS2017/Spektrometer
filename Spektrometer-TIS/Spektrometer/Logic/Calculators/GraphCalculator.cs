@@ -36,58 +36,104 @@ namespace Spektrometer.Logic
          * Vráti zoznam indexov (x-ová os), tých vrcholov,
          * ktorých hodnota (y-ová os) presiahla požadovanú hodnotu (threshold).
          */
-        public Dictionary<KeyValuePair<int, Brush>, int> Peaks(List<Color> pic, double threshold)
+        public Dictionary<KeyValuePair<Brush, int>, int> Peaks(List<Color> pic, double threshold, int epsilon, int minheight)
         {
-            var indexes = new Dictionary<KeyValuePair<int,Brush>, int>();
-            var epsilon = 1;
-            var maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
-            var maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
-            var maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
-            var previousValueRed = -1;
-            var previousValueGreen = -1;
-            var previousValueBlue = -1;
-            for (int i = 0; i < pic.Count; i++)
+            Dictionary<KeyValuePair<Brush, int>, int> indexes = new Dictionary<KeyValuePair<Brush,int>, int>();
+            int[] lastIndexX = new int[4];  // r,g,b,max
+            double[] valeyBottomSinceLastPeak = new double[4];
+            int[] lastPeakHeight = new int[4];
+            KeyValuePair<Brush, int>[] lastKey = new KeyValuePair<Brush, int>[4];
+            bool[] plateau = new bool[4];
+            for (int i = 0; i < 4; i++)
             {
-                var indexAndValueRed = new KeyValuePair<int,int>(i,pic[i].R);
-                var indexAndValueGreen = new KeyValuePair<int, int>(i, pic[i].G);
-                var indexAndValueBlue = new KeyValuePair<int, int>(i, pic[i].B);
+                lastIndexX[i] = -epsilon - 1;
+                lastPeakHeight[i] = -minheight;
+                plateau[i] = false;
+            }
+            valeyBottomSinceLastPeak[0] = pic[0].R;
+            valeyBottomSinceLastPeak[1] = pic[0].G;
+            valeyBottomSinceLastPeak[2] = pic[0].B;
+            int max = pic[0].R;
+            if (pic[0].G > max) max = pic[0].G;
+            if (pic[0].B > max) max = pic[0].B;
+            valeyBottomSinceLastPeak[3] = max;
+            Brush[] brushes = { Brushes.Red, Brushes.Green, Brushes.Blue, Brushes.Chocolate };
 
-                if (i > 0)
+            int[] pix = new int[4];
+            int[] nextPix = new int[4];
+            int[] lastPix = new int[4];
+            int[] passAround;
+
+            for (int i = 0; i < pic.Count - 2; i++)
+            {
+                // i, pic[i].R, pic[i].G, pic[i].B, max
+                max = pic[i + 1].R;
+                if (pic[i + 1].G > max) max = pic[i + 1].G;
+                if (pic[i + 1].B > max) max = pic[i + 1].B;
+
+                passAround = lastPix;
+                lastPix = pix;
+                pix = nextPix;
+                nextPix = passAround;
+
+                nextPix[0] = pic[i + 1].R;
+                nextPix[1] = pic[i + 1].G;
+                nextPix[2] = pic[i + 1].B;
+                nextPix[3] = max;
+
+                if (i == 0) continue;
+
+                for (int j = 0; j < 4; j++)
                 {
-                    previousValueRed = pic[i-1].R;
-                    previousValueGreen = pic[i-1].G;
-                    previousValueBlue = pic[i-1].B;
-                }
-                if (indexAndValueRed.Value >= threshold && maxIndexAndValueRed.Value < indexAndValueRed.Value)
-                {
-                    maxIndexAndValueRed = new KeyValuePair<int,int> (indexAndValueRed.Key,indexAndValueRed.Value);
-                }
-                if (indexAndValueGreen.Value >= threshold && maxIndexAndValueGreen.Value < indexAndValueGreen.Value)
-                {
-                    maxIndexAndValueGreen = new KeyValuePair<int, int>(indexAndValueGreen.Key, indexAndValueGreen.Value);
-                }
-                if (indexAndValueBlue.Value >= threshold && maxIndexAndValueBlue.Value < indexAndValueBlue.Value)
-                {
-                    maxIndexAndValueBlue = new KeyValuePair<int, int>(indexAndValueBlue.Key, indexAndValueBlue.Value);
-                }
-                if (i - maxIndexAndValueRed.Key > epsilon && maxIndexAndValueRed.Value > 0 && previousValueRed > indexAndValueRed.Value)
-                {
-                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueRed.Key,Brushes.Red), maxIndexAndValueRed.Value);
-                    maxIndexAndValueRed = new KeyValuePair<int, int>(-1, -1);
-                }
-                if (i - maxIndexAndValueGreen.Key > epsilon && maxIndexAndValueGreen.Value > 0 && previousValueGreen > indexAndValueGreen.Value)
-                {
-                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueGreen.Key, Brushes.Green), maxIndexAndValueGreen.Value);
-                    maxIndexAndValueGreen = new KeyValuePair<int, int>(-1, -1);
-                }
-                if (i - maxIndexAndValueBlue.Key > epsilon && maxIndexAndValueBlue.Value > 0 && previousValueBlue > indexAndValueBlue.Value)
-                {
-                    indexes.Add(new KeyValuePair<int, Brush>(maxIndexAndValueBlue.Key, Brushes.Blue), maxIndexAndValueBlue.Value);
-                    maxIndexAndValueBlue = new KeyValuePair<int, int>(-1, -1);
+                    bool isAPeak = (pix[j] > lastPix[j]) &&
+                                   (pix[j] >= nextPix[j]) &&
+                                   (pix[j] >= threshold);                    
+                    bool newPeak = false;
+                    bool wasValeySinceLastPeak = ((pix[j] - valeyBottomSinceLastPeak[j]) >= minheight) &&
+                                                 ((lastPeakHeight[j] - valeyBottomSinceLastPeak[j]) >= minheight);
+                    bool gapWideEnoughSinceLast = i - lastIndexX[j] >= epsilon;
+                    int peakI = i;
+                    if (isAPeak &&
+                        gapWideEnoughSinceLast &&
+                        wasValeySinceLastPeak)
+                    {
+                        newPeak = true;
+                    }
+                    else if (isAPeak && 
+                             (pix[j] > lastPeakHeight[j]))
+                       // && ((!wasValeySinceLastPeak) || !gapWideEnoughSinceLast))
+                    {
+                        try { indexes.Remove(lastKey[j]); } catch (Exception) { }
+                        newPeak = true;
+                    }
+                    else if (plateau[j] &&
+                        (pix[j] < lastPix[j]) &&
+                        (i - lastIndexX[j] > 2))
+                    {
+                        indexes.Remove(lastKey[j]);
+                        peakI = (i + lastIndexX[j] - 1) / 2;
+                        newPeak = true;
+                    }
+
+                    if (newPeak)
+                    {
+                        lastKey[j] = new KeyValuePair<Brush, int>(brushes[j], peakI);
+                        indexes.Add(lastKey[j], pix[j]);
+                        lastPeakHeight[j] = pix[j];
+                        lastIndexX[j] = peakI;
+                        valeyBottomSinceLastPeak[j] = pix[j];
+                        plateau[j] = i == peakI;
+                    }
+                    else
+                    {
+                        if (pix[j] < valeyBottomSinceLastPeak[j])
+                            valeyBottomSinceLastPeak[j] = pix[j];
+                        if (pix[j] != lastPix[j]) plateau[j] = false;
+                    }
                 }
             }
             return indexes;
-        } 
+        }
 
         /**
          * Funkcia slúži na výpočet parametrov a0,a1,a2, pomocou ktorých funkcia convertToNanometers

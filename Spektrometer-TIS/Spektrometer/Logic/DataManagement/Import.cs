@@ -141,9 +141,6 @@ namespace Spektrometer.Logic
         {
             var graphData = GraphController.GetInstance().GraphData;
 
-            var showPeaks = measurement.Element("showPeaks").Value;
-            graphData.ShowPeaks = showPeaks.Equals("false") ? false : true;
-
             var globalPeak = measurement.Element("globalPeak").Value;
             graphData.GlobalPeak = globalPeak.Equals("false") ? false : true;
 
@@ -154,8 +151,17 @@ namespace Spektrometer.Logic
             var offset = showValues.Element("offset").Value;
             graphData.Treshold = Int32.Parse(offset);
 
+            var epsilon = showValues.Element("epsilon").Value;
+            graphData.XMinDist = Int32.Parse(epsilon);
+
+            var height = showValues.Element("height").Value;
+            graphData.MinValeyHeight = Int32.Parse(height);
+
             var fillChart = measurement.Element("fillChart").Value;
-            graphData.Filter = (Filter)Enum.Parse(typeof(Filter), fillChart);
+            graphData.FillChart = fillChart.Equals("false") ? false : true;
+
+            var filter = measurement.Element("filter").Value;
+            graphData.Filter = (Filter)Enum.Parse(typeof(Filter), filter);
         }
 
         private void LoadBasicConfiguration(IEnumerable<XElement> xElement)

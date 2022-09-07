@@ -20,6 +20,8 @@ namespace Spektrometer.Logic
 
         public StopCameraHandler CameraStop { get; set; }
 
+        public volatile bool cameraStarted = false;
+
         private ImageController _imageController;
         private FilterInfoCollection _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
         private VideoCaptureDevice _videoSource;
@@ -117,6 +119,7 @@ namespace Spektrometer.Logic
             if (_videoSource != null)
             {
                 _videoSource.Start();
+                cameraStarted = true;
             }
         }
 
@@ -124,24 +127,35 @@ namespace Spektrometer.Logic
         {
             if (_videoSource != null && _videoSource.IsRunning)
             {
+                cameraStarted = false;
                 _videoSource.SignalToStop();
             }
         }
 
+        bool frame_processed = true;
+
         private void Video_NewFrame(object sender, NewFrameEventArgs eventargs)
         {
-            Bitmap bitmap = eventargs.Frame;
+            if (frame_processed)
+            {
+                frame_processed = false;
+                Bitmap bitmap = eventargs.Frame;
 
-            CreateBitmapSourceAndCallSendImageEvent(bitmap);
+                CreateBitmapSourceAndCallSendImageEvent(bitmap);
+                frame_processed = true;
+            }
         }
 
         public int GetCameraIndex()
         {
             return _cameraIndex;
         }
-        
+
+        bool previousFrameFinished = true;
         public void CreateBitmapSourceAndCallSendImageEvent(Bitmap bitmap)
         {
+            if (!previousFrameFinished) return;
+            previousFrameFinished = false;
             var bmp = (Bitmap)bitmap.Clone();
             Application.Current.Dispatcher.BeginInvoke(
                 new Action(() =>
@@ -159,6 +173,8 @@ namespace Spektrometer.Logic
                     _imageController.NewImage(bitmapSource);
 
                     DeleteObject(hBitmap);
+                    Task.Yield();
+                    previousFrameFinished = true;
                 })
             );
         }
