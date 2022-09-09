@@ -326,7 +326,10 @@ namespace Spektrometer.GUI
 
             TextBlock maxValueTxt = new TextBlock();
             maxValueTxt.FontWeight = FontWeights.Bold;
-            maxValueTxt.Text = String.Format("{0:0}", globalPeakIndex);
+            if (_graphData.DisplayFormat.Equals(DisplayFormat.pixel))
+                maxValueTxt.Text = String.Format("{0:0}", globalPeakIndex);
+            else
+                maxValueTxt.Text = String.Format("{0:N1}", _graphData.IntesityData[globalPeakIndex]);
             Canvas.SetTop(maxValueTxt, l.Y2 - 20);
             Canvas.SetLeft(maxValueTxt, l.X1 - 10);
             canGraph.Children.Add(maxValueTxt);
@@ -342,7 +345,7 @@ namespace Spektrometer.GUI
             foreach (var maxIndex in indexes)
             {
                 //MAXIMUM
-                if (brushes.Contains(maxIndex.Key.Key) && (maxIndex.Key.Value > _minValueRange && maxIndex.Key.Value < _maxValueRange))
+                if (brushes.Contains(maxIndex.Key.Key) && (maxIndex.Key.Value > _minValueRange) && (maxIndex.Key.Value < _maxValueRange))
                 {
                     Line l = new Line();
                     l.X1 = l.X2 = (maxIndex.Key.Value - _minValueRange) * (1/step) + margin;
@@ -362,7 +365,12 @@ namespace Spektrometer.GUI
                     }
                     else
                     {
-                        maxValueTxt.Text = String.Format("{0:0}", _graphData.IntesityData[maxIndex.Key.Value]);
+                        double peakXValue = 0;
+                        if (Math.Floor(maxIndex.Key.Value) - maxIndex.Key.Value > 0.1)  // middle of plateau between two points
+                            peakXValue = (_graphData.IntesityData[(int)Math.Floor(maxIndex.Key.Value)] +
+                                          _graphData.IntesityData[(int)Math.Ceiling(maxIndex.Key.Value)]) / 2.0;
+                        else peakXValue = _graphData.IntesityData[(int)maxIndex.Key.Value];
+                        maxValueTxt.Text = String.Format("{0:N1}", peakXValue);
                     }
                     Canvas.SetTop(maxValueTxt, l.Y2 - 20);
                     Canvas.SetLeft(maxValueTxt, l.X1 - 10);
@@ -433,10 +441,10 @@ namespace Spektrometer.GUI
                         points.Add(new Point(xmin + count, yValue));
                         count++;
                     }
-                    
+
                     if (fill && !CameraController.GetInstance().cameraStarted)
                     {
-                        double x = _minValueRange;                        
+                        double x = _minValueRange;
                         foreach (Point point in points)
                         {
                             Line ln = new Line();
@@ -449,11 +457,11 @@ namespace Spektrometer.GUI
                             var r = pixelData.ElementAt((int)x).R;
                             var g = pixelData.ElementAt((int)x).G;
                             var b = pixelData.ElementAt((int)x).B;
-                            Brush lnBrush = new SolidColorBrush(Color.FromRgb(r, g, b));                            
-                            ln.Stroke = lnBrush;                            
+                            Brush lnBrush = new SolidColorBrush(Color.FromRgb(r, g, b));
+                            ln.Stroke = lnBrush;
                             x += step;
-                            canGraph.Children.Add(ln);                            
-                        } 
+                            canGraph.Children.Add(ln);
+                        }
                     }
                     Polyline polyline = new Polyline();
                     polyline.StrokeThickness = 1;
@@ -462,7 +470,7 @@ namespace Spektrometer.GUI
                     chartLinesDrawnLast.Add(polyline);
                 }
                 foreach(Polyline line in chartLinesDrawnLast)
-                {                    
+                {
                     canGraph.Children.Add(line);
                 }
             } catch (Exception) {  /* when zooming in/out while this runs, it can crash, ignore */ }
