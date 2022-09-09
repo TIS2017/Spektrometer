@@ -36,13 +36,13 @@ namespace Spektrometer.Logic
          * Vráti zoznam indexov (x-ová os), tých vrcholov,
          * ktorých hodnota (y-ová os) presiahla požadovanú hodnotu (threshold).
          */
-        public Dictionary<KeyValuePair<Brush, int>, int> Peaks(List<Color> pic, double threshold, int epsilon, int minheight)
+        public Dictionary<KeyValuePair<Brush, double>, int> Peaks(List<Color> pic, double threshold, int epsilon, int minheight)
         {
-            Dictionary<KeyValuePair<Brush, int>, int> indexes = new Dictionary<KeyValuePair<Brush, int>, int>();
+            Dictionary<KeyValuePair<Brush, double>, int> indexes = new Dictionary<KeyValuePair<Brush, double>, int>();
             int[] lastIndexX = new int[4];  // r,g,b,max
             double[] valeyBottomSinceLastPeak = new double[4];
             int[] lastPeakHeight = new int[4];
-            KeyValuePair<Brush, int>[] lastKey = new KeyValuePair<Brush, int>[4];
+            KeyValuePair<Brush, double>[] lastKey = new KeyValuePair<Brush, double>[4];
             bool[] plateau = new bool[4];
             for (int i = 0; i < 4; i++)
             {
@@ -92,43 +92,46 @@ namespace Spektrometer.Logic
                     bool wasValeySinceLastPeak = ((pix[j] - valeyBottomSinceLastPeak[j]) >= minheight) &&
                                                  ((lastPeakHeight[j] - valeyBottomSinceLastPeak[j]) >= minheight);
                     bool gapWideEnoughSinceLast = i - lastIndexX[j] >= epsilon;
-                    int peakI = i;
+                    double peakI = i;
+                    int newPeakHeight = 0;
                     if (isAPeak &&
                         gapWideEnoughSinceLast &&
                         wasValeySinceLastPeak)
                     {
                         newPeak = true;
+                        newPeakHeight = pix[j];
                     }
                     else if (isAPeak &&
-                             (pix[j] > lastPeakHeight[j]))
-                    // && ((!wasValeySinceLastPeak) || !gapWideEnoughSinceLast))
+                             (pix[j] > lastPeakHeight[j] + 2))
                     {
                         try { indexes.Remove(lastKey[j]); } catch (Exception) { }
                         newPeak = true;
+                        newPeakHeight = pix[j];
                     }
                     else if (plateau[j] &&
-                        (pix[j] < lastPix[j]) &&
+                        (lastPeakHeight[j] - pix[j] > 2) &&
                         (i - lastIndexX[j] > 2))
                     {
                         indexes.Remove(lastKey[j]);
-                        peakI = (i + lastIndexX[j] - 1) / 2;
+                        peakI = (i + lastIndexX[j] - 1) / 2.0;
                         newPeak = true;
-                    }
+                        newPeakHeight = lastPeakHeight[j];
+                     }
 
                     if (newPeak)
                     {
-                        lastKey[j] = new KeyValuePair<Brush, int>(brushes[j], peakI);
-                        indexes.Add(lastKey[j], pix[j]);
-                        lastPeakHeight[j] = pix[j];
-                        lastIndexX[j] = peakI;
-                        valeyBottomSinceLastPeak[j] = pix[j];
-                        plateau[j] = i == peakI;
+                        lastKey[j] = new KeyValuePair<Brush, double>(brushes[j], peakI);
+                        indexes.Add(lastKey[j], newPeakHeight);
+                        lastPeakHeight[j] = newPeakHeight;
+                        lastIndexX[j] = (int)peakI;
+                        valeyBottomSinceLastPeak[j] = newPeakHeight;
+                        plateau[j] = i == (int)peakI;
                     }
                     else
                     {
                         if (pix[j] < valeyBottomSinceLastPeak[j])
                             valeyBottomSinceLastPeak[j] = pix[j];
-                        if (pix[j] != lastPix[j]) plateau[j] = false;
+                        if (lastPeakHeight[j] - pix[j] > 2) plateau[j] = false;
                     }
                 }
             }
