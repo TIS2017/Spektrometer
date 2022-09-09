@@ -47,6 +47,7 @@ namespace Spektrometer.GUI
                 // Open document 
                 string path = Path.GetFullPath(dialogWindow.FileName);
                 _import.ImportCalibrationFile(path);
+                MainWindow.switchToNanometers();
             }
         }
     }

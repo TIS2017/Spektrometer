@@ -86,12 +86,16 @@ namespace Spektrometer.Logic
                 }
                 _graphController.CalibrationPoints.CalibrationPointsList = calibrationPoints;
             }
-            if(calibrationPointsCount < 3)
+            if (calibrationPointsCount < 3)
             {
-                MessageBox.Show("Insufficient number of calibration points, please add "+(3-calibrationPointsCount)+
+                MessageBox.Show("Insufficient number of calibration points, please add " + (3 - calibrationPointsCount) +
                 " more, or add more in the calibration file!");
 
                 _graphController.CalibrationPoints.CalibrationPointsList = new List<Point>();
+            }
+            else
+            {
+
             }
         }
 
