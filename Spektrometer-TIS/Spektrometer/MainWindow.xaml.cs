@@ -39,6 +39,11 @@ namespace Spektrometer
             cameraController = CameraController.GetInstance();
         }
 
+        public void switchToNanometers()
+        {
+            dispayFormat.SelectedIndex = 1;
+        }
+        
         public void ChangeFrameContent(Page page)
         {
             menu.Content = page;

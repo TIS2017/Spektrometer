@@ -7,7 +7,7 @@ namespace Spektrometer.Logic
 {
     public class GraphCalculator
     {
-        private double a0, a1, a2;
+        private double a0, a1, a2, a3;
         public GraphCalculator()
         {
         }
@@ -20,7 +20,7 @@ namespace Spektrometer.Logic
         {
             int index = 0;
             int max = 0;
-            for(int i=0; i<pic.Count; i++)
+            for (int i = 0; i < pic.Count; i++)
             {
                 if ((pic[i].R + pic[i].G + pic[i].B) > max)
                 {
@@ -38,7 +38,7 @@ namespace Spektrometer.Logic
          */
         public Dictionary<KeyValuePair<Brush, int>, int> Peaks(List<Color> pic, double threshold, int epsilon, int minheight)
         {
-            Dictionary<KeyValuePair<Brush, int>, int> indexes = new Dictionary<KeyValuePair<Brush,int>, int>();
+            Dictionary<KeyValuePair<Brush, int>, int> indexes = new Dictionary<KeyValuePair<Brush, int>, int>();
             int[] lastIndexX = new int[4];  // r,g,b,max
             double[] valeyBottomSinceLastPeak = new double[4];
             int[] lastPeakHeight = new int[4];
@@ -87,7 +87,7 @@ namespace Spektrometer.Logic
                 {
                     bool isAPeak = (pix[j] > lastPix[j]) &&
                                    (pix[j] >= nextPix[j]) &&
-                                   (pix[j] >= threshold);                    
+                                   (pix[j] >= threshold);
                     bool newPeak = false;
                     bool wasValeySinceLastPeak = ((pix[j] - valeyBottomSinceLastPeak[j]) >= minheight) &&
                                                  ((lastPeakHeight[j] - valeyBottomSinceLastPeak[j]) >= minheight);
@@ -99,9 +99,9 @@ namespace Spektrometer.Logic
                     {
                         newPeak = true;
                     }
-                    else if (isAPeak && 
+                    else if (isAPeak &&
                              (pix[j] > lastPeakHeight[j]))
-                       // && ((!wasValeySinceLastPeak) || !gapWideEnoughSinceLast))
+                    // && ((!wasValeySinceLastPeak) || !gapWideEnoughSinceLast))
                     {
                         try { indexes.Remove(lastKey[j]); } catch (Exception) { }
                         newPeak = true;
@@ -196,6 +196,91 @@ namespace Spektrometer.Logic
                 nanometers.Add(a0 + a1 * i + a2 * i * i);
             }
             return nanometers;
+        }
+
+        public List<double> convertPixelsToNanometersCubic(int amount)
+        {
+            List<double> nanometers = new List<double>();
+            for (int i = 0; i < amount; i++)
+            {
+                nanometers.Add(a0 + a1 * i + a2 * i * i + a3 * i * i * i);
+            }
+            return nanometers;
+        }
+
+        private void solveEquations(double[,] a, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                if (i > 0)
+                    for (int j = 0; j < i; j++)
+                        a[i, i] -= a[j, i] * a[j, i];
+
+                if (a[i, i] < 0) return;
+                a[i, i] = Math.Sqrt(a[i, i]);
+                if (i < n - 1)
+                {
+                    for (int j = i + 1; j < n; j++)
+                    {
+                        if (i > 0)
+                            for (int k = 0; k < i; k++)
+                                a[i, j] -= a[k, i] * a[k, j];
+                        a[i, j] = a[i, j] / a[i, i];
+                    }
+                }
+            }
+            double[] p = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                p[i] = a[i, n];
+                if (i > 0)
+                    for (int r = 0; r < i; r++)
+                        p[i] -= a[r, i] * p[r];
+                p[i] /= a[i, i];
+            }
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (i < n - 1)
+                    for (int r = i + 1; r < n; r++)
+                        p[i] -= a[i, r] * p[r];                            
+                p[i] /= a[i, i];
+            }
+            a0 = p[0];
+            a1 = p[1];
+            a2 = p[2];
+            a3 = p[3];
+        }
+
+        public void calculateParametersCubic(List<Point> calibrationPoints)
+        {
+            double[,] a = new double[4, 5];
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 5; j++)
+                    a[i, j] = 0;
+            a[0, 0] = calibrationPoints.Count;
+
+            for (int i = 0; i < calibrationPoints.Count; i++)
+            {
+                double x = calibrationPoints[i].X;
+                double y = calibrationPoints[i].Y;
+                double xx = x * x;
+                double xy = x * y;
+                a[0, 1] += x;
+                a[0, 2] += xx;
+                a[0, 3] += xx * x;
+                a[1, 3] += xx * xx;
+                a[2, 3] += xx * xx * x;
+                a[3, 3] += xx * xx * xx;
+                a[0, 4] += y;
+                a[1, 4] += xy;
+                a[2, 4] += xx * y;
+                a[3, 4] += xx * xy;
+            }
+            a[1, 1] = a[0, 2];
+            a[1, 2] = a[0, 3];
+            a[2, 2] = a[1, 3];
+
+            solveEquations(a, 4);
         }
     }
 }

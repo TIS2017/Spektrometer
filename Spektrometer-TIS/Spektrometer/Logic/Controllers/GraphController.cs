@@ -68,8 +68,8 @@ namespace Spektrometer.Logic
 
         public void IntensityData()
         {
-            _graphCalculator.calculateParameters(CalibrationPoints.CalibrationPointsList);
-            GraphData.IntesityData = _graphCalculator.convertPixelsToNanometers(1280);
+            _graphCalculator.calculateParametersCubic(CalibrationPoints.CalibrationPointsList);
+            GraphData.IntesityData = _graphCalculator.convertPixelsToNanometersCubic(1280);
         }
     }
 }
